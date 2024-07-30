@@ -1,0 +1,4 @@
+*.sh linguist-generated
+
+dev/constants/tpl/** linguist-documentation
+src/assets/** linguist-documentation

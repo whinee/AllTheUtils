@@ -8,9 +8,9 @@ try:
     from .exceptions import CFGExceptions
     from .utils import yaml_str_presenter
 except ImportError:
-    from alltheutils.utils import types
-    from alltheutils.utils.exceptions import CFGExceptions
-    from alltheutils.utils.utils import yaml_str_presenter
+    from alltheutils import types
+    from alltheutils.exceptions import CFGExceptions
+    from alltheutils.utils import yaml_str_presenter
 
 TYPES: dict[
     str,

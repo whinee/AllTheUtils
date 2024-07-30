@@ -1,13 +1,13 @@
 from typing import Any, Optional
 
 try:
-    from .. import TW
+    from . import TW
     from .base_exc import c_exc, c_exc_str
     from .types import Kwargs
 except ImportError:
     from alltheutils import TW
-    from alltheutils.utils.base_exc import c_exc, c_exc_str
-    from alltheutils.utils.types import Kwargs
+    from alltheutils.base_exc import c_exc, c_exc_str
+    from alltheutils.types import Kwargs
 
 """
 `Common` exceptions are raised if an error occured and it is of the `Common` exception's common variant of error.

@@ -22,8 +22,7 @@ from subprocess import call
 from typing import Any, Final, Optional
 
 try:
-    from .. import PSH
-    from . import exceptions, types
+    from . import PSH, exceptions, types
 except ImportError:
     from alltheutils import PSH
     from alltheutils.utils import exceptions, types
@@ -40,7 +39,7 @@ ALL_CHARS: Final[Generator[str, None, None]] = (chr(i) for i in range(sys.maxuni
 CCHARS: Final[str] = "".join(
     map(chr, itertools.chain(range(0x00, 0x20), range(0x7F, 0xA0))),
 )
-CCHARS_RE: Final[Pattern[str]] = re.compile("[%s]" % re.escape(CCHARS))
+CCHARS_RE: Final[Pattern[str]] = re.compile("[%s]" % re.escape(CCHARS)) # type: ignore
 
 
 # Class

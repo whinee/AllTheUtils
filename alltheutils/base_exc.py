@@ -6,7 +6,7 @@ from typing import Optional
 try:
     from . import types
 except ImportError:
-    from alltheutils.utils import types
+    from alltheutils import types
 
 
 def c_exc_str(cls: type[BaseException]) -> type[BaseException]:

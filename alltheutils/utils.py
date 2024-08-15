@@ -271,20 +271,6 @@ def fn(relative_path: str, idx: Optional[int] = None) -> str:
     )
 
 
-def half_round(n: float | int) -> int:
-    """
-    Given a number, half it, then round it to nearest ones place.
-
-    Args:
-    - n (`float | int`): number to half and round.
-
-    Returns:
-    `int`: half and rounded number.
-    """
-
-    return round(n / 2)
-
-
 def inmd(fp: str, ls: Optional[list[str]] = None) -> str:
     """
     If given file path is not a directory, make one of the same name.

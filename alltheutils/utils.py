@@ -11,7 +11,7 @@ import sys
 import unicodedata
 import warnings
 from collections.abc import Callable, Generator, Iterable, Sized
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from itertools import cycle
 from multiprocessing import Pool, pool
 from os import makedirs
@@ -169,7 +169,7 @@ def dt_ts(ts: str) -> str:
     `str`: Formatted datetime string
     """
 
-    return datetime.fromtimestamp(int(ts), tz=UTC).strftime("%Y-%m-%dT%H:%M:%S")
+    return datetime.fromtimestamp(int(ts), tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%S")
 
 
 def file_exists(fp: str) -> str:

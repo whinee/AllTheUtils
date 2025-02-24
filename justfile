@@ -6,11 +6,11 @@ default:
 
 [private]
 nio:
-    @ python -m no_implicit_optional alltheutils; exit 0
+    @ python -m no_implicit_optional alltheutils tests; exit 0
 
 [private]
 ruff:
-    @ python -m ruff check --fix alltheutils; exit 0
+    @ python -m ruff check --fix alltheutils tests; exit 0
 
 # Set up development environment
 [unix]
@@ -22,5 +22,5 @@ bootstrap:
 # Lint codebase
 lint:
     @ just nio
-    @ python -m black -q alltheutils
+    @ python -m black -q alltheutils tests
     @ just ruff

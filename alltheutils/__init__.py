@@ -1,9 +1,6 @@
 import platform
-import warnings
 from shutil import get_terminal_size
 from sys import platform as PLATFORM
-
-warnings.filterwarnings("ignore")
 
 DEFAULT_STR = "c0VjUmVUX2NPZEUgYnkgd2hpX25l"
 

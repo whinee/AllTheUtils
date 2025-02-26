@@ -17,10 +17,11 @@ This software uses [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.h
 
 - Functions deprecated in v1.1.0
 
-## 1.1.0 (Unreleased)
+## 1.1.0
 
 ### Added
 
+- `alltheutils.utils.get_value_from_or_update_nested_dict`
 - MIT License
 
 ### Deprecated
@@ -39,6 +40,7 @@ This software uses [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.h
     - `alltheutils.utils.le` -> `literal_eval`
     - `alltheutils.utils.repl` -> `batch_replace`
     - `alltheutils.utils.rfnn` -> `first_not_none_in_ls`
+    - `alltheutils.utils.squery` -> `search_query`
     - `alltheutils.utils.vls_str` -> `custom_version_ls_to_str`
 
 ## 1.0.1

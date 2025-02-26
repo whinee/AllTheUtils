@@ -548,7 +548,7 @@ def sanitize_text(s: str) -> str:
         return unicodedata.normalize("NFKD", CCHARS_RE.sub("", s)).strip()
 
 
-def squery(
+def search_query(
     query: str,
     possibilities: list[str],
     cutoff: int | float = 0.6,
@@ -917,6 +917,29 @@ def rfnn(*args: types.ListOptionalAny) -> Any:
     """
     return first_not_none_in_ls(args)  # type: ignore
 
+
+@deprecated("2.0.0", "search_query")
+def squery(
+    query: str,
+    possibilities: list[str],
+    cutoff: int | float = 0.6,
+    *,
+    processor: Callable[[Any], Any] = lambda x: x,
+) -> Generator[tuple[None, str] | tuple[float, str], None, None]:
+    """
+    Custom search query.
+
+    Args:
+    - query (`str`): String to search for in the possibilities.
+    - possibilities (`list[str]`): The possibilities to search from.
+    - cutoff (`int | float`, optional): The minimum percentage of similarity from the given possibilities. Defaults to `0.6`.
+    - processor (`Callable[[Any], Any]`, optional): Processes the possibilities before comparing it with the query. Defaults to `lambda x: x`.
+
+    Returns:
+    `Generator[tuple[None, str] | tuple[float, str], None, None]`: Generator object of mastching search quries.
+    """
+
+    return search_query(query, possibilities, cutoff, processor=processor)
 
 @deprecated("2.0.0", "custom_version_ls_to_str")
 def vls_str(vls: list[str | int] | list[int] | list[str]) -> list[str]:

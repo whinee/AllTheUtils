@@ -25,6 +25,10 @@ lint:
     @ python -m black -q alltheutils tests
     @ just ruff
 
+test:
+    @ pytest tests
+
 bump +args:
+    @ just lint
     @ poetry version {{args}}
     @ poetry version | awk '{print $2}' > dev/version

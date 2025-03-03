@@ -16,12 +16,13 @@ from datetime import datetime
 from itertools import cycle
 from multiprocessing import Pool, pool
 from os import makedirs
-from os.path import dirname, realpath
+from os.path import dirname
 from re import Pattern
 from subprocess import call
 from typing import Any, Final, Optional
 
-from alltheutils import PSH, exceptions, types
+from alltheutils import PSH, types
+from alltheutils.exceptions import GeneralExceptions, NestedDictExceptions
 
 warnings.simplefilter("always")
 
@@ -278,7 +279,7 @@ def file_exists(fp: str) -> str:
     `str`: Return `fp` when file path exists.
     """
     if not os.path.exists(fp):
-        raise exceptions.GeneralExceptions.ValidationError.FileNotFound(fp)
+        raise GeneralExceptions.ValidationError.FileNotFound(fp)
     return fp
 
 
@@ -380,12 +381,12 @@ def get_value_from_or_update_nested_dict(  # noqa: C901
                 data.clear()
                 data.update(new_value)
             return data
-        raise TypeError("Cannot replace a dict with a non-dict.")
+        raise NestedDictExceptions.NonDictReplacementValue
 
     keys = address.split(".")
     current = data
 
-    for i, key in enumerate(keys):
+    for idx, key in enumerate(keys):
         new_key: int | str = key
         start_key = key[:4]
         if start_key in ["int>", "str>"]:
@@ -397,16 +398,16 @@ def get_value_from_or_update_nested_dict(  # noqa: C901
 
         if isinstance(new_key, int):
             if new_key not in current and not isinstance(current, list):
-                raise TypeError(f"Path '{'.'.join(keys[: i + 1])}' is not a list.")
+                raise NestedDictExceptions.ValueNotAList(keys, idx)
             is_dict = False
         elif not is_dict:
-            raise TypeError(f"Path '{'.'.join(keys[:i])}' is not a dict.")
+            raise NestedDictExceptions.ValueNotADict(keys, idx)
 
-        if i == len(keys) - 1:
+        if idx == len(keys) - 1:
             if new_value is None:
                 if new_key in current:
                     return current[new_key]  # type: ignore
-                raise KeyError(f"Path '{'.'.join(keys[: i + 1])}' does not exist.")
+                raise NestedDictExceptions.ValueDoesNotExist(keys, idx)
             current[new_key] = new_value  # type: ignore
         else:
             # Navigate deeper, create dicts if missing
@@ -416,35 +417,32 @@ def get_value_from_or_update_nested_dict(  # noqa: C901
                 len_current = len(current)
                 new_key_int: int = new_key  # type: ignore
                 if new_key not in current:
-                    # if new_key != 0:
-                    #     raise IndexError(
-                    #         f"Path '{'.'.join(keys[: i + 1])}' does not exist, and the index is above 0.",
-                    #     )
                     current = current[new_key_int]
                 elif len(current) <= new_key_int or new_key_int < (0 - len_current):
-                    raise IndexError(
-                        f"Path's ('{'.'.join(keys[: i + 1])}') index is out of range.",
+                    raise NestedDictExceptions.ValueIsAListAndIndexIsOutOfRange(
+                        keys,
+                        idx,
                     )
 
     return data
 
 
-def if_none(var: Any, de: Any) -> Any:
+def if_none(variable: Any, default: Any) -> Any:
     """
-    "If Var None, Default".
+    "If variable is None, then return the default".
 
-    If `var` is `None`, return `de` else `var`.
+    If `variable` is `None`, return `default` else `var`.
 
     Args:
-    - var (`Any`): Variable to check if it is None.
-    - de (`Any`): Default value to return if var is None.
+    - variable (`Any`): Variable to check if it is None.
+    - default (`Any`): Default value to return if var is None.
 
     Returns:
-    `Any`: `var` if `var` is not None else `de`.
+    `Any`: `variable` if `variable` is not None else `default`.
     """
-    if var is None:
-        return de
-    return var
+    if variable is None:
+        return default
+    return variable
 
 
 def iter_ls_with_items(
@@ -718,238 +716,3 @@ def zip_extend(a: Sized, b: Sized) -> Iterable[Any]:
     if len(a) > len(b):
         return zip(a, cycle(b), strict=False)  # type: ignore[arg-type, call-overload, no-any-return]
     return zip(cycle(a), b, strict=False)  # type: ignore[arg-type, call-overload, no-any-return]
-
-
-# =========================== Deprecated Functions =============================
-@deprecated("2.0.0", "calculate_sha256_hash")
-def calc_hash(input: str) -> str:
-    """
-    Given a string, calculate its hash and return it.
-
-    Args:
-        input (str): String to hash.
-
-    Returns:
-        str: Hash of the string.
-    """
-    return calculate_sha256_hash(input)
-
-
-@deprecated("2.0.0", "zip_extend")
-def cycle_2ls(a: Sized, b: Sized) -> Iterable[Any]:
-    """
-    Given two list, iterate through both of them, and cycle the shorter list until the longer list has been exhausted.
-
-    Args:
-    - a (`Sized`): First sized iterable.
-    - b (`Sized`): Second sized iterable.
-
-    Returns:
-    `Iterable[Any]`: _description_
-    """
-    return zip_extend(a, b)
-
-
-@deprecated("2.0.0", "parent_dir_nth_times")
-def dnn(fn: str, n: Optional[int] = None) -> str:
-    """
-    Dirname N-th times.
-
-    Given a file name and a number, find the parent directory of the given filename as many times as the given number.
-
-    Args:
-    - fn (`str`): The filename to find the parent directory of.
-    - n (`int`): How many times the parent directory of the given filename should be found.
-
-    Returns:
-    `str`: Parent directory of the given filename.
-    """
-    return parent_dir_nth_times(fn, n)
-
-
-@deprecated(
-    "2.0.0",
-    reason="Use `parent_dir_nth_times(os.path.realpath(file))` instead.",
-)
-def dnrp(file: str, n: Optional[int] = None) -> str:
-    """
-    Get the directory component of a pathname by n times recursively then return it.
-
-    Args:
-    - file (`str`): File to get the directory of.
-    - n (`Optional[int]`, optional): Number of times to get up the directory???? Defaults to 1.
-
-    Returns:
-    `str`: The directory component got recursively by n times from the given pathname
-    """
-    return parent_dir_nth_times(realpath(file), n)
-
-
-@deprecated("2.0.0", "dict_get_first_match")
-def dpop(
-    d: dict[Any, Any],
-    pop: list[int | list[str | int | tuple[str, ...]] | str],
-    de: Optional[Any] = None,
-) -> Any:
-    """
-    Iterate through the preferred order of precedence (`pop`) and see if the value exists in the dictionary. If it does, return it. If not, return `de`.
-
-    Args:
-    - d (`Dict[Any, Any]`): Dictionary to retrieve the value from.
-    - pop (`list[int | tuple[str | int | tuple] | str]`): List of keys to iterate through.
-    - de (`Any`, optional): Default object to be returned. Defaults to None.
-
-    Returns:
-    `Any`: Retrieved value.
-    """
-
-    return dict_get_first_match(d, pop, de)
-
-
-@deprecated("2.0.0", "unix_timestamp_to_iso")
-def dt_ts(ts: str) -> str:
-    """
-    Convert the given unix timestamp to ISO 8601 format.
-
-    Args:
-    - ts (`str`): unix timestamp to be converted to ISO 8601 format
-
-    Returns:
-    `str`: Formatted datetime string
-    """
-
-    return unix_timestamp_to_iso(int(ts))
-
-
-@deprecated("2.0.0", "caller_relative_path")
-def fn(relative_path: str, idx: Optional[int] = None) -> str:
-    """
-    Given a path, output the same path, relative to the absolute directory path of the file that invoked this function.
-
-    An optional argument `idx` can be supplied to change what script to get the absolute directory path from. Consider the following scenario:
-
-    A helper function in `src/utils` that takes in a relative path as an argument wants to transform the path into one relative to the caller's path. However, the said function needs to call this function directly. Said function can then use an index of `2` so that the given path to this function will be processed to be relative from the caller's path, not from the funciton in `src/utils/utils`.
-
-    Args:
-    - relative_path (`str`): Path to output relative to the caller's path.
-    - idx (`Optional[int]`, optional): Index of the stack to relativize the path from. Defaults to `1`.
-
-    Returns:
-    `str`: Path relative to the caller's path.
-    """
-
-    return caller_relative_path(relative_path, idx)
-
-
-@deprecated("2.0.0", "ensure_parent_dir")
-def inmd(fp: str, ls: Optional[list[str]] = None) -> str:
-    """
-    If given file path is not a directory, make one of the same name.
-
-    Args:
-    - fp (`str`): File path to check if it is a directory, and if not, to make one of the same name.
-    - ls (`Optional[list[str]]`, optional): A list of string to which this function can append the file path to if the given file path is not a directory. Defaults to `None`.
-
-    Returns:
-    `str`: Given filepath.
-    """
-
-    return ensure_parent_dir(fp, ls)
-
-
-@deprecated("2.0.0", "if_none")
-def ivnd(var: Any, de: Any) -> Any:
-    """
-    "If Var None, Default".
-
-    If `var` is `None`, return `de` else `var`.
-
-    Args:
-    - var (`Any`): Variable to check if it is None.
-    - de (`Any`): Default value to return if var is None.
-
-    Returns:
-    `Any`: `var` if `var` is not None else `de`.
-    """
-
-    return if_none(var, de)
-
-
-@deprecated("2.0.0", "literal_eval")
-def le(expr: Optional[str]) -> Any:
-    """
-    Literal Evaluation.
-
-    Args:
-    - expr (`Optional[str]`): Expression to be evaluated.
-
-    Returns:
-    `Any`: Expression literally evaluated.
-    """
-    return literal_eval(expr)
-
-
-@deprecated("2.0.0", "batch_replace")
-def repl(s: str, repl_dict: dict[str, list[str]]) -> str:
-    """
-    Iterate through the dictionary, find the values in the given string and replace it with the corresponding key, and output the modified string.
-
-    Args:
-    - s (`str`): String to modify the contents of.
-    - repl_dict (`dict[str, list[str]]`): Key-value pairs of string to replace the substring with and list of string to replace with the corresponding key.
-
-    Returns:
-    `str`: Modified string.
-    """
-
-    return batch_replace(s, repl_dict)
-
-
-@deprecated("2.0.0", "first_not_none_in_ls")
-def rfnn(*args: types.ListOptionalAny) -> Any:
-    """
-    Return First Non-None.
-
-    Return the first argument that is not `None`, else return `None`.
-
-    Returns:
-    `Any`: The first argument that is not `None`, else `None`.
-    """
-    return first_not_none_in_ls(args)  # type: ignore
-
-
-@deprecated("2.0.0", "search_query")
-def squery(
-    query: str,
-    possibilities: list[str],
-    cutoff: int | float = 0.6,
-    *,
-    processor: Callable[[Any], Any] = lambda x: x,
-) -> Generator[tuple[None, str] | tuple[float, str], None, None]:
-    """
-    Custom search query.
-
-    Args:
-    - query (`str`): String to search for in the possibilities.
-    - possibilities (`list[str]`): The possibilities to search from.
-    - cutoff (`int | float`, optional): The minimum percentage of similarity from the given possibilities. Defaults to `0.6`.
-    - processor (`Callable[[Any], Any]`, optional): Processes the possibilities before comparing it with the query. Defaults to `lambda x: x`.
-
-    Returns:
-    `Generator[tuple[None, str] | tuple[float, str], None, None]`: Generator object of mastching search quries.
-    """
-
-    return search_query(query, possibilities, cutoff, processor=processor)
-
-@deprecated("2.0.0", "custom_version_ls_to_str")
-def vls_str(vls: list[str | int] | list[int] | list[str]) -> list[str]:
-    """
-    Given the list of custom version numbers, convert them to their string representation both in modified semver form and semver-compliant form.
-
-    Args:
-    - vls (`list[str | int]`): List of version numbers.
-
-    Returns:
-    `list[str]`: List of string representation of given list of version numbers, both in modified semver form and semver-compliant form.
-    """
-    return list(custom_version_ls_to_str(vls))

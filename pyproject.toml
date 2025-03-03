@@ -2,7 +2,7 @@
 readme = "docs/README.md"
 name = "alltheutils"
 license = "MIT"
-version = "1.1.0"
+version = "2.0.0"
 description = "None"
 
 authors = [

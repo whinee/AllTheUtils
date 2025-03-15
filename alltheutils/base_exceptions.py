@@ -19,6 +19,7 @@ def deprecated(
     Args:
         version (str): The version in which the function will be removed.
         replacement (str, optional): The new function to use instead.
+
     """
 
     def decorator(func):
@@ -41,6 +42,27 @@ def deprecated(
     return decorator
 
 
+class CustomBaseException(BaseException):
+    """Base class for all custom exceptions."""
+
+    message: str
+    details: Optional[str] = None
+
+    def __init__(self, message: str) -> None:
+        self.message = message
+
+    def __str__(self) -> str:
+        return self.message
+
+    def print_details(self) -> None:
+        if self.details:
+            print(self.details)
+
+
+@deprecated(
+    "3.0.0",
+    reason="Inherit the custom exception class from `alltheutils.exceptions.CustomBaseException` instead, alongside any inherited exception/s.",
+)
 def custom_exception_str(cls: type[BaseException]) -> type[BaseException]:
     """
     Decorator to add the __str__ method to an exception.
@@ -50,23 +72,20 @@ def custom_exception_str(cls: type[BaseException]) -> type[BaseException]:
 
     Returns:
     `BaseException`: The exception to raise.
+
     """
 
     old_init: Callable[..., None] = cls.__init__
 
     def init_fn(
-        self: BaseException,
+        self: type[BaseException],
         *args: types.Args,
         **kwargs: types.Kwargs,
     ) -> None:
-        old_init(self, *args, **kwargs)
+        old_init(self, *args, **kwargs)  # type: ignore
 
-    def str_fn(self: BaseException) -> str:
-        msg: str = self.message
-        # details: str=getattr(self, 'details')
-        # if details:
-        #     return msg + '\n' + details
-        return msg
+    def str_fn(self: type[BaseException]) -> str:
+        return self.message  # type: ignore
 
     def print_details_fn(self: BaseException) -> None:
         if details := getattr(self, "details", None):
@@ -74,11 +93,11 @@ def custom_exception_str(cls: type[BaseException]) -> type[BaseException]:
 
     cls.__init__ = init_fn  # type: ignore[assignment]
     cls.__str__ = str_fn  # type: ignore[assignment]
-    cls.print_details = print_details_fn
+    cls.print_details = print_details_fn  # type: ignore
     return cls
 
 
-def custom_exception(cls: type[BaseException]) -> type[BaseException]:
+def custom_exception(cls: type[CustomBaseException]) -> type[CustomBaseException]:
     """
     Decorator to raise a custom exception.
 
@@ -91,6 +110,7 @@ def custom_exception(cls: type[BaseException]) -> type[BaseException]:
 
     Returns:
     `BaseException`: The exception to raise.
+
     """
     if cls.__mro__[-2] is BaseException:
         exc = cls.__mro__[1]
@@ -102,18 +122,18 @@ def custom_exception(cls: type[BaseException]) -> type[BaseException]:
         message: str,
         details: Optional[str] = None,
     ) -> None:
-        self.message = message
+        self.message = message  # type: ignore
         if details is not None:
-            self.details = details
-        exc(self.message)
+            self.details = details  # type: ignore
+        exc(self.message)  # type: ignore
 
     cls.__init__ = init  # type: ignore[assignment]
-    return custom_exception_str(cls)
+    return cls
 
 
 def custom_exception_hook(
-    exctype: type[BaseException],
-    value: BaseException,
+    exctype: type[CustomBaseException],
+    value: CustomBaseException,
     traceback: Optional[TracebackType],
 ) -> None:
     sys.__excepthook__(exctype, value, traceback)
@@ -121,4 +141,4 @@ def custom_exception_hook(
         value.print_details()
 
 
-sys.excepthook = custom_exception_hook
+sys.excepthook = custom_exception_hook  # type: ignore[assignment]

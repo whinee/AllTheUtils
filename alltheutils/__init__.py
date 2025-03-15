@@ -1,8 +1,9 @@
 import platform
+import warnings
 from shutil import get_terminal_size
 from sys import platform as PLATFORM
 
-DEFAULT_STR = "c0VjUmVUX2NPZEUgYnkgd2hpX25l"
+warnings.simplefilter("always")
 
 MACHINE = platform.machine()
 

@@ -42,7 +42,7 @@
 
 6. Focus to the said window and press the `Yes` button by hovering the mouse towards the said button and left-clicking the mouse. A window named `Administrator: Windows Powershell` should pop-up, as seen in the following:
 
-	![](assets/images/windows/pwsh-_admin.png)
+	![](assets/images/windows/pwsh_admin.png)
 
 7. Focus to the window named `Administrator: Windows Powershell` window by hovering the mouse towards the said window and left-clicking the mouse. Then, press `Ctrl` + `V` (Press `Ctrl` and `V` keys simultaneously), and `Enter` afterwards.
 

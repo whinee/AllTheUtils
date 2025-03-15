@@ -1,37 +1,52 @@
-import json
-from typing import Any
+import functools
+import warnings
+from typing import Any, Optional
 
-import yaml
-
-try:
-    from . import types
-    from .exceptions import CFGExceptions
-    from .utils import yaml_str_presenter
-except ImportError:
-    from alltheutils import types
-    from alltheutils.exceptions import CFGExceptions
-    from alltheutils.utils import yaml_str_presenter
-
-TYPES: dict[
-    str,
-    tuple[
-        tuple[str | tuple[str] | tuple[str, str], tuple[str, types.CallableAnyAny]],
-        ...,
-    ],
-] = {
-    "r": (
-        (("yaml", "yml"), ("r", lambda x: yaml.safe_load(x))),
-        (("json"), ("r", lambda x: json.loads(x))),
-    ),
-    "w": (
-        (("yaml", "yml"), ("w", lambda x: yaml.dump(x, indent=2))),
-        (("json"), ("w", lambda x: json.dumps(x, indent=4, sort_keys=False))),
-    ),
-}
-
-yaml.add_representer(str, yaml_str_presenter)
+from alltheutils.config import (
+    dump_conf_obj,
+    parse_conf_str,
+    read_conf_file,
+    write_to_conf_file,
+)
 
 
+# ============================= Top dependencies ===============================
+def deprecated(
+    version: str,
+    replacement: Optional[str] = None,
+    reason: Optional[str] = None,
+):
+    """
+    Decorator to mark functions as deprecated.
+
+    Args:
+        version (str): The version in which the function will be removed.
+        replacement (str, optional): The new function to use instead.
+
+    """
+
+    def decorator(func):
+        func_name = func.__name__  # Get function name automatically
+
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            message = (
+                f"{func_name}() is deprecated and will be removed in version {version}."
+            )
+            if replacement:
+                message += f" Use {replacement}() instead."
+            if reason:
+                message += f" {reason}"
+            warnings.warn(message, DeprecationWarning, stacklevel=2)
+            return func(*args, **kwargs)  # Pass all arguments properly
+
+        return wrapper
+
+    return decorator
+
+
+# =========================== Deprecated Functions =============================
+@deprecated("3.0.0", "alltheutils.config.parse_conf_str")
 def pcfg(d: str, type: str) -> dict[Any, Any]:
     """
     Parse the given string as the given type.
@@ -42,14 +57,13 @@ def pcfg(d: str, type: str) -> dict[Any, Any]:
 
     Returns:
     `dict`: The parsed string.
+
     """
 
-    for k, v in TYPES["r"]:
-        if type in k:
-            return v[1](d)
-    raise CFGExceptions.ExtensionNotSupported(type)
+    return parse_conf_str(d, type)
 
 
+@deprecated("3.0.0", "alltheutils.config.parse_conf_str")
 def dcfg(value: dict[str, Any], ext: str) -> str:
     """
     Dump the given value to a string with the given extension.
@@ -60,13 +74,10 @@ def dcfg(value: dict[str, Any], ext: str) -> str:
 
     Returns:
     `str`: The dumped value.
+
     """
 
-    for k, v in TYPES["w"]:
-        if ext in k:
-            op: str = v[1](value)
-            return op
-    raise CFGExceptions.ExtensionNotSupported(ext)
+    return dump_conf_obj(value, ext)
 
 
 def rcfg(file: str) -> dict[Any, Any]:
@@ -78,14 +89,10 @@ def rcfg(file: str) -> dict[Any, Any]:
 
     Returns:
     `dict`: The contents of the file.
+
     """
 
-    ext = file.split(".")[-1]
-    for k, v in TYPES["r"]:
-        if ext in k:
-            with open(file, v[0]) as f:
-                return v[1](f.read())
-    raise CFGExceptions.ExtensionNotSupported(ext)
+    return read_conf_file(file)
 
 
 def wcfg(file: str, value: dict[Any, Any] | list[Any]) -> None:
@@ -95,11 +102,7 @@ def wcfg(file: str, value: dict[Any, Any] | list[Any]) -> None:
     Args:
     - file (`str`): File name of the file to write the value to.
     - value (`dict[Any, Any] | list[Any])`: Value to write to the file.
+
     """
-    ext = file.split(".")[-1]
-    for k, v in TYPES["w"]:
-        if ext in k:
-            with open(file, v[0]) as f:
-                if value.__class__.__mro__[-2] is dict:
-                    value = dict(value)
-                f.write(v[1](value))
+
+    write_to_conf_file(file, value)

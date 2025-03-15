@@ -17,6 +17,7 @@ def deprecated(
     Args:
         version (str): The version in which the function will be removed.
         replacement (str, optional): The new function to use instead.
+
     """
 
     def decorator(func):
@@ -50,6 +51,7 @@ def c_exc_str(cls: type[BaseException]) -> type[BaseException]:
 
     Returns:
     `BaseException`: The exception to raise.
+
     """
     return custom_exception_str(cls)
 
@@ -68,5 +70,6 @@ def c_exc(cls: type[BaseException]) -> type[BaseException]:
 
     Returns:
     `BaseException`: The exception to raise.
+
     """
-    return custom_exception(cls)
+    return custom_exception(cls)  # type: ignore

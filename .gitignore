@@ -4,6 +4,7 @@
 
 # User-defined Ignored Folders
 .history/
+.obsidian/
 node_modules/
 personal/
 squashfs-root/

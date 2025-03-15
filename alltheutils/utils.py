@@ -22,7 +22,14 @@ from subprocess import call
 from typing import Any, Final, Optional
 
 from alltheutils import PSH, types
-from alltheutils.exceptions import GeneralExceptions, NestedDictExceptions
+from alltheutils.exceptions import (
+    FileNotFound,
+    NDNonDictReplacementValue,
+    NDValueDoesNotExist,
+    NDValueIsAListAndIndexIsOutOfRange,
+    NDValueNotADict,
+    NDValueNotAList,
+)
 
 # ================================ Constants ===================================
 PR = ["alpha", "beta", "rc"]  # Prerelease strings
@@ -96,6 +103,40 @@ def deprecated(
 
     return decorator
 
+
+def deprecated_class(
+    version: str,
+    replacement: Optional[str] = None,
+    reason: Optional[str] = None,
+):
+    """
+    Decorator to mark a classes as deprecated.
+
+    Args:
+    - version (`str`): The version in which the exception will be removed.
+    - replacement (`str`, optional): The new exception to use instead.
+    - reason (`str`, optional): Additional reason for deprecation.
+
+    """
+
+    def decorator(cls):
+        orig_init = cls.__init__
+
+        @functools.wraps(orig_init)
+        def new_init(self, *args, **kwargs):
+            message = f"{cls.__name__} is deprecated and will be removed in version {version}."
+            if replacement:
+                message += f" Use {replacement} instead."
+            if reason:
+                message += f" {reason}"
+
+            warnings.warn(message, DeprecationWarning, stacklevel=2)
+            orig_init(self, *args, **kwargs) # Pass all arguments properly
+
+        cls.__init__ = new_init
+        return cls
+
+    return decorator
 
 @deprecated(
     "3.0.0",
@@ -295,14 +336,14 @@ def file_exists(fp: str) -> str:
     - fp (`str`): File path to check if it exists.
 
     Raises:
-    - `exceptions.GeneralExceptions.ValidationError.FileNotFound`: Raised when a file in the path is not found.
+    - `alltheutils.exceptions.FileNotFound`: Raised when a file in the path is not found.
 
     Returns:
     `str`: Return `fp` when file path exists.
 
     """
     if not os.path.exists(fp):
-        raise GeneralExceptions.ValidationError.FileNotFound(fp)
+        raise FileNotFound(fp)
     return fp
 
 
@@ -406,7 +447,7 @@ def get_value_from_or_update_nested_dict(  # noqa: C901
                 data.clear()
                 data.update(new_value)
             return data
-        raise NestedDictExceptions.NonDictReplacementValue
+        raise NDNonDictReplacementValue
 
     keys = address.split(".")
     current = data
@@ -423,16 +464,16 @@ def get_value_from_or_update_nested_dict(  # noqa: C901
 
         if isinstance(new_key, int):
             if new_key not in current and not isinstance(current, list):
-                raise NestedDictExceptions.ValueNotAList(keys, idx)
+                raise NDValueNotAList(keys, idx)
             is_dict = False
         elif not is_dict:
-            raise NestedDictExceptions.ValueNotADict(keys, idx)
+            raise NDValueNotADict(keys, idx)
 
         if idx == len(keys) - 1:
             if new_value is None:
                 if new_key in current:
                     return current[new_key]  # type: ignore
-                raise NestedDictExceptions.ValueDoesNotExist(keys, idx)
+                raise NDValueDoesNotExist(keys, idx)
             current[new_key] = new_value  # type: ignore
         else:
             # Navigate deeper, create dicts if missing
@@ -444,7 +485,7 @@ def get_value_from_or_update_nested_dict(  # noqa: C901
                 if new_key not in current:
                     current = current[new_key_int]
                 elif len(current) <= new_key_int or new_key_int < (0 - len_current):
-                    raise NestedDictExceptions.ValueIsAListAndIndexIsOutOfRange(
+                    raise NDValueIsAListAndIndexIsOutOfRange(
                         keys,
                         idx,
                     )

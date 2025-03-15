@@ -5,7 +5,7 @@ from typing import Any
 
 import yaml
 
-from alltheutils.exceptions import ConfigExceptions
+from alltheutils.exceptions import ConfigFileExtensionNotSupported
 from alltheutils.utils import yaml_str_presenter
 
 
@@ -48,12 +48,12 @@ class ParserRegistry:
         - mode (`str`): The mode, either "r" (read) or "w" (write).
 
         Raises:
-        - `ConfigExceptions.ExtensionNotSupported`: if no parser is found.
+        - `ConfigFileExtensionNotSupported`: if no parser is found.
 
         """
         if ext in self.parsers[mode]:
             return self.parsers[mode][ext]
-        raise ConfigExceptions.ExtensionNotSupported(ext)
+        raise ConfigFileExtensionNotSupported(ext)
 
 
 # Custom YAML Presenter
@@ -83,7 +83,7 @@ def parse_conf_str(data_str: str, ext: str) -> Any:
     `Any`: The parsed dictionary.
 
     Raises:
-    - `ConfigExceptions.ExtensionNotSupported`: if no parser is available.
+    - `ConfigFileExtensionNotSupported`: if no parser is available.
 
     """
     parser = registry.get_parser(ext, "r")
@@ -102,7 +102,7 @@ def dump_conf_obj(data: Any, ext: str) -> str:
     - `str`: The serialized data.
 
     Raises:
-    - `ConfigExceptions.ExtensionNotSupported`: if no serializer is available.
+    - `ConfigFileExtensionNotSupported`: if no serializer is available.
 
     """
     serializer = registry.get_parser(ext, "w")
@@ -120,7 +120,7 @@ def read_conf_file(file_path: str) -> Any:
     - `Any`: Parsed file content.
 
     Raises:
-    - `ConfigExceptions.ExtensionNotSupported`: If the file extension is not supported.
+    - `ConfigFileExtensionNotSupported`: If the file extension is not supported.
     - `FileNotFoundError`: If the file does not exist.
 
     """
@@ -140,7 +140,7 @@ def write_to_conf_file(file_path: str, value: Any) -> None:
     - value (`Any`): Data to write.
 
     Raises:
-    - `ConfigExceptions.ExtensionNotSupported`: If the file extension is not supported.
+    - `ConfigFileExtensionNotSupported`: If the file extension is not supported.
 
     """
 

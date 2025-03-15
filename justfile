@@ -32,3 +32,6 @@ bump +args:
     @ just lint
     @ poetry version {{args}}
     @ poetry version | awk '{print $2}' > dev/version
+
+docs:
+    @ pdoc --force --output-dir docs/api --template-dir dev/tpl/pdoc3 alltheutils

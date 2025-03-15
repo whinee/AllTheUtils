@@ -17,9 +17,44 @@ This software uses [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.h
 
 ### Removed
 
-- Classes, functions and modules deprecated in v2.0.0 and v.2.1.0
+- Classes, functions and modules deprecated in v2.0.0, v2.1.0, and v2.2.0
 
-## 2.1.0 (Unreleased)
+## 2.2.0
+
+This is not funny anymore, guys. I'm so tired of deprecating shit due to the poor design choices I've made in the past :C
+
+I've mostly deprecated stuff this time for the custom exceptions to be easily documented by pdoc3.
+
+### Added
+
+- Added `alltheutils.exceptions.deprecated_class` decorator for deprecating classes
+- Added `alltheutils.exceptions.deprecated_class` decorators for deprecated base_exceptions classes. If you are an external API user, please use the `alltheutils.utils.deprecated_class` decorator instead.
+
+### Changed
+
+- Changed `alltheutils.config.ParserRegistry.get_parser` to throw `alltheutils.exceptions.ConfigFileExtensionNotSupported` instead of `alltheutils.exceptions.ConfigExceptions.ExtensionNotSupported`, and updated docstrings in the module to reflect said change
+- Changed `alltheutils.utils.file_exists` to throw `alltheutils.exceptions.FileNotFound` instead of `alltheutils.exceptions.GeneralExceptions.ValidationError.FileNotFound`, and updated docstrings in said function to reflect said change
+- Changed `alltheutils.utils.file_exists` to throw the new exceptions. Fuck! Just look at the deprecated classes in this version to see which changes what.
+
+### Deprecated
+
+- The following classes has been renamed to be more readable:
+    - `alltheutils.exceptions.GeneralExceptions.ValidationError.FileNotFound` -> `alltheutils.exceptions.FileNotFound`
+    - `alltheutils.exceptions.GeneralExceptions.ValidationError.Arguments` -> `alltheutils.exceptions.Arguments`
+    - `alltheutils.exceptions.GeneralExceptions.ValidationError.Common` -> `alltheutils.exceptions.CommonValidationError`
+    - `alltheutils.exceptions.GeneralExceptions.PrerequisiteNotFound` -> `alltheutils.exceptions.PrerequisiteNotFound`
+    - `alltheutils.exceptions.CLIExceptions.TerminalTooThin` -> `alltheutils.exceptions.TerminalTooThin`
+    - `alltheutils.exceptions.CLIExceptions.ValidationError.OptionRequired` -> `alltheutils.exceptions.CLIOptionRequired`
+    - `alltheutils.exceptions.CLIExceptions.ValidationError.Common` -> `alltheutils.exceptions.CLICommonError`
+    - `alltheutils.exceptions.ConfigExceptions.ExtensionNotSupported` -> `alltheutils.exceptions.ConfigFileExtensionNotSupported`
+    - `alltheutils.exceptions.CFGExceptions.ExtensionNotSupported` -> `alltheutils.exceptions.ConfigFileExtensionNotSupported`
+    - `alltheutils.exceptions.NestedDictExceptions.NonDictReplacementValue` -> `alltheutils.exceptions.NDNonDictReplacementValue`
+    - `alltheutils.exceptions.NestedDictExceptions.ValueNotAList` -> `alltheutils.exceptions.NDValueNotAList`
+    - `alltheutils.exceptions.NestedDictExceptions.ValueNotADict` -> `alltheutils.exceptions.NDValueNotADict`
+    - `alltheutils.exceptions.NestedDictExceptions.ValueDoesNotExist` -> `alltheutils.exceptions.NDValueDoesNotExist`
+    - `alltheutils.exceptions.NestedDictExceptions.ValueIsAListAndIndexIsOutOfRange` -> `alltheutils.exceptions.NDValueIsAListAndIndexIsOutOfRange`
+
+## 2.1.0
 
 ### Added
 
@@ -72,7 +107,7 @@ This software uses [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.h
 
 ### Added
 
-- Added `alltheutils.utils.deprecated` decorator for deprecated utils function
+- Added `alltheutils.utils.deprecated` decorator for deprecating utils function
 - Added `alltheutils.utils.get_value_from_or_update_nested_dict`
 - Added an MIT License
 
@@ -110,3 +145,5 @@ This software uses [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.h
 ## 0.0.0
 
 Initial release of the package
+
+Web development and game development share a surprising number of transferable skills, but there are also key differences. Here’s how they overlap and where they diverge:

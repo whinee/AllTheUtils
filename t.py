@@ -1,5 +1,16 @@
-"""
-['ImportWarning', '__class__', '__delattr__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__getstate__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__pdoc__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__slots__', '__str__', '__subclasshook__', '_context', '_filter_doc_objs', '_inherits_top', '_is_inheritance_linked', '_link_inheritance', '_skipped_submodules', '_url', 'classes', 'doc', 'docstring', 'find_class', 'find_ident', 'functions', 'html', 'inherits', 'is_namespace', 'is_package', 'module', 'name', 'obj', 'qualname', 'refname', 'source', 'submodules', 'supermodule', 'text', 'url', 'variables'].
+import re
 
-['ImportWarning', '__class__', '__delattr__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__getstate__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__pdoc__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__slots__', '__str__', '__subclasshook__', '_context', '_filter_doc_objs', '_inherits_top', '_is_inheritance_linked', '_link_inheritance', '_skipped_submodules', '_url', 'classes', 'doc', 'docstring', 'find_class', 'find_ident', 'functions', 'html', 'inherits', 'is_namespace', 'is_package', 'module', 'name', 'obj', 'qualname', 'refname', 'source', 'submodules', 'supermodule', 'text', 'url', 'variables']
-"""  # noqa: D200
+def slugify(text: str) -> str:
+    """Convert a heading into a URL-safe slug."""
+    text = text.lower().strip()  # Convert to lowercase and trim spaces
+    text = re.sub(r"[^\w\s-]", "", text)  # Remove special characters
+    return re.sub(r"\s+", "-", text)
+
+def generate_html_heading(level: int, text: str) -> str:
+    """Generate an HTML heading with a clickable link."""
+    slug = slugify(text)
+    return f'<h{level} id="{slug}"><a href="#{slug}">{text}</a></h{level}>'
+
+# Example usage
+heading_html = generate_html_heading(2, "Hello, World! This is a test heading.")
+print(heading_html)

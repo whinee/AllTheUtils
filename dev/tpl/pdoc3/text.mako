@@ -2,35 +2,46 @@
 
 ## Top Dependencies
 
-<%def name="h2(s)">## ${s}
-</%def>
-
-<%def name="h3(s)">### ${s}
-</%def>
-
-<%def name="h4(s)">#### ${s}
-</%def>
-
-<%def name="heading(s, level=1)">
-<%
-    hashtags = "#" * level
-%>
-${hashtags} ${s}
-</%def>
-
 <%!
+    import re
+
+    # Track last used H2-H5 slugs for hierarchical slugs
+    last_slugs = [""] * 5  # For H2 to H6
+
+    # Store TOC entries (level, text, slug)
+    toc_entries = []
+
+    def slugify(text: str) -> str:
+        text = text.lower().strip()  # Convert to lowercase and trim spaces
+        text = re.sub(r"[^\w\s-]", "", text)  # Remove special characters
+        return re.sub(r"\s+", "-", text)
+
+    def heading(level, text):
+        global last_slugs
+
+        index = level - 2  # H2 -> 0, H3 -> 1, ..., H6 -> 4
+        last_slugs[index] = slug  # Update slug for this level
+
+        # Reset deeper levels when a new higher-level heading appears
+        for i in range(index + 1, 5):
+            last_slugs[i] = ""
+
+        # Construct hierarchical slug
+        slug_parts = [s for s in last_slugs if s]  # Ignore empty parts
+        slug = "-".join(slug_parts)
+
+        toc_entries.append((level, text, slug))  # Store TOC entry
+
+        return f'<h{level} id="{slug}"><a href="#{slug}">{text}</a></h{level}>'
+
     def indent(s, spaces=4):
         new = s.replace('\n', '\n' + ' ' * spaces)
         return ' ' * spaces + new.strip()
-%>
 
-<%!
     def submodule_list_item(submodule):
         name = submodule.name
         return f"- [{name}](./" + name.split(".")[-1] + ('/index' if submodule.is_package else '') + ".md)"
-%>
 
-<%!
     def go_back_to_index(module, top_bar: bool = False, bottom_bar: bool = False):
         bar = "---"
         name = module.name
@@ -49,7 +60,7 @@ ${hashtags} ${s}
     if returns:
         returns = ' → ' + returns
 %>
-${heading(f"`{func.name}`", level)}
+${heading(level, f"`{func.name}`")}
 ```python
 (${", ".join(func.params(annotate=show_type_annotations))})${returns}
 ```
@@ -59,17 +70,17 @@ ${func.docstring}
 
 <%def name="variable(var, level=2)" buffered="True">
 <%
-    annot = show_type_annotations and var.type_annotation() or ''
-    if annot:
-        annot = f"\n\n```python\n{annot}\n```"
+    annotation = show_type_annotations and var.type_annotation() or ''
+    if annotation:
+        annotation = f"\n\n```python\n{annotation}\n```"
 %>
-${heading(f"`{var.name}`", level)}${annot}
+${heading(level, f"`{var.name}`")}${annotation}
 
 ${var.docstring}
 </%def>
 
 <%def name="class_(cls, level)" buffered="True">
-${heading(f"`{cls.name}`", level)}<%
+${heading(level, f"`{cls.name}`")}<%
 annotation_ls = cls.params(annotate=show_type_annotations)
 if not len(annotation_ls):
     annotation = ""
@@ -88,41 +99,41 @@ ${cls.docstring}
   subclasses = cls.subclasses()
 %>
 % if mro:
-${h4('Ancestors (in MRO)')}
+${heading(4, 'Ancestors (in MRO)')}
 % for c in mro:
 - ${c.refname}
 % endfor
 
 % endif
 % if subclasses:
-${h4('Descendants')}
+${heading(4, 'Descendants')}
 % for c in subclasses:
 - ${c.refname}
 % endfor
 
 % endif
 % if class_vars:
-${h4('Class variables')}
+${heading(4, 'Class variables')}
 % for v in class_vars:
 ${variable(v, 5)}
 % endfor
 % endif
 % if static_methods:
-${h4('Static methods')}
+${heading(4, 'Static methods')}
 % for f in static_methods:
 ${function(f, 5)}
 
 % endfor
 % endif
 % if inst_vars:
-${h4('Instance variables')}
+${heading(4, 'Instance variables')}
 % for v in inst_vars:
 ${variable(v, 5)}
 
 % endfor
 % endif
 % if methods:
-${h4('Methods')}
+${heading(4, 'Methods')}
 % for m in methods:
 ${function(m, 5)}
 
@@ -138,25 +149,25 @@ ${function(m, 5)}
   classes = module.classes(sort=sort_identifiers)
   functions = module.functions(sort=sort_identifiers)
   submodules = module.submodules()
-  heading = 'Namespace' if module.is_namespace else 'Module'
+  heading_text = 'Namespace' if module.is_namespace else 'Module'
 %>
 
-# ${heading} ${module.name}
-## =${'=' * (len(module.name) + len(heading))}
+# ${heading(1, heading_text + " " + module.name)}
+## =${'=' * (len(module.name) + len(heading_text))}
 
 ${module.docstring.strip()}
 
 
 ${go_back_to_index(module)}
 % if submodules:
-${h2('Sub-modules')}
+${heading(2, 'Sub-modules')}
     % for m in submodules:
 ${submodule_list_item(m)}
     % endfor
 % endif
 
 % if variables:
-${h2('Variables')}
+${heading(2, 'Variables')}
     % for v in variables:
 ${variable(v, 3)}
 
@@ -164,7 +175,7 @@ ${variable(v, 3)}
 % endif
 
 % if functions:
-${h2('Functions')}
+${heading(2, 'Functions')}
     % for f in functions:
 ${function(f, 3)}
 
@@ -172,7 +183,7 @@ ${function(f, 3)}
 % endif
 
 % if classes:
-${h2('Classes')}
+${heading(2, 'Classes')}
     % for c in classes:
 ${class_(c, 3)}
 

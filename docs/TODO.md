@@ -13,6 +13,8 @@ Items are sorted by priority, with the most important item at the top and least 
 
 ## Temporary
 
+- [ ] In pdoc-generated markdown files, convert markdown headings to HTML headings with links
+- [ ] In pdoc-generated markdown files, make a Table of Contents
 - [ ] Use [typeguard](https://typeguard.readthedocs.io/en/stable/userguide.html) to type check function arguments and return values in runtime
 - [ ] Migrate from `poetry` to `uv`
 - [ ] Add test coverage in README

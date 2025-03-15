@@ -1,11 +1,10 @@
-# Module alltheutils.multi_processing
+# <h1 id="module-alltheutilsmulti_processing"><a href="#module-alltheutilsmulti_processing">Module alltheutils.multi_processing</a></h1>
 
 [← Go back to `alltheutils`](./index.md)
 
-## Functions
+<h2 id="functions"><a href="#functions">Functions</a></h2>
 
-### `run_mp`
-
+<h3 id="run_mp"><a href="#run_mp">`run_mp`</a></h3>
 ```python
 (func: Callable[..., typing.Any], iterable: Iterable[typing.Any]) → list[typing.Any]
 ```
@@ -33,8 +32,7 @@ Args:
 Returns:
 `types.ListAny`: A list of the results of applying `func` to each item in `iterable`.
 
-### `run_mp_qgr`
-
+<h3 id="run_mp_qgr"><a href="#run_mp_qgr">`run_mp_qgr`</a></h3>
 ```python
 (func: Callable[..., typing.Any], iterable: Iterable[typing.Any]) → tuple[None] | tuple[typing.Any] | tuple[typing.Any, ...]
 ```
@@ -62,8 +60,7 @@ Args:
 Returns:
 `types.TupleAny`: A list of the results of applying `func` to each item in `iterable`.
 
-### `run_mp_qir`
-
+<h3 id="run_mp_qir"><a href="#run_mp_qir">`run_mp_qir`</a></h3>
 ```python
 (func: Callable[..., typing.Any], iterable: Iterable[typing.Any], callback: Callable[..., typing.Any]) → None
 ```
@@ -89,8 +86,7 @@ Args:
 - iterable (`types.IterAny`): Iterable containing items to iterate over and pass to `func`.
 - callback (`types.CallableAny`): Function to be called when a process in the pool returns.
 
-### `run_mp_star`
-
+<h3 id="run_mp_star"><a href="#run_mp_star">`run_mp_star`</a></h3>
 ```python
 (func: Callable[..., typing.Any], iterable: Iterable[Iterable[typing.Any]]) → list[typing.Any]
 ```
@@ -118,8 +114,7 @@ Args:
 Returns:
 `types.ListAny`: A list of the results of applying `func` to each item in `iterable`.
 
-### `run_mp_star_qgr`
-
+<h3 id="run_mp_star_qgr"><a href="#run_mp_star_qgr">`run_mp_star_qgr`</a></h3>
 ```python
 (func: Callable[..., typing.Any], iterable: Iterable[Iterable[typing.Any]]) → tuple[None] | tuple[typing.Any] | tuple[typing.Any, ...]
 ```
@@ -147,8 +142,7 @@ Args:
 Returns:
 `types.TupleAny`: A list of the results of applying `func` to each item in `iterable`.
 
-### `run_mp_star_qir`
-
+<h3 id="run_mp_star_qir"><a href="#run_mp_star_qir">`run_mp_star_qir`</a></h3>
 ```python
 (func: Callable[..., typing.Any], iterable: Iterable[Iterable[typing.Any]], callback: Callable[..., typing.Any]) → None
 ```
@@ -174,34 +168,30 @@ Args:
 - iterable (`types.IterIterAny`): Iterable containing iterables to iterate over and pass to `func`.
 - callback (`types.CallableAny`): Function to be called when a process in the pool returns.
 
-## Classes
+<h2 id="classes"><a href="#classes">Classes</a></h2>
 
-### `CallbackGetResult`
+<h3 id="callbackgetresult"><a href="#callbackgetresult">`CallbackGetResult`</a></h3>
 
-#### Methods
+<h4 id="methods"><a href="#methods">Methods</a></h4>
 
-##### `callback`
-
+<h5 id="callback"><a href="#callback">`callback`</a></h5>
 ```python
 (self, *args: tuple[typing.Any, ...]) → None
 ```
 
-##### `get`
-
+<h5 id="get"><a href="#get">`get`</a></h5>
 ```python
 (self) → tuple[typing.Any, ...]
 ```
 
-### `PoolTerminate`
-
+<h3 id="poolterminate"><a href="#poolterminate">`PoolTerminate`</a></h3>
 ```python
 (pool: multiprocessing.pool.Pool, callback_fn: Callable[..., typing.Any])
 ```
 
-#### Methods
+<h4 id="methods"><a href="#methods">Methods</a></h4>
 
-##### `callback`
-
+<h5 id="callback"><a href="#callback">`callback`</a></h5>
 ```python
 (self, result: bool | tuple[bool, *tuple[typing.Any, ...]]) → None
 ```

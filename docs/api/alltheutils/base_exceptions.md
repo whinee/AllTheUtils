@@ -1,11 +1,10 @@
-# Module alltheutils.base_exceptions
+# <h1 id="module-alltheutilsbase_exceptions"><a href="#module-alltheutilsbase_exceptions">Module alltheutils.base_exceptions</a></h1>
 
 [← Go back to `alltheutils`](./index.md)
 
-## Functions
+<h2 id="functions"><a href="#functions">Functions</a></h2>
 
-### `custom_exception`
-
+<h3 id="custom_exception"><a href="#custom_exception">`custom_exception`</a></h3>
 ```python
 (cls: type[alltheutils.base_exceptions.CustomBaseException]) → type[alltheutils.base_exceptions.CustomBaseException]
 ```
@@ -22,14 +21,12 @@ Args:
 Returns:
 `BaseException`: The exception to raise.
 
-### `custom_exception_hook`
-
+<h3 id="custom_exception_hook"><a href="#custom_exception_hook">`custom_exception_hook`</a></h3>
 ```python
 (exctype: type[alltheutils.base_exceptions.CustomBaseException], value: alltheutils.base_exceptions.CustomBaseException, traceback: traceback | None) → None
 ```
 
-### `custom_exception_str`
-
+<h3 id="custom_exception_str"><a href="#custom_exception_str">`custom_exception_str`</a></h3>
 ```python
 (cls: type[BaseException]) → type[BaseException]
 ```
@@ -42,8 +39,7 @@ Args:
 Returns:
 `BaseException`: The exception to raise.
 
-### `deprecated`
-
+<h3 id="deprecated"><a href="#deprecated">`deprecated`</a></h3>
 ```python
 (version: str, replacement: str | None = None, reason: str | None = None)
 ```
@@ -54,22 +50,19 @@ Args:
     version (str): The version in which the function will be removed.
     replacement (str, optional): The new function to use instead.
 
-## Classes
+<h2 id="classes"><a href="#classes">Classes</a></h2>
 
-### `CustomBaseException`
-
+<h3 id="custombaseexception"><a href="#custombaseexception">`CustomBaseException`</a></h3>
 ```python
 (message: str)
 ```
 
 Base class for all custom exceptions.
 
-#### Ancestors (in MRO)
-
+<h4 id="ancestors-in-mro"><a href="#ancestors-in-mro">Ancestors (in MRO)</a></h4>
 - builtins.BaseException
 
-#### Descendants
-
+<h4 id="descendants"><a href="#descendants">Descendants</a></h4>
 - alltheutils.exceptions.ArgumentsNotFollowingSpec
 - alltheutils.exceptions.CFGExceptions.ExtensionNotSupported
 - alltheutils.exceptions.CLICommonError
@@ -98,24 +91,23 @@ Base class for all custom exceptions.
 - alltheutils.exceptions.PrerequisiteNotFound
 - alltheutils.exceptions.TerminalTooThin
 
-#### Class variables
+<h4 id="class-variables"><a href="#class-variables">Class variables</a></h4>
 
-##### `details`
+<h5 id="details"><a href="#details">`details`</a></h5>
 
 ```python
 str | None
 ```
 
-##### `message`
+<h5 id="message"><a href="#message">`message`</a></h5>
 
 ```python
 str
 ```
 
-#### Methods
+<h4 id="methods"><a href="#methods">Methods</a></h4>
 
-##### `print_details`
-
+<h5 id="print_details"><a href="#print_details">`print_details`</a></h5>
 ```python
 (self) → None
 ```

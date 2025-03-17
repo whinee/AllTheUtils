@@ -4,7 +4,7 @@
 
 <h2 id="functions"><a href="#functions">Functions</a></h2>
 
-<h3 id="functions-c_exc"><a href="#functions-c_exc">`c_exc`</a></h3>
+<h3 id="functions-prec_excpre"><a href="#functions-prec_excpre"><pre>c_exc</pre></a></h3>
 
 ```python
 (cls: type[BaseException]) → type[BaseException]
@@ -22,7 +22,7 @@ Args:
 Returns:
 `BaseException`: The exception to raise.
 
-<h3 id="functions-c_exc_str"><a href="#functions-c_exc_str">`c_exc_str`</a></h3>
+<h3 id="functions-prec_exc_strpre"><a href="#functions-prec_exc_strpre"><pre>c_exc_str</pre></a></h3>
 
 ```python
 (cls: type[BaseException]) → type[BaseException]
@@ -36,7 +36,7 @@ Args:
 Returns:
 `BaseException`: The exception to raise.
 
-<h3 id="functions-deprecated"><a href="#functions-deprecated">`deprecated`</a></h3>
+<h3 id="functions-predeprecatedpre"><a href="#functions-predeprecatedpre"><pre>deprecated</pre></a></h3>
 
 ```python
 (version: str, replacement: str | None = None, reason: str | None = None)

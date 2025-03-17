@@ -85,7 +85,7 @@
     if returns:
         returns = ' → ' + returns
 %>
-${heading(level, f"`{func.name}`")}
+${heading(level, f"<pre>{func.name}</pre>")}
 ```python
 (${", ".join(func.params(annotate=show_type_annotations))})${returns}
 ```
@@ -99,13 +99,13 @@ ${func.docstring}
     if annotation:
         annotation = f"\n\n```python\n{annotation}\n```"
 %>
-${heading(level, f"`{var.name}`")}${annotation}
+${heading(level, f"<pre>{var.name}</pre>")}${annotation}
 
 ${var.docstring}
 </%def>
 
 <%def name="class_(cls, level)" buffered="True">
-${heading(level, f"`{cls.name}`")}<%
+${heading(level, f"<pre>{cls.name}</pre>")}<%
 annotation_ls = cls.params(annotate=show_type_annotations)
 if not len(annotation_ls):
     annotation = ""

@@ -4,7 +4,7 @@
 
 <h2 id="functions"><a href="#functions">Functions</a></h2>
 
-<h3 id="functions-run_mp"><a href="#functions-run_mp">`run_mp`</a></h3>
+<h3 id="functions-prerun_mppre"><a href="#functions-prerun_mppre"><pre>run_mp</pre></a></h3>
 
 ```python
 (func: Callable[..., typing.Any], iterable: Iterable[typing.Any]) → list[typing.Any]
@@ -33,7 +33,7 @@ Args:
 Returns:
 `types.ListAny`: A list of the results of applying `func` to each item in `iterable`.
 
-<h3 id="functions-run_mp_qgr"><a href="#functions-run_mp_qgr">`run_mp_qgr`</a></h3>
+<h3 id="functions-prerun_mp_qgrpre"><a href="#functions-prerun_mp_qgrpre"><pre>run_mp_qgr</pre></a></h3>
 
 ```python
 (func: Callable[..., typing.Any], iterable: Iterable[typing.Any]) → tuple[None] | tuple[typing.Any] | tuple[typing.Any, ...]
@@ -62,7 +62,7 @@ Args:
 Returns:
 `types.TupleAny`: A list of the results of applying `func` to each item in `iterable`.
 
-<h3 id="functions-run_mp_qir"><a href="#functions-run_mp_qir">`run_mp_qir`</a></h3>
+<h3 id="functions-prerun_mp_qirpre"><a href="#functions-prerun_mp_qirpre"><pre>run_mp_qir</pre></a></h3>
 
 ```python
 (func: Callable[..., typing.Any], iterable: Iterable[typing.Any], callback: Callable[..., typing.Any]) → None
@@ -89,7 +89,7 @@ Args:
 - iterable (`types.IterAny`): Iterable containing items to iterate over and pass to `func`.
 - callback (`types.CallableAny`): Function to be called when a process in the pool returns.
 
-<h3 id="functions-run_mp_star"><a href="#functions-run_mp_star">`run_mp_star`</a></h3>
+<h3 id="functions-prerun_mp_starpre"><a href="#functions-prerun_mp_starpre"><pre>run_mp_star</pre></a></h3>
 
 ```python
 (func: Callable[..., typing.Any], iterable: Iterable[Iterable[typing.Any]]) → list[typing.Any]
@@ -118,7 +118,7 @@ Args:
 Returns:
 `types.ListAny`: A list of the results of applying `func` to each item in `iterable`.
 
-<h3 id="functions-run_mp_star_qgr"><a href="#functions-run_mp_star_qgr">`run_mp_star_qgr`</a></h3>
+<h3 id="functions-prerun_mp_star_qgrpre"><a href="#functions-prerun_mp_star_qgrpre"><pre>run_mp_star_qgr</pre></a></h3>
 
 ```python
 (func: Callable[..., typing.Any], iterable: Iterable[Iterable[typing.Any]]) → tuple[None] | tuple[typing.Any] | tuple[typing.Any, ...]
@@ -147,7 +147,7 @@ Args:
 Returns:
 `types.TupleAny`: A list of the results of applying `func` to each item in `iterable`.
 
-<h3 id="functions-run_mp_star_qir"><a href="#functions-run_mp_star_qir">`run_mp_star_qir`</a></h3>
+<h3 id="functions-prerun_mp_star_qirpre"><a href="#functions-prerun_mp_star_qirpre"><pre>run_mp_star_qir</pre></a></h3>
 
 ```python
 (func: Callable[..., typing.Any], iterable: Iterable[Iterable[typing.Any]], callback: Callable[..., typing.Any]) → None
@@ -176,31 +176,31 @@ Args:
 
 <h2 id="classes"><a href="#classes">Classes</a></h2>
 
-<h3 id="classes-callbackgetresult"><a href="#classes-callbackgetresult">`CallbackGetResult`</a></h3>
+<h3 id="classes-precallbackgetresultpre"><a href="#classes-precallbackgetresultpre"><pre>CallbackGetResult</pre></a></h3>
 
-<h4 id="classes-callbackgetresult-methods"><a href="#classes-callbackgetresult-methods">Methods</a></h4>
+<h4 id="classes-precallbackgetresultpre-methods"><a href="#classes-precallbackgetresultpre-methods">Methods</a></h4>
 
-<h5 id="classes-callbackgetresult-methods-callback"><a href="#classes-callbackgetresult-methods-callback">`callback`</a></h5>
+<h5 id="classes-precallbackgetresultpre-methods-precallbackpre"><a href="#classes-precallbackgetresultpre-methods-precallbackpre"><pre>callback</pre></a></h5>
 
 ```python
 (self, *args: tuple[typing.Any, ...]) → None
 ```
 
-<h5 id="classes-callbackgetresult-methods-get"><a href="#classes-callbackgetresult-methods-get">`get`</a></h5>
+<h5 id="classes-precallbackgetresultpre-methods-pregetpre"><a href="#classes-precallbackgetresultpre-methods-pregetpre"><pre>get</pre></a></h5>
 
 ```python
 (self) → tuple[typing.Any, ...]
 ```
 
-<h3 id="classes-poolterminate"><a href="#classes-poolterminate">`PoolTerminate`</a></h3>
+<h3 id="classes-prepoolterminatepre"><a href="#classes-prepoolterminatepre"><pre>PoolTerminate</pre></a></h3>
 
 ```python
 (pool: multiprocessing.pool.Pool, callback_fn: Callable[..., typing.Any])
 ```
 
-<h4 id="classes-poolterminate-methods"><a href="#classes-poolterminate-methods">Methods</a></h4>
+<h4 id="classes-prepoolterminatepre-methods"><a href="#classes-prepoolterminatepre-methods">Methods</a></h4>
 
-<h5 id="classes-poolterminate-methods-callback"><a href="#classes-poolterminate-methods-callback">`callback`</a></h5>
+<h5 id="classes-prepoolterminatepre-methods-precallbackpre"><a href="#classes-prepoolterminatepre-methods-precallbackpre"><pre>callback</pre></a></h5>
 
 ```python
 (self, result: bool | tuple[bool, *tuple[typing.Any, ...]]) → None

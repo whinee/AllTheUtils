@@ -4,7 +4,7 @@
 
 <h2 id="functions"><a href="#functions">Functions</a></h2>
 
-<h3 id="functions-dcfg"><a href="#functions-dcfg">`dcfg`</a></h3>
+<h3 id="functions-predcfgpre"><a href="#functions-predcfgpre"><pre>dcfg</pre></a></h3>
 
 ```python
 (value: dict[str, typing.Any], ext: str) → str
@@ -19,7 +19,7 @@ Args:
 Returns:
 `str`: The dumped value.
 
-<h3 id="functions-deprecated"><a href="#functions-deprecated">`deprecated`</a></h3>
+<h3 id="functions-predeprecatedpre"><a href="#functions-predeprecatedpre"><pre>deprecated</pre></a></h3>
 
 ```python
 (version: str, replacement: str | None = None, reason: str | None = None)
@@ -31,7 +31,7 @@ Args:
     version (str): The version in which the function will be removed.
     replacement (str, optional): The new function to use instead.
 
-<h3 id="functions-pcfg"><a href="#functions-pcfg">`pcfg`</a></h3>
+<h3 id="functions-prepcfgpre"><a href="#functions-prepcfgpre"><pre>pcfg</pre></a></h3>
 
 ```python
 (d: str, type: str) → dict[typing.Any, typing.Any]
@@ -46,7 +46,7 @@ Args:
 Returns:
 `dict`: The parsed string.
 
-<h3 id="functions-rcfg"><a href="#functions-rcfg">`rcfg`</a></h3>
+<h3 id="functions-prercfgpre"><a href="#functions-prercfgpre"><pre>rcfg</pre></a></h3>
 
 ```python
 (file: str) → dict[typing.Any, typing.Any]
@@ -60,7 +60,7 @@ Args:
 Returns:
 `dict`: The contents of the file.
 
-<h3 id="functions-wcfg"><a href="#functions-wcfg">`wcfg`</a></h3>
+<h3 id="functions-prewcfgpre"><a href="#functions-prewcfgpre"><pre>wcfg</pre></a></h3>
 
 ```python
 (file: str, value: dict[typing.Any, typing.Any] | list[typing.Any]) → None

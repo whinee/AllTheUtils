@@ -4,7 +4,7 @@
 
 <h2 id="functions"><a href="#functions">Functions</a></h2>
 
-<h3 id="functions-batch_replace"><a href="#functions-batch_replace">`batch_replace`</a></h3>
+<h3 id="functions-prebatch_replacepre"><a href="#functions-prebatch_replacepre"><pre>batch_replace</pre></a></h3>
 
 ```python
 (text: str, key_value_map: dict[str, list[str]]) → str
@@ -19,7 +19,7 @@ Args:
 Returns:
 `str`: Modified string.
 
-<h3 id="functions-calculate_sha256_hash"><a href="#functions-calculate_sha256_hash">`calculate_sha256_hash`</a></h3>
+<h3 id="functions-precalculate_sha256_hashpre"><a href="#functions-precalculate_sha256_hashpre"><pre>calculate_sha256_hash</pre></a></h3>
 
 ```python
 (input: str) → str
@@ -33,7 +33,7 @@ Args:
 Returns:
 `str`: Hash of the string.
 
-<h3 id="functions-caller_relative_path"><a href="#functions-caller_relative_path">`caller_relative_path`</a></h3>
+<h3 id="functions-precaller_relative_pathpre"><a href="#functions-precaller_relative_pathpre"><pre>caller_relative_path</pre></a></h3>
 
 ```python
 (relative_path: str, idx: int | None = None) → str
@@ -52,7 +52,7 @@ Args:
 Returns:
 `str`: Path relative to the caller's path.
 
-<h3 id="functions-custom_version_ls_to_str"><a href="#functions-custom_version_ls_to_str">`custom_version_ls_to_str`</a></h3>
+<h3 id="functions-precustom_version_ls_to_strpre"><a href="#functions-precustom_version_ls_to_strpre"><pre>custom_version_ls_to_str</pre></a></h3>
 
 ```python
 (vls: list[str | int] | list[int] | list[str]) → tuple[str, str]
@@ -66,7 +66,7 @@ Args:
 Returns:
 `tuple[str, str]`: List of string representation of given list of version numbers, both in modified semver form and semver-compliant form.
 
-<h3 id="functions-deprecated"><a href="#functions-deprecated">`deprecated`</a></h3>
+<h3 id="functions-predeprecatedpre"><a href="#functions-predeprecatedpre"><pre>deprecated</pre></a></h3>
 
 ```python
 (version: str, replacement: str | None = None, reason: str | None = None)
@@ -79,7 +79,7 @@ Args:
 - replacement (`str`, optional): The new function to use instead.
 - reason (`str`, optional): Reason for deprecation. Defaults to None.
 
-<h3 id="functions-deprecated_class"><a href="#functions-deprecated_class">`deprecated_class`</a></h3>
+<h3 id="functions-predeprecated_classpre"><a href="#functions-predeprecated_classpre"><pre>deprecated_class</pre></a></h3>
 
 ```python
 (version: str, replacement: str | None = None, reason: str | None = None)
@@ -92,7 +92,7 @@ Args:
 - replacement (`str`, optional): The new exception to use instead.
 - reason (`str`, optional): Additional reason for deprecation.
 
-<h3 id="functions-dict_get_first_match"><a href="#functions-dict_get_first_match">`dict_get_first_match`</a></h3>
+<h3 id="functions-predict_get_first_matchpre"><a href="#functions-predict_get_first_matchpre"><pre>dict_get_first_match</pre></a></h3>
 
 ```python
 (dictionary: dict[typing.Any, typing.Any], keys: list[int | list[str | int | tuple[str, ...]] | str], default_value: Any | None = None) → Any
@@ -108,7 +108,7 @@ Args:
 Returns:
 `Any`: Retrieved value.
 
-<h3 id="functions-ensure_parent_dir"><a href="#functions-ensure_parent_dir">`ensure_parent_dir`</a></h3>
+<h3 id="functions-preensure_parent_dirpre"><a href="#functions-preensure_parent_dirpre"><pre>ensure_parent_dir</pre></a></h3>
 
 ```python
 (file_path: str, make_dir_append_to_ls: list[str] | None = None) → str
@@ -123,7 +123,7 @@ Args:
 Returns:
 `str`: Given filepath.
 
-<h3 id="functions-file_exists"><a href="#functions-file_exists">`file_exists`</a></h3>
+<h3 id="functions-prefile_existspre"><a href="#functions-prefile_existspre"><pre>file_exists</pre></a></h3>
 
 ```python
 (fp: str) → str
@@ -140,7 +140,7 @@ Raises:
 Returns:
 `str`: Return `fp` when file path exists.
 
-<h3 id="functions-fill_ls"><a href="#functions-fill_ls">`fill_ls`</a></h3>
+<h3 id="functions-prefill_lspre"><a href="#functions-prefill_lspre"><pre>fill_ls</pre></a></h3>
 
 ```python
 (*, ls: Sequence[typing.Any], length: int, filler: Any | None = None) → Sequence[typing.Any]
@@ -156,7 +156,7 @@ Args:
 Returns:
 `types.SequenceAny`: Filled list.
 
-<h3 id="functions-first_not_none_in_ls"><a href="#functions-first_not_none_in_ls">`first_not_none_in_ls`</a></h3>
+<h3 id="functions-prefirst_not_none_in_lspre"><a href="#functions-prefirst_not_none_in_lspre"><pre>first_not_none_in_ls</pre></a></h3>
 
 ```python
 (ls: list[Any | None]) → Any
@@ -172,13 +172,13 @@ Args:
 Returns:
 `Any`: The first argument that is not `None`, else `None`.
 
-<h3 id="functions-flatten_element"><a href="#functions-flatten_element">`flatten_element`</a></h3>
+<h3 id="functions-preflatten_elementpre"><a href="#functions-preflatten_elementpre"><pre>flatten_element</pre></a></h3>
 
 ```python
 (elem: dict[typing.Any, typing.Any], sep: str = '/') → dict[typing.Any, typing.Any]
 ```
 
-<h3 id="functions-get_value_from_or_update_nested_dict"><a href="#functions-get_value_from_or_update_nested_dict">`get_value_from_or_update_nested_dict`</a></h3>
+<h3 id="functions-preget_value_from_or_update_nested_dictpre"><a href="#functions-preget_value_from_or_update_nested_dictpre"><pre>get_value_from_or_update_nested_dict</pre></a></h3>
 
 ```python
 (data: dict, address: str, new_value: int | dict | str | None = None)
@@ -189,7 +189,7 @@ Updates or retrieves a nested dictionary value at the given dot-separated addres
 - If `new_value` is provided, updates the value.
 - If `new_value` is `None`, returns the current value at `address`.
 
-<h3 id="functions-if_none"><a href="#functions-if_none">`if_none`</a></h3>
+<h3 id="functions-preif_nonepre"><a href="#functions-preif_nonepre"><pre>if_none</pre></a></h3>
 
 ```python
 (variable: Any, default: Any) → Any
@@ -206,13 +206,13 @@ Args:
 Returns:
 `Any`: `variable` if `variable` is not None else `default`.
 
-<h3 id="functions-iter_ls_with_items"><a href="#functions-iter_ls_with_items">`iter_ls_with_items`</a></h3>
+<h3 id="functions-preiter_ls_with_itemspre"><a href="#functions-preiter_ls_with_itemspre"><pre>iter_ls_with_items</pre></a></h3>
 
 ```python
 (ls: list[typing.Any], *items: list[typing.Any]) → Generator[tuple[typing.Any, ...], None, None]
 ```
 
-<h3 id="functions-literal_eval"><a href="#functions-literal_eval">`literal_eval`</a></h3>
+<h3 id="functions-preliteral_evalpre"><a href="#functions-preliteral_evalpre"><pre>literal_eval</pre></a></h3>
 
 ```python
 (expr: str | None) → Any
@@ -226,7 +226,7 @@ Args:
 Returns:
 `Any`: Expression literally evaluated.
 
-<h3 id="functions-noop"><a href="#functions-noop">`noop`</a></h3>
+<h3 id="functions-prenooppre"><a href="#functions-prenooppre"><pre>noop</pre></a></h3>
 
 ```python
 (*args: list[typing.Any], **kwargs: dict[str, typing.Any]) → None
@@ -234,13 +234,13 @@ Returns:
 
 No operation.
 
-<h3 id="functions-noop_single_kwargs"><a href="#functions-noop_single_kwargs">`noop_single_kwargs`</a></h3>
+<h3 id="functions-prenoop_single_kwargspre"><a href="#functions-prenoop_single_kwargspre"><pre>noop_single_kwargs</pre></a></h3>
 
 ```python
 (arg: Any) → Any
 ```
 
-<h3 id="functions-parent_dir_nth_times"><a href="#functions-parent_dir_nth_times">`parent_dir_nth_times`</a></h3>
+<h3 id="functions-preparent_dir_nth_timespre"><a href="#functions-preparent_dir_nth_timespre"><pre>parent_dir_nth_times</pre></a></h3>
 
 ```python
 (filename: str, n: int | None = None) → str
@@ -257,7 +257,7 @@ Args:
 Returns:
 `str`: Parent directory of the given filename.
 
-<h3 id="functions-run_cmd"><a href="#functions-run_cmd">`run_cmd`</a></h3>
+<h3 id="functions-prerun_cmdpre"><a href="#functions-prerun_cmdpre"><pre>run_cmd</pre></a></h3>
 
 ```python
 (cmd: str) → None
@@ -268,19 +268,19 @@ Given a string, execute it as a shell command.
 Args:
 - cmd (`str`): Shell command to excute.
 
-<h3 id="functions-run_mp"><a href="#functions-run_mp">`run_mp`</a></h3>
+<h3 id="functions-prerun_mppre"><a href="#functions-prerun_mppre"><pre>run_mp</pre></a></h3>
 
 ```python
 (func: Callable[..., typing.Any], iterable: Iterable[typing.Any]) → list[typing.Any]
 ```
 
-<h3 id="functions-run_mp_qgr"><a href="#functions-run_mp_qgr">`run_mp_qgr`</a></h3>
+<h3 id="functions-prerun_mp_qgrpre"><a href="#functions-prerun_mp_qgrpre"><pre>run_mp_qgr</pre></a></h3>
 
 ```python
 (func: Callable[..., typing.Any], iterable: Iterable[typing.Any]) → tuple[None] | tuple[typing.Any] | tuple[typing.Any, ...]
 ```
 
-<h3 id="functions-run_mp_qir"><a href="#functions-run_mp_qir">`run_mp_qir`</a></h3>
+<h3 id="functions-prerun_mp_qirpre"><a href="#functions-prerun_mp_qirpre"><pre>run_mp_qir</pre></a></h3>
 
 ```python
 (func: Callable[..., typing.Any], iterable: Iterable[typing.Any], callback: Callable[..., typing.Any]) → None
@@ -297,19 +297,19 @@ Args:
 - iterable (`types.IterAny`): Iterable containing items to iterate over and pass to `func`.
 - callback (`types.CallableAny`): Function to be called when a process in the pool returns.
 
-<h3 id="functions-run_mp_star"><a href="#functions-run_mp_star">`run_mp_star`</a></h3>
+<h3 id="functions-prerun_mp_starpre"><a href="#functions-prerun_mp_starpre"><pre>run_mp_star</pre></a></h3>
 
 ```python
 (func: Callable[..., typing.Any], iterable: Iterable[Iterable[typing.Any]]) → list[typing.Any]
 ```
 
-<h3 id="functions-run_mp_star_qgr"><a href="#functions-run_mp_star_qgr">`run_mp_star_qgr`</a></h3>
+<h3 id="functions-prerun_mp_star_qgrpre"><a href="#functions-prerun_mp_star_qgrpre"><pre>run_mp_star_qgr</pre></a></h3>
 
 ```python
 (func: Callable[..., typing.Any], iterable: Iterable[Iterable[typing.Any]]) → tuple[None] | tuple[typing.Any] | tuple[typing.Any, ...]
 ```
 
-<h3 id="functions-run_mp_star_qir"><a href="#functions-run_mp_star_qir">`run_mp_star_qir`</a></h3>
+<h3 id="functions-prerun_mp_star_qirpre"><a href="#functions-prerun_mp_star_qirpre"><pre>run_mp_star_qir</pre></a></h3>
 
 ```python
 (func: Callable[..., typing.Any], iterable: Iterable[Iterable[typing.Any]], callback: Callable[..., typing.Any]) → None
@@ -319,7 +319,7 @@ Run `multiprocessing.Pool().starmap_async()`, and quit in return.
 
 Iterate over `iterable` and apply iterated items to `func` asynchronously. Wait for a single process in the pool to return, and terminate the pool.
 
-<h3 id="functions-sanitize_text"><a href="#functions-sanitize_text">`sanitize_text`</a></h3>
+<h3 id="functions-presanitize_textpre"><a href="#functions-presanitize_textpre"><pre>sanitize_text</pre></a></h3>
 
 ```python
 (s: str) → str
@@ -335,7 +335,7 @@ Args:
 Returns:
 `str`: Sanitized text.
 
-<h3 id="functions-search_query"><a href="#functions-search_query">`search_query`</a></h3>
+<h3 id="functions-presearch_querypre"><a href="#functions-presearch_querypre"><pre>search_query</pre></a></h3>
 
 ```python
 (query: str, possibilities: list[str], cutoff: int | float = 0.6, *, processor: Callable[[typing.Any], typing.Any] = <function <lambda>>) → Generator[tuple[None, str] | tuple[float, str], None, None]
@@ -352,7 +352,7 @@ Args:
 Returns:
 `Generator[tuple[None, str] | tuple[float, str], None, None]`: Generator object of mastching search quries.
 
-<h3 id="functions-str2int"><a href="#functions-str2int">`str2int`</a></h3>
+<h3 id="functions-prestr2intpre"><a href="#functions-prestr2intpre"><pre>str2int</pre></a></h3>
 
 ```python
 (num: int | str) → int | None
@@ -366,7 +366,7 @@ Args:
 Returns:
 `Optional[int]`: If given argument can be converted to integer, it will be returned. Otherwise, None will be.
 
-<h3 id="functions-unix_timestamp_to_iso"><a href="#functions-unix_timestamp_to_iso">`unix_timestamp_to_iso`</a></h3>
+<h3 id="functions-preunix_timestamp_to_isopre"><a href="#functions-preunix_timestamp_to_isopre"><pre>unix_timestamp_to_iso</pre></a></h3>
 
 ```python
 (timestamp: int) → str
@@ -380,7 +380,7 @@ Args:
 Returns:
 `str`: Formatted datetime string
 
-<h3 id="functions-which_ls"><a href="#functions-which_ls">`which_ls`</a></h3>
+<h3 id="functions-prewhich_lspre"><a href="#functions-prewhich_lspre"><pre>which_ls</pre></a></h3>
 
 ```python
 (cmd: str, mode: int | None = None, path: str | None = None) → tuple[str] | tuple[str, ...] | None
@@ -395,13 +395,13 @@ Args:
 Returns:
 `Optional[types.TupleStr]`: Tuple of commands that conforms to the given arguments as said above.
 
-<h3 id="functions-yaml_str_presenter"><a href="#functions-yaml_str_presenter">`yaml_str_presenter`</a></h3>
+<h3 id="functions-preyaml_str_presenterpre"><a href="#functions-preyaml_str_presenterpre"><pre>yaml_str_presenter</pre></a></h3>
 
 ```python
 (dumper, data)
 ```
 
-<h3 id="functions-zip_extend"><a href="#functions-zip_extend">`zip_extend`</a></h3>
+<h3 id="functions-prezip_extendpre"><a href="#functions-prezip_extendpre"><pre>zip_extend</pre></a></h3>
 
 ```python
 (a: <class 'collections.abc.Sized'>, b: <class 'collections.abc.Sized'>) → Iterable[typing.Any]
@@ -418,31 +418,31 @@ Returns:
 
 <h2 id="classes"><a href="#classes">Classes</a></h2>
 
-<h3 id="classes-callbackgetresult"><a href="#classes-callbackgetresult">`CallbackGetResult`</a></h3>
+<h3 id="classes-precallbackgetresultpre"><a href="#classes-precallbackgetresultpre"><pre>CallbackGetResult</pre></a></h3>
 
-<h4 id="classes-callbackgetresult-methods"><a href="#classes-callbackgetresult-methods">Methods</a></h4>
+<h4 id="classes-precallbackgetresultpre-methods"><a href="#classes-precallbackgetresultpre-methods">Methods</a></h4>
 
-<h5 id="classes-callbackgetresult-methods-callback"><a href="#classes-callbackgetresult-methods-callback">`callback`</a></h5>
+<h5 id="classes-precallbackgetresultpre-methods-precallbackpre"><a href="#classes-precallbackgetresultpre-methods-precallbackpre"><pre>callback</pre></a></h5>
 
 ```python
 (self, *args: tuple[typing.Any, ...]) → None
 ```
 
-<h5 id="classes-callbackgetresult-methods-get"><a href="#classes-callbackgetresult-methods-get">`get`</a></h5>
+<h5 id="classes-precallbackgetresultpre-methods-pregetpre"><a href="#classes-precallbackgetresultpre-methods-pregetpre"><pre>get</pre></a></h5>
 
 ```python
 (self) → tuple[None] | tuple[typing.Any, ...]
 ```
 
-<h3 id="classes-poolterminate"><a href="#classes-poolterminate">`PoolTerminate`</a></h3>
+<h3 id="classes-prepoolterminatepre"><a href="#classes-prepoolterminatepre"><pre>PoolTerminate</pre></a></h3>
 
 ```python
 (pool: multiprocessing.pool.Pool, callback: Callable[..., typing.Any])
 ```
 
-<h4 id="classes-poolterminate-methods"><a href="#classes-poolterminate-methods">Methods</a></h4>
+<h4 id="classes-prepoolterminatepre-methods"><a href="#classes-prepoolterminatepre-methods">Methods</a></h4>
 
-<h5 id="classes-poolterminate-methods-inner"><a href="#classes-poolterminate-methods-inner">`inner`</a></h5>
+<h5 id="classes-prepoolterminatepre-methods-preinnerpre"><a href="#classes-prepoolterminatepre-methods-preinnerpre"><pre>inner</pre></a></h5>
 
 ```python
 (self, err: bool, *args: tuple[typing.Any, ...], **kwargs: dict[str, typing.Any]) → None

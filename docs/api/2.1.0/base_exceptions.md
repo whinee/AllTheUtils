@@ -1,10 +1,11 @@
-# <h1 id="module-alltheutilsbase_exceptions"><a href="#module-alltheutilsbase_exceptions">Module alltheutils.base_exceptions</a></h1>
+<h1 id=""><a href="#">Module alltheutils.base_exceptions</a></h1>
 
 [← Go back to `alltheutils`](./index.md)
 
 <h2 id="functions"><a href="#functions">Functions</a></h2>
 
-<h3 id="custom_exception"><a href="#custom_exception">`custom_exception`</a></h3>
+<h3 id="functions-custom_exception"><a href="#functions-custom_exception">`custom_exception`</a></h3>
+
 ```python
 (cls: type[alltheutils.base_exceptions.CustomBaseException]) → type[alltheutils.base_exceptions.CustomBaseException]
 ```
@@ -21,12 +22,14 @@ Args:
 Returns:
 `BaseException`: The exception to raise.
 
-<h3 id="custom_exception_hook"><a href="#custom_exception_hook">`custom_exception_hook`</a></h3>
+<h3 id="functions-custom_exception_hook"><a href="#functions-custom_exception_hook">`custom_exception_hook`</a></h3>
+
 ```python
 (exctype: type[alltheutils.base_exceptions.CustomBaseException], value: alltheutils.base_exceptions.CustomBaseException, traceback: traceback | None) → None
 ```
 
-<h3 id="custom_exception_str"><a href="#custom_exception_str">`custom_exception_str`</a></h3>
+<h3 id="functions-custom_exception_str"><a href="#functions-custom_exception_str">`custom_exception_str`</a></h3>
+
 ```python
 (cls: type[BaseException]) → type[BaseException]
 ```
@@ -39,7 +42,8 @@ Args:
 Returns:
 `BaseException`: The exception to raise.
 
-<h3 id="deprecated"><a href="#deprecated">`deprecated`</a></h3>
+<h3 id="functions-deprecated"><a href="#functions-deprecated">`deprecated`</a></h3>
+
 ```python
 (version: str, replacement: str | None = None, reason: str | None = None)
 ```
@@ -52,17 +56,20 @@ Args:
 
 <h2 id="classes"><a href="#classes">Classes</a></h2>
 
-<h3 id="custombaseexception"><a href="#custombaseexception">`CustomBaseException`</a></h3>
+<h3 id="classes-custombaseexception"><a href="#classes-custombaseexception">`CustomBaseException`</a></h3>
+
 ```python
 (message: str)
 ```
 
 Base class for all custom exceptions.
 
-<h4 id="ancestors-in-mro"><a href="#ancestors-in-mro">Ancestors (in MRO)</a></h4>
+<h4 id="classes-custombaseexception-ancestors-in-mro"><a href="#classes-custombaseexception-ancestors-in-mro">Ancestors (in MRO)</a></h4>
+
 - builtins.BaseException
 
-<h4 id="descendants"><a href="#descendants">Descendants</a></h4>
+<h4 id="classes-custombaseexception-descendants"><a href="#classes-custombaseexception-descendants">Descendants</a></h4>
+
 - alltheutils.exceptions.ArgumentsNotFollowingSpec
 - alltheutils.exceptions.CFGExceptions.ExtensionNotSupported
 - alltheutils.exceptions.CLICommonError
@@ -91,23 +98,24 @@ Base class for all custom exceptions.
 - alltheutils.exceptions.PrerequisiteNotFound
 - alltheutils.exceptions.TerminalTooThin
 
-<h4 id="class-variables"><a href="#class-variables">Class variables</a></h4>
+<h4 id="classes-custombaseexception-class-variables"><a href="#classes-custombaseexception-class-variables">Class variables</a></h4>
 
-<h5 id="details"><a href="#details">`details`</a></h5>
+<h5 id="classes-custombaseexception-class-variables-details"><a href="#classes-custombaseexception-class-variables-details">`details`</a></h5>
 
 ```python
 str | None
 ```
 
-<h5 id="message"><a href="#message">`message`</a></h5>
+<h5 id="classes-custombaseexception-class-variables-message"><a href="#classes-custombaseexception-class-variables-message">`message`</a></h5>
 
 ```python
 str
 ```
 
-<h4 id="methods"><a href="#methods">Methods</a></h4>
+<h4 id="classes-custombaseexception-methods"><a href="#classes-custombaseexception-methods">Methods</a></h4>
 
-<h5 id="print_details"><a href="#print_details">`print_details`</a></h5>
+<h5 id="classes-custombaseexception-methods-print_details"><a href="#classes-custombaseexception-methods-print_details">`print_details`</a></h5>
+
 ```python
 (self) → None
 ```

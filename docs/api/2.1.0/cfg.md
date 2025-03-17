@@ -1,10 +1,11 @@
-# <h1 id="module-alltheutilscfg"><a href="#module-alltheutilscfg">Module alltheutils.cfg</a></h1>
+<h1 id=""><a href="#">Module alltheutils.cfg</a></h1>
 
 [← Go back to `alltheutils`](./index.md)
 
 <h2 id="functions"><a href="#functions">Functions</a></h2>
 
-<h3 id="dcfg"><a href="#dcfg">`dcfg`</a></h3>
+<h3 id="functions-dcfg"><a href="#functions-dcfg">`dcfg`</a></h3>
+
 ```python
 (value: dict[str, typing.Any], ext: str) → str
 ```
@@ -18,7 +19,8 @@ Args:
 Returns:
 `str`: The dumped value.
 
-<h3 id="deprecated"><a href="#deprecated">`deprecated`</a></h3>
+<h3 id="functions-deprecated"><a href="#functions-deprecated">`deprecated`</a></h3>
+
 ```python
 (version: str, replacement: str | None = None, reason: str | None = None)
 ```
@@ -29,7 +31,8 @@ Args:
     version (str): The version in which the function will be removed.
     replacement (str, optional): The new function to use instead.
 
-<h3 id="pcfg"><a href="#pcfg">`pcfg`</a></h3>
+<h3 id="functions-pcfg"><a href="#functions-pcfg">`pcfg`</a></h3>
+
 ```python
 (d: str, type: str) → dict[typing.Any, typing.Any]
 ```
@@ -43,7 +46,8 @@ Args:
 Returns:
 `dict`: The parsed string.
 
-<h3 id="rcfg"><a href="#rcfg">`rcfg`</a></h3>
+<h3 id="functions-rcfg"><a href="#functions-rcfg">`rcfg`</a></h3>
+
 ```python
 (file: str) → dict[typing.Any, typing.Any]
 ```
@@ -56,7 +60,8 @@ Args:
 Returns:
 `dict`: The contents of the file.
 
-<h3 id="wcfg"><a href="#wcfg">`wcfg`</a></h3>
+<h3 id="functions-wcfg"><a href="#functions-wcfg">`wcfg`</a></h3>
+
 ```python
 (file: str, value: dict[typing.Any, typing.Any] | list[typing.Any]) → None
 ```

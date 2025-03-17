@@ -42,11 +42,12 @@ def deprecated(
             if reason:
                 message += f" {reason}"
             warnings.warn(message, DeprecationWarning, stacklevel=2)
-            return func(*args, **kwargs) # Pass all arguments properly
+            return func(*args, **kwargs)  # Pass all arguments properly
 
         return wrapper
 
     return decorator
+
 
 def deprecated_class(
     version: str,
@@ -75,21 +76,25 @@ def deprecated_class(
                 message += f" {reason}"
 
             warnings.warn(message, DeprecationWarning, stacklevel=2)
-            orig_init(self, *args, **kwargs) # Pass all arguments properly
+            orig_init(self, *args, **kwargs)  # Pass all arguments properly
 
         cls.__init__ = new_init
         return cls
 
     return decorator
 
+
 # In v3.0.0, all classes prefixed with `New` will have their prefix removed, to replace the old classes
+
 
 class ValidationError(BaseException):
     pass
 
+
 @custom_exception
 class CommonValidationError(ValidationError, CustomBaseException):
     pass
+
 
 class FileNotFound(ValidationError, FileNotFoundError, CustomBaseException):
     def __init__(self, fp: str) -> None:
@@ -101,6 +106,7 @@ class FileNotFound(ValidationError, FileNotFoundError, CustomBaseException):
 
         """
         self.message = f"`{fp}` does not exist."
+
 
 class ArgumentsNotFollowingSpec(ValidationError, CustomBaseException):
     def __init__(
@@ -121,6 +127,7 @@ class ArgumentsNotFollowingSpec(ValidationError, CustomBaseException):
         """
         self.message = f"Argument `{parameter}` needs to {specification}. Instead, passed in the following: {argument}"
 
+
 class PrerequisiteNotFound(CustomBaseException):
     def __init__(
         self,
@@ -138,12 +145,15 @@ class PrerequisiteNotFound(CustomBaseException):
         """
         self.message = f"prerequisite `{prerequisite}` cannot be found."
 
+
 class NewCLIExceptions(BaseException):
     pass
+
 
 @custom_exception
 class CLICommonError(NewCLIExceptions, CustomBaseException):
     pass
+
 
 class TerminalTooThin(NewCLIExceptions, CustomBaseException):
     def __init__(self, min_width: int) -> None:
@@ -154,10 +164,14 @@ class TerminalTooThin(NewCLIExceptions, CustomBaseException):
         - min_width (`int`): Required minimum terminal width.
 
         """
-        self.message = f"Please widen terminal.\nCurrent Width: {TW}\nMinimum Width: {min_width}"
+        self.message = (
+            f"Please widen terminal.\nCurrent Width: {TW}\nMinimum Width: {min_width}"
+        )
+
 
 class CLIValidationError(NewCLIExceptions, ValidationError):
     pass
+
 
 class CLIOptionRequired(CLIValidationError, CustomBaseException):
     def __init__(self, option: str) -> None:
@@ -170,10 +184,16 @@ class CLIOptionRequired(CLIValidationError, CustomBaseException):
         """
         self.message = f"Option `{option}` is required."
 
+
 class NewConfigExceptions(BaseException):
     pass
 
-class ConfigFileExtensionNotSupported(NewConfigExceptions, NotImplementedError, CustomBaseException):
+
+class ConfigFileExtensionNotSupported(
+    NewConfigExceptions,
+    NotImplementedError,
+    CustomBaseException,
+):
     def __init__(self, ext: str) -> None:
         """
         Raise when extension `{ext}` is not supported.
@@ -184,30 +204,39 @@ class ConfigFileExtensionNotSupported(NewConfigExceptions, NotImplementedError, 
         """
         self.message = f"Extension `{ext}` is not supported."
 
+
 class NewNestedDictExceptions(BaseException):
     pass
 
-class NDNonDictReplacementValue(NewNestedDictExceptions, TypeError, CustomBaseException):
+
+class NDNonDictReplacementValue(
+    NewNestedDictExceptions,
+    TypeError,
+    CustomBaseException,
+):
     def __init__(self) -> None:
         self.message = "Cannot replace a dict with a non-dict."
+
 
 class NDValueNotAList(NewNestedDictExceptions, TypeError, CustomBaseException):
     def __init__(self, keys: list[str], idx: int) -> None:
         self.message = f"Value of path '{'.'.join(keys[: idx + 1])}' is not a list."
 
+
 class NDValueNotADict(NewNestedDictExceptions, TypeError, CustomBaseException):
     def __init__(self, keys: list[str], idx: int) -> None:
         self.message = f"Value of path '{'.'.join(keys[:idx])}' is not a dict."
 
+
 class NDValueDoesNotExist(NewNestedDictExceptions, KeyError, CustomBaseException):
     def __init__(self, keys: list[str], idx: int) -> None:
-        self.message = (
-            f"Value of path '{'.'.join(keys[: idx + 1])}' does not exist."
-        )
+        self.message = f"Value of path '{'.'.join(keys[: idx + 1])}' does not exist."
+
 
 class NDValueIsAListAndIndexIsOutOfRange(IndexError, CustomBaseException):
     def __init__(self, keys: list[str], idx: int) -> None:
         self.message = f"Value of path '{'.'.join(keys[: idx + 1])}' is a list and index is out of range."
+
 
 # ============================ Deprecated Classes ==============================
 class GeneralExceptions:

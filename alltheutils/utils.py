@@ -131,12 +131,13 @@ def deprecated_class(
                 message += f" {reason}"
 
             warnings.warn(message, DeprecationWarning, stacklevel=2)
-            orig_init(self, *args, **kwargs) # Pass all arguments properly
+            orig_init(self, *args, **kwargs)  # Pass all arguments properly
 
         cls.__init__ = new_init
         return cls
 
     return decorator
+
 
 @deprecated(
     "3.0.0",
@@ -575,7 +576,9 @@ def run_cmd(cmd: str) -> None:
 
 
 @deprecated(
-    "3.0.0", "alltheutils.multi_processing.run_mp", "This is probably broken anyways.",
+    "3.0.0",
+    "alltheutils.multi_processing.run_mp",
+    "This is probably broken anyways.",
 )
 def run_mp(func: types.CallableAny, iterable: types.IterAny) -> types.ListAny:
     with Pool() as pool:

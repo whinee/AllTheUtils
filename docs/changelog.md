@@ -15,6 +15,17 @@ This software uses [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.h
 
 ## 3.0.0 (Unreleased)
 
+### Added
+
+- CLI utilities
+- `alltheutils.exceptions.CLICommandNotFound`
+- `alltheutils.instance_config`
+- `alltheutils.utils.requires_instance_config`
+
+### Changed
+
+- Project installer to be `uv` instead of `poetry`
+
 ### Removed
 
 - Classes, functions and modules deprecated in v2.0.0, v2.1.0, and v2.2.0
@@ -145,5 +156,3 @@ I've mostly deprecated stuff this time for the custom exceptions to be easily do
 ## 0.0.0
 
 Initial release of the package
-
-Web development and game development share a surprising number of transferable skills, but there are also key differences. Here’s how they overlap and where they diverge:

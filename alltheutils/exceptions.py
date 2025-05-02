@@ -173,6 +173,17 @@ class CLIValidationError(NewCLIExceptions, ValidationError):
     pass
 
 
+class CLICommandNotFound(CLIValidationError, CustomBaseException):
+    def __init__(self, command: str) -> None:
+        """
+        Raised when a command is not found.
+
+        Args:
+        - command (`str`): Required option with no arguments passed into it.
+
+        """
+        self.message = f"Command `{command}` is not found."
+
 class CLIOptionRequired(CLIValidationError, CustomBaseException):
     def __init__(self, option: str) -> None:
         """
@@ -187,6 +198,18 @@ class CLIOptionRequired(CLIValidationError, CustomBaseException):
 
 class NewConfigExceptions(BaseException):
     pass
+
+
+class MissingInstanceConfigValue(
+    NewConfigExceptions,
+    ValidationError,
+    KeyError,
+    CustomBaseException,
+):
+    def __init__(self, func_name: str, missing_constants: list[str]) -> None:
+        self.message = (
+            f"Function '{func_name}' requires config(s): {', '.join(missing_constants)}"
+        )
 
 
 class ConfigFileExtensionNotSupported(

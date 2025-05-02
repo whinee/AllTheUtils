@@ -18,8 +18,20 @@ ruff:
 [unix]
 bootstrap:
     #!/usr/bin/env bash
-    rm -rf poetry.lock
-    poetry install --with dev
+    rm -rf .venv
+    rm -f uv.lock
+    uv venv
+    source .venv/bin/activate
+    uv sync
+
+# Set up development environment
+[windows]
+bootstrap:
+    Remove-Item -Recurse -Force .venv
+    Remove-Item -Force uv.lock
+    uv venv
+    . .\.venv\Scripts\Activate.ps1
+    uv sync
 
 # Lint codebase
 lint:

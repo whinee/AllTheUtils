@@ -54,10 +54,14 @@ python -m ruff check alltheutils tests --fix
 
 ## License
 
-This software is licensed under the MIT license.
+This library is licensed under the MIT License.
 
-Copyright (c) 2025 [whinee](https://github.com/whinee)
+Copyright © 2025 [whinee](https://github.com/whinee)
 
 Said license was only added in version 1.1.0, thus, is only effective to the version of this library going forwards. Code in this library before release of said version has no license, and as such is not considered to be "true" open source and shall not be used.
+
+This library includes portions of code licensed under the BSD 3-Clause License.
+
+Copyright © 2014-2025 Pallets
 
 See [LICENSE.md](./LICENSE.md) for full details.

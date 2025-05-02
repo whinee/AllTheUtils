@@ -24,12 +24,14 @@ from typing import Any, Final, Optional
 from alltheutils import PSH, types
 from alltheutils.exceptions import (
     FileNotFound,
+    MissingInstanceConfigValue,
     NDNonDictReplacementValue,
     NDValueDoesNotExist,
     NDValueIsAListAndIndexIsOutOfRange,
     NDValueNotADict,
     NDValueNotAList,
 )
+from alltheutils.instance_config import get_instance_config, has_instance_config
 
 # ================================ Constants ===================================
 PR = ["alpha", "beta", "rc"]  # Prerelease strings
@@ -562,6 +564,25 @@ def parent_dir_nth_times(filename: str, n: Optional[int] = None) -> str:
     for _ in range(n or 1):
         op = dirname(op)
     return op
+
+
+def requires_instance_config(*keys):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            missing_constants = [k for k in keys if not has_instance_config(k)]
+            if missing_constants:
+                raise MissingInstanceConfigValue(func.__name__, missing_constants)
+
+            injected_kwargs = {k: get_instance_config(k) for k in keys}
+            return func(
+                *args,
+                **{**injected_kwargs, **kwargs},
+            )  # user-supplied kwargs override if needed
+
+        return wrapper
+
+    return decorator
 
 
 def run_cmd(cmd: str) -> None:

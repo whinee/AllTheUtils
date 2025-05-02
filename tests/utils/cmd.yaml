@@ -1,0 +1,18 @@
+credits:
+  args:
+  kwargs:
+  help:
+    overview: credits
+    description: |-
+      It's the credits, whaddya expect?
+  arguments:
+  options:
+version:
+  args:
+  kwargs:
+  help:
+    overview: display application version
+    description: |-
+      Print version of the program. Useful for reports and debugging.
+  arguments:
+  options:

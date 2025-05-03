@@ -1,6 +1,9 @@
 # Constants
 app_id := `python -c 'from alltheutils.config import read_conf_file;print(read_conf_file("dev/conf/constants/main.yaml")["app_name"])'`
 app_version := `sed 's/^[[:space:]]*//;s/[[:space:]]*$//' dev/version`
+dev_docs := "dev/docs"
+docs_api_root_dir := "docs/api"
+docs_api_unreleased_dir := docs_api_root_dir + "/unreleased"
 
 # Choose recipes
 default:
@@ -42,25 +45,45 @@ lint:
 test:
     @ pytest tests
 
+# Generate documentation
+[unix]
 docs:
     #!/usr/bin/env bash
     set -euo pipefail
     TMPDIR=$(mktemp -d)
-    TARGET_DIR="docs/api/{{app_version}}"
+    TARGET_DIR="{{docs_api_unreleased_dir}}"
 
     just lint
 
-    pdoc --force --output-dir "$TMPDIR" --template-dir dev/tpl/pdoc3 {{app_id}}
+    pdoc --force --output-dir "$TMPDIR" --template-dir dev/tpl/pdoc3 {{app_id}} >/dev/null
     
     rm -rf "$TARGET_DIR"
     mkdir -p "$TARGET_DIR"
     cp -r "$TMPDIR/{{app_id}}"/* "$TARGET_DIR"
     rm -rf "$TMPDIR"
 
+    erdantic alltheutils.cli.dataclasses.CommandSchema --dot | dot -Tpng -Gdpi=300 -o "{{dev_docs}}/cli/dataclasses.png"
+
+    mkdir -p "$TARGET_DIR/dev"
+    cp -r "{{dev_docs}}"/* "$TARGET_DIR/dev"
+
     echo "Docs generated in $TARGET_DIR"
 
+[confirm('Are you sure you want to bump the version? [y/N]')]
 bump +args:
-    @ just lint
-    @ poetry version {{args}}
-    @ poetry version | awk '{print $2}' > dev/version
-    @ just docs
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    just lint
+    poetry version {{args}}
+    poetry version | awk '{print $2}' > dev/version
+    just docs
+
+    DOCS_SOURCE_DIR="{{docs_api_unreleased_dir}}"
+    DOCS_TARGET_DIR="{{docs_api_root_dir}}/{{app_version}}"
+
+    rm -rf "$DOCS_TARGET_DIR"
+    mkdir -p "$DOCS_TARGET_DIR"
+    cp -r "$DOCS_SOURCE_DIR"/* "$DOCS_TARGET_DIR"
+
+    echo "Docs generated in $DOCS_TARGET_DIR"

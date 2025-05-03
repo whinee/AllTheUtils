@@ -53,6 +53,13 @@ whi~nyaan! ― 2023
 Update (April 23, 2025):
 
 This still holds true to this day. Please, do not touch if you do not need to.
+
+---
+
+Update (May 4, 2025):
+
+Bruh, why am I touching this?
+
 """  # noqa: D400, D415
 
 import typing
@@ -74,7 +81,6 @@ from tabulate import tabulate
 
 from alltheutils import TW, exceptions
 from alltheutils.exceptions import CLICommandNotFound
-from alltheutils.utils import fill_ls
 
 # Constants
 CLICK_CMD_OPTIONS_EXAMPLE_INDICATOR: Final[str] = "Ex.: "
@@ -402,16 +408,14 @@ class Group(MultiCommand):
         self.commands[name] = cmd
 
     @overload  # type: ignore[override]
-    def command(self, __func: Callable[..., Any]) -> Command:
-        ...
+    def command(self, __func: Callable[..., Any]) -> Command: ...
 
     @overload
     def command(
         self,
         *args: Any,
         **kwargs: Any,
-    ) -> Callable[[Callable[..., Any]], Command]:
-        ...
+    ) -> Callable[[Callable[..., Any]], Command]: ...
 
     def command(
         self,
@@ -441,16 +445,14 @@ class Group(MultiCommand):
         return decorator
 
     @overload
-    def group(self, __func: Callable[..., Any]) -> "Group":
-        ...
+    def group(self, __func: Callable[..., Any]) -> "Group": ...
 
     @overload
     def group(
         self,
         *args: Any,
         **kwargs: Any,
-    ) -> Callable[[Callable[..., Any]], "Group"]:
-        ...
+    ) -> Callable[[Callable[..., Any]], "Group"]: ...
 
     def group(  # noqa: C901
         self,
@@ -532,9 +534,11 @@ class ExtInquirerControl(InquirerControl):  # type: ignore[misc]
                     (
                         "class:selected" if selected else "class:disabled",
                         "{}".format(
-                            ""
-                            if isinstance(choice.disabled, bool)
-                            else " ({})".format(choice.disabled),
+                            (
+                                ""
+                                if isinstance(choice.disabled, bool)
+                                else " ({})".format(choice.disabled)
+                            ),
                         ),
                     ),
                 )
@@ -624,16 +628,14 @@ CmdType = TypeVar("CmdType", bound=Command)
 @overload
 def custom_command(
     __func: Callable[..., Any],
-) -> Command:
-    ...
+) -> Command: ...
 
 
 @overload
 def custom_command(
     name: Optional[str] = None,
     **attrs: Any,
-) -> Callable[..., Command]:
-    ...
+) -> Callable[..., Command]: ...
 
 
 @overload
@@ -641,8 +643,7 @@ def custom_command(
     name: Optional[str] = None,
     cls: type[CmdType] = ...,  # type: ignore
     **attrs: Any,
-) -> Callable[..., CmdType]:
-    ...
+) -> Callable[..., CmdType]: ...
 
 
 def custom_command(  # noqa: C901
@@ -723,7 +724,9 @@ class CommandWrapper:
         self.command_config = command_config
         self.group: Group = group
 
-    def command(self) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
+    def command(
+        self,
+    ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
         """
         The command wrapper.
 
@@ -739,8 +742,10 @@ class CommandWrapper:
         command_overview_help_text, command_description_help_text = self.cmd["help"]
 
         command_description_help_text = self.cmd["help"]["description"]
-        command_overview_help_text = self.cmd["help"].get("overview", command_description_help_text)
-
+        command_overview_help_text = self.cmd["help"].get(
+            "overview",
+            command_description_help_text,
+        )
 
         if self.arguments_cfg:
             for arg_name, v in self.arguments_cfg.items():
@@ -750,9 +755,16 @@ class CommandWrapper:
                 ]
 
             for arg_name, v in self.arguments_cfg.items():
-                c_arg_type: str
-                c_arg_type, c_arg_help, c_arg_example = fill_ls(ls=v["help"], length=3)
-                c_arg_example = "\nEx.: {c_arg_example}" if c_arg_example else ""
+                arg_help = v["help"]
+
+                c_arg_type = v.kwargs.get("type", None)
+                c_arg_help = arg_help.get("text", None)
+                c_arg_example = arg_help.get("example", None)
+
+                if c_arg_type:
+                    c_arg_type = c_arg_type.__name__
+
+                c_arg_example = f"\nEx.: {c_arg_example}" if c_arg_example else ""
                 c_arg_help_ls.append(
                     (f"<{arg_name}>", c_arg_type, f"{c_arg_help}{c_arg_example}"),
                 )
@@ -763,14 +775,14 @@ class CommandWrapper:
                 "short_help": command_overview_help_text,
                 "help": f"\b\n{command_description_help_text}\n{tabulate(c_arg_help_ls, tablefmt='plain')}",
             },
-            **(self.cmd["kwargs"] or {}),
+            **(self.cmd.get("kwargs", {})),
         )
 
         def inner(
             func: Callable[..., Any],
         ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
             op: Callable[..., Any] = self.group.command(
-                *(self.cmd["args"] or []),
+                *self.cmd.get("args", []),
                 **click_kwargs,
             )(func)
             return op
@@ -792,9 +804,13 @@ class CommandWrapper:
             return lambda x: x
 
         for arg_name, v in self.arguments_cfg.items():
-            kw: dict[str, str] = {"metavar": f"<{arg_name}>"}
-            click_args[arg_name] = [arg_name, *(v["args"] or [])]
-            click_kwargs[arg_name] = dict(kw, **(v["kwargs"] or {}))
+            passed_kwargs = v.get("kwargs", {})
+            metavar = v.pop("metavar", None)
+            kw: dict[str, str] = {
+                "metavar": f"<{arg_name}>" if metavar is None else metavar,
+            }
+            click_args[arg_name] = [arg_name, *v.get("args", [])]
+            click_kwargs[arg_name] = dict(kw, **passed_kwargs)
 
         def inner(
             func: Callable[[Any], Any],
@@ -849,11 +865,13 @@ class CommandWrapper:
                 else maxlen_option_string
             )
 
-            opt_type: str = v["help"].get("type", "str")
+            opt_type = ""
             if kw.get("is_flag"):
                 opt_type = "N/A (flag)"
             elif kw.get("multiple"):
-                opt_type = f"list[{opt_type}]"
+                raw_opt_type = kw.get("type", None)
+                if raw_opt_type:
+                    opt_type = f"list[{raw_opt_type.__name__}]"
             opts[opt_name]["help"]["type"] = opt_type
 
             curlen_type_string = len(opt_type)
@@ -873,7 +891,7 @@ class CommandWrapper:
         if maxlen_opts_help_clearance <= 0:
             raise exceptions.TerminalTooThin(maxlen_opts_help_clearance)
 
-        opt_the_fn = self.option_the(
+        opt_the_fn = self.option_type_help_example(
             maxlen_type_string,
             maxlen_opts_help,
         )  # Option [type, help, and example] parser
@@ -915,7 +933,7 @@ class CommandWrapper:
 
         return inner
 
-    def option_the(  # noqa: C901
+    def option_type_help_example(  # noqa: C901
         self,
         maxlen_type_string: int,
         maxlen_opts_help: int,
@@ -1033,4 +1051,3 @@ def command(
     """
 
     return CommandWrapper(command_config, group).wrap
-

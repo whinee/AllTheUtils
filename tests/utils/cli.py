@@ -13,11 +13,17 @@ from alltheutils.utils import parent_dir_nth_times
 def cli(**kwargs: dict[str, Any]) -> None:
     """Main command group."""
 
-ccli = command(cli, read_conf_file(os.path.join(parent_dir_nth_times(__file__, 1), "cmd.yaml")))
+
+ccli = command(
+    cli,
+    read_conf_file(os.path.join(parent_dir_nth_times(__file__, 1), "cmd.yaml")),
+)
+
 
 @ccli
 def version():
     with open("dev/version") as f:
         print(f.read().strip())
+
 
 cli()

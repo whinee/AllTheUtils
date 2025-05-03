@@ -16,7 +16,7 @@
         text = re.sub(r"[^\w\s-]", "", text)  # Remove special characters
         return re.sub(r"\s+", "-", text)
 
-    def heading(level, text):
+    def heading(level, text, prefix='', suffix=''):
         global last_slugs
 
         slug = slugify(text)
@@ -34,7 +34,7 @@
 
         toc_entries.append((level, text, slug))  # Store TOC entry
 
-        return f'<h{level} id="{slug}"><a href="#{slug}">{text}</a></h{level}>\n'
+        return f'<h{level} id="{slug}"><a href="#{slug}">{prefix}{text}{suffix}</a></h{level}>\n'
 
     def indent(s, spaces=4):
         new = s.replace('\n', '\n' + ' ' * spaces)
@@ -85,7 +85,7 @@
     if returns:
         returns = ' → ' + returns
 %>
-${heading(level, f"<pre>{func.name}</pre>")}
+${heading(level, func.name, prefix="<pre>", suffix="</pre>")}
 ```python
 (${", ".join(func.params(annotate=show_type_annotations))})${returns}
 ```
@@ -99,13 +99,13 @@ ${func.docstring}
     if annotation:
         annotation = f"\n\n```python\n{annotation}\n```"
 %>
-${heading(level, f"<pre>{var.name}</pre>")}${annotation}
+${heading(level, var.name, prefix="<pre>", suffix="</pre>")}${annotation}
 
 ${var.docstring}
 </%def>
 
 <%def name="class_(cls, level)" buffered="True">
-${heading(level, f"<pre>{cls.name}</pre>")}<%
+${heading(level, cls.name, prefix="<pre>", suffix="</pre>")}<%
 annotation_ls = cls.params(annotate=show_type_annotations)
 if not len(annotation_ls):
     annotation = ""

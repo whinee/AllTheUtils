@@ -184,6 +184,7 @@ class CLICommandNotFound(CLIValidationError, CustomBaseException):
         """
         self.message = f"Command `{command}` is not found."
 
+
 class CLIOptionRequired(CLIValidationError, CustomBaseException):
     def __init__(self, option: str) -> None:
         """

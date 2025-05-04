@@ -69,18 +69,21 @@ docs:
 
     echo "Docs generated in $TARGET_DIR"
 
+[unix]
 [confirm('Are you sure you want to bump the version? [y/N]')]
 bump +args:
     #!/usr/bin/env bash
     set -euo pipefail
 
     just lint
-    poetry version {{args}}
-    poetry version | awk '{print $2}' > dev/version
+    uv version --bump {{args}}
+    uv version --short > dev/version
     just docs
 
+    APP_VERSION=$(sed 's/^[[:space:]]*//;s/[[:space:]]*$//' dev/version)
+
     DOCS_SOURCE_DIR="{{docs_api_unreleased_dir}}"
-    DOCS_TARGET_DIR="{{docs_api_root_dir}}/{{app_version}}"
+    DOCS_TARGET_DIR="{{docs_api_root_dir}}/$APP_VERSION"
 
     rm -rf "$DOCS_TARGET_DIR"
     mkdir -p "$DOCS_TARGET_DIR"

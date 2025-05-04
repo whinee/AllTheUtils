@@ -2,7 +2,7 @@ import os
 from typing import Any
 
 from alltheutils.cli.base import command, command_group
-from alltheutils.config import read_conf_file
+from alltheutils.cli.utils import parse_yaml_file_command_config
 from alltheutils.utils import parent_dir_nth_times
 
 
@@ -16,7 +16,9 @@ def cli(**kwargs: dict[str, Any]) -> None:
 
 ccli = command(
     cli,
-    read_conf_file(os.path.join(parent_dir_nth_times(__file__, 1), "cmd.yaml")),
+    parse_yaml_file_command_config(
+        os.path.join(parent_dir_nth_times(__file__, 1), "cmd.yaml"),
+    ),
 )
 
 

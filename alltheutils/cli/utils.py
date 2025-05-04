@@ -5,6 +5,7 @@ from prompt_toolkit.application import Application
 from prompt_toolkit.key_binding import KeyBindings, KeyPressEvent
 from prompt_toolkit.keys import Keys
 from prompt_toolkit.styles import BaseStyle, merge_styles
+from pydantic_yaml import parse_yaml_file_as
 from questionary import utils
 from questionary.constants import (
     DEFAULT_KBI_MESSAGE,
@@ -16,6 +17,7 @@ from questionary.prompts import common
 from questionary.prompts.common import Choice
 
 from alltheutils.cli.base import ExtInquirerControl, ExtQuestion
+from alltheutils.cli.dataclasses import CommandConfig
 from alltheutils.utils import requires_instance_config
 
 
@@ -159,3 +161,7 @@ def select(  # noqa: C901
         if type(res).__mro__[-2] is dict:
             res = res.get("value", res)
     return err, res
+
+
+def parse_yaml_file_command_config(file_path: str) -> CommandConfig:
+    return parse_yaml_file_as(CommandConfig, file_path)

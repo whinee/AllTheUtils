@@ -6,11 +6,12 @@ from click.shell_completion import CompletionItem
 from click.types import ParamType
 from pydantic import BaseModel, ConfigDict, Field, RootModel
 
-__pdoc__: dict[str, bool | str] = {
-    f"{cls.__name__}.{method}": False
-    for method in ("BaseModel.", "model_computed_fields", "model_config")
-    for cls in (BaseModel, *BaseModel.__subclasses__())
-}
+# __pdoc__: dict[str, bool | str] = {
+#     f"{cls.__name__}.{method}": False
+#     for method in ("BaseModel.", "model_computed_fields", "model_config")
+#     for cls in (BaseModel, *BaseModel.__subclasses__())
+# }
+__pdoc__: dict[str, bool | str] = {}
 
 
 class CommandKwargsSchema(BaseModel):
@@ -18,7 +19,7 @@ class CommandKwargsSchema(BaseModel):
     __pdoc__["CommandKwargsSchema"] = ""
 
     # Arguments to provide to `click.core.Command`
-    name: Optional[str]
+    name: Optional[str] = None
     __pdoc__["CommandKwargsSchema.name"] = (
         """The name of the command to use unless a group overrides it."""
     )
@@ -28,10 +29,10 @@ class CommandKwargsSchema(BaseModel):
         """An optional dictionary with defaults that are passed to the context object."""
     )
 
-    callback: Optional[Callable[..., Any]] = None
-    __pdoc__["CommandKwargsSchema.callback"] = (
-        """The callback to invoke. This is optional."""
-    )
+    # callback: Optional[Callable[..., Any]] = None
+    # __pdoc__["CommandKwargsSchema.callback"] = (
+    #     """The callback to invoke. This is optional."""
+    # )
 
     params: Optional[list[Parameter]] = None
     __pdoc__["CommandKwargsSchema.params"] = (
@@ -309,15 +310,20 @@ class CommandOptionsKwargsSchema(BaseModel):
 
 class CommandOptionsHelpSchema(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
+    __pdoc__["CommandOptionsHelpSchema"] = ""
 
-    # Main help string
-    help: Optional[str] = None
-    # Example of string that can be passed as an argument
+    help: str
+    __pdoc__["CommandOptionsHelpSchema.help"] = """Main help string."""
+
     example: Optional[str] = None
+    __pdoc__["CommandOptionsHelpSchema.example"] = (
+        """Example of string that can be passed as an argument"""
+    )
 
 
 class CommandOptionsSchema(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
+    __pdoc__["CommandOptionsSchema"] = ""
 
     # Arguments to provide to `click.core.Option`
     args: list[str] = Field(default_factory=list)
@@ -329,11 +335,12 @@ class CommandOptionsSchema(BaseModel):
 
 class CommandSchema(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
+    __pdoc__["CommandSchema"] = ""
 
     # Arguments to provide to `alltheutils.cli.base.Group.command`
     args: list[str] = Field(default_factory=list)
     # Keyword arguments to provide to `alltheutils.cli.base.Group.command`
-    kwargs: CommandKwargsSchema
+    kwargs: CommandKwargsSchema = CommandKwargsSchema()
 
     # Help strings to show when the help option is invoked
     help: CommandHelpSchema

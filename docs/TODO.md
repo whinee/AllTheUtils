@@ -13,6 +13,7 @@ Items are sorted by priority, with the most important item at the top and least 
 
 ## Temporary
 
+- [ ] Translation file support for CLI
 - [ ] In pdoc-generated markdown files, make a Table of Contents
 - [ ] In pdoc-generated markdown files, determine whether a given mmarkdown file is the top level index file for that app's version, and if so, shall point back to the index where the user can choose the app's version and their corresponding documentation
 - [ ] Use [typeguard](https://typeguard.readthedocs.io/en/stable/userguide.html) to type check function arguments and return values in runtime

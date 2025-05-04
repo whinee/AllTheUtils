@@ -13,7 +13,7 @@ This software uses [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.h
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## 3.0.0 (Unreleased)
+## 2.3.0
 
 ### Added
 

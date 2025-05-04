@@ -70,6 +70,7 @@ from textwrap import wrap
 from typing import Any, Final, Optional, TypeVar, Union, cast, overload
 
 import click
+from click.types import ParamType
 from questionary.constants import (
     DEFAULT_KBI_MESSAGE,
     INDICATOR_SELECTED,
@@ -80,11 +81,12 @@ from questionary.question import Question
 from tabulate import tabulate
 
 from alltheutils import TW, exceptions
+from alltheutils.cli.dataclasses import CommandConfig, CommandSchema
 from alltheutils.exceptions import CLICommandNotFound
 
 # Constants
 CLICK_CMD_OPTIONS_EXAMPLE_INDICATOR: Final[str] = "Ex.: "
-DEFAULT_CLI_KWARGS: Final[dict[str, Any]] = {"metavar": ""}
+DEFAULT_OPTIONS_KWARGS: Final[dict[str, Any]] = {"metavar": ""}
 TERMINAL_CLEARANCE: Final[int] = 10
 
 # Derived Constants
@@ -710,11 +712,12 @@ def command_group(name: str | Callable[..., Any] | None = None, **attrs: Any) ->
 class CommandWrapper:
     """Returns wrappers for a click command evaluated from the given arguments."""
 
-    def __init__(self, command_config, group: Group) -> None:
+    def __init__(self, command_config: CommandConfig, group: Group) -> None:
         """
         Initialize object.
 
         Args:
+        - command_config (`CommandConfig`): Command config for initialization of the command.
         - group (`Group`): Command group of the command to be under.
 
         """
@@ -724,7 +727,7 @@ class CommandWrapper:
         self.command_config = command_config
         self.group: Group = group
 
-    def command(
+    def command(  # noqa: C901
         self,
     ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
         """
@@ -739,34 +742,30 @@ class CommandWrapper:
         c_arg_help_ls: list[tuple[str, str, str]] = []
 
         # Primary Variables
-        command_overview_help_text, command_description_help_text = self.cmd["help"]
+        command_description_help_text = self.cmd.help.description
+        command_overview_help_text = self.cmd.help.overview
 
-        command_description_help_text = self.cmd["help"]["description"]
-        command_overview_help_text = self.cmd["help"].get(
-            "overview",
-            command_description_help_text,
-        )
+        if not command_overview_help_text:
+            command_overview_help_text = command_description_help_text
 
         if self.arguments_cfg:
-            for arg_name, v in self.arguments_cfg.items():
-                self.arguments_cfg[arg_name]["help"] = [
-                    *v["help"],
-                    *[None for _ in range(3 - len(v["help"]))],
-                ]
+            for arg_name, command_arguments_cfg in self.arguments_cfg.items():
+                arg_help = command_arguments_cfg.help
 
-            for arg_name, v in self.arguments_cfg.items():
-                arg_help = v["help"]
+                c_arg_type = command_arguments_cfg.kwargs.type
+                c_arg_help = arg_help.help
+                c_arg_example = arg_help.example
 
-                c_arg_type = v.kwargs.get("type", None)
-                c_arg_help = arg_help.get("text", None)
-                c_arg_example = arg_help.get("example", None)
-
+                c_arg_type_name = ""
                 if c_arg_type:
-                    c_arg_type = c_arg_type.__name__
+                    if isinstance(c_arg_type, ParamType):
+                        c_arg_type_name = c_arg_type.name
+                    else:
+                        c_arg_type_name = c_arg_type.__name__
 
                 c_arg_example = f"\nEx.: {c_arg_example}" if c_arg_example else ""
                 c_arg_help_ls.append(
-                    (f"<{arg_name}>", c_arg_type, f"{c_arg_help}{c_arg_example}"),
+                    (f"<{arg_name}>", c_arg_type_name, f"{c_arg_help}{c_arg_example}"),
                 )
 
         click_kwargs: dict[str, dict[str, list[str]] | str] = dict(
@@ -775,14 +774,14 @@ class CommandWrapper:
                 "short_help": command_overview_help_text,
                 "help": f"\b\n{command_description_help_text}\n{tabulate(c_arg_help_ls, tablefmt='plain')}",
             },
-            **(self.cmd.get("kwargs", {})),
+            **self.cmd.kwargs.model_dump(),
         )
 
         def inner(
             func: Callable[..., Any],
         ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
             op: Callable[..., Any] = self.group.command(
-                *self.cmd.get("args", []),
+                *self.cmd.args,
                 **click_kwargs,
             )(func)
             return op
@@ -803,13 +802,13 @@ class CommandWrapper:
         if not self.arguments_cfg:
             return lambda x: x
 
-        for arg_name, v in self.arguments_cfg.items():
-            passed_kwargs = v.get("kwargs", {})
-            metavar = v.pop("metavar", None)
+        for arg_name, command_arguments_cfg in self.arguments_cfg.items():
+            passed_kwargs = command_arguments_cfg.kwargs.model_dump()
+            metavar = passed_kwargs.pop("metavar", None)
             kw: dict[str, str] = {
                 "metavar": f"<{arg_name}>" if metavar is None else metavar,
             }
-            click_args[arg_name] = [arg_name, *v.get("args", [])]
+            click_args[arg_name] = [arg_name, *command_arguments_cfg.args]
             click_kwargs[arg_name] = dict(kw, **passed_kwargs)
 
         def inner(
@@ -835,7 +834,9 @@ class CommandWrapper:
         """
 
         # Fetch Values
-        opts = self.cmd.get("options", None)
+        opts = self.cmd.options
+
+        options_kwargs = {}
 
         # Filter #1
         if not opts:
@@ -847,16 +848,16 @@ class CommandWrapper:
         click_args: dict[str, Any] = {}
         click_kwargs: dict[str, Any] = {}
 
-        # See Longest Type and Help String
+        # Check Longest Type and Help String
         # This is for checking how wide should the help string for each options should be rendered, and if the terminal could even handle it
-        for opt_name, v in opts.items():
-            opts[opt_name]["kwargs"] = kw = {
-                **DEFAULT_CLI_KWARGS,
-                **v.get("kwargs", {}),
+        for opt_name, opt_cfg in opts.items():
+            options_kwargs[opt_name] = kw = {
+                **DEFAULT_OPTIONS_KWARGS,
+                **opt_cfg.kwargs.model_dump(),
             }
 
-            if "args" in v:
-                curlen_option_string = len(f'-{opt_name}, --{v["args"][0]}')
+            if opt_cfg.args:
+                curlen_option_string = len(f"-{opt_name}, --{opt_cfg.args[0]}")
             else:
                 curlen_option_string = len(f"--{opt_name}")
             maxlen_option_string = (
@@ -865,16 +866,22 @@ class CommandWrapper:
                 else maxlen_option_string
             )
 
-            opt_type = ""
-            if kw.get("is_flag"):
-                opt_type = "N/A (flag)"
-            elif kw.get("multiple"):
-                raw_opt_type = kw.get("type", None)
-                if raw_opt_type:
-                    opt_type = f"list[{raw_opt_type.__name__}]"
-            opts[opt_name]["help"]["type"] = opt_type
+            c_opt_type = kw["type"]
 
-            curlen_type_string = len(opt_type)
+            if kw.get("is_flag"):
+                c_opt_type_name = "N/A (flag)"
+            else:
+                c_opt_type_name = ""
+
+                if c_opt_type:
+                    if isinstance(c_opt_type, ParamType):
+                        c_opt_type_name = c_opt_type.name
+                    else:
+                        c_opt_type_name = c_opt_type.__name__
+                elif c_opt_type_name and kw.get("multiple"):
+                    c_opt_type_name = f"list[{c_opt_type_name}]"
+
+            curlen_type_string = len(c_opt_type_name)
             maxlen_type_string = (
                 curlen_type_string
                 if curlen_type_string > maxlen_type_string
@@ -896,11 +903,11 @@ class CommandWrapper:
             maxlen_opts_help,
         )  # Option [type, help, and example] parser
 
-        for opt_name, v in opts.items():
+        for opt_name, opt_cfg in opts.items():
             # Fetch Values
             ## Primary
-            a = v.get("args", [])
-            kw = v["kwargs"]
+            a = opt_cfg.args
+            kw = options_kwargs[opt_name]
 
             ## Secondary
             if len(a) != 0:
@@ -910,7 +917,7 @@ class CommandWrapper:
                 a.insert(0, f"--{opt_name}")
 
             ## Tertiary
-            o_type, o_help, o_example = opt_the_fn(opt_name, kw, v["help"])
+            o_type, o_help, o_example = opt_the_fn(opt_name, kw, opt_cfg.help)
 
             if o_example and (not o_help):
                 o_example = o_example.strip()
@@ -1025,8 +1032,8 @@ class CommandWrapper:
 
         """
 
-        self.cmd = self.command_config[func.__name__]
-        self.arguments_cfg = self.cmd["arguments"]
+        self.cmd: CommandSchema = self.command_config.root[func.__name__]
+        self.arguments_cfg = self.cmd.arguments
         wrappers_ls = self.command(), self.arguments(), self.options()
         func = self.kwargs_preprocessor(func)
         for wrapper in wrappers_ls:
@@ -1036,13 +1043,13 @@ class CommandWrapper:
 
 def command(
     group: Group,
-    command_config: dict[str, Any],
+    command_config: CommandConfig,
 ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
     """
     Wrapper for click commands.
 
     Args:
-    - command_config (`dict[str, Any]`): Command configuration dictionary.
+    - command_config (`CommandConfig`): Command configuration.
     - group (`Group`): Command group of the command to be under.
 
     Returns:

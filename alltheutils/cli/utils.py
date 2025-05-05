@@ -18,7 +18,7 @@ from questionary.prompts.common import Choice
 
 from alltheutils.cli.base import ExtInquirerControl, ExtQuestion
 from alltheutils.cli.dataclasses import CommandConfig
-from alltheutils.utils import requires_instance_config
+from alltheutils.instance_config import requires_instance_config
 
 
 @requires_instance_config("language_constant")

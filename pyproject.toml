@@ -33,7 +33,6 @@ documentation = "https://github.com/whinee/AllTheUtils/tree/main/docs"
 
 [dependency-groups]
 dev = [
-    "alltheutils>=2.2.0",
     "black>=25.1.0",
     "erdantic>=1.1.0.post1",
     "mypy>=1.15.0",

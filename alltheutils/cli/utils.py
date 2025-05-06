@@ -18,7 +18,7 @@ from questionary.prompts.common import Choice
 
 from alltheutils.cli.base import ExtInquirerControl, ExtQuestion
 from alltheutils.cli.dataclasses import CommandConfig
-from alltheutils.instance_config import get_instance_config
+from alltheutils.instance_config import get_instance_config, has_instance_config
 from alltheutils.utils import get_value_from_or_update_nested_dict, load_language_texts
 
 
@@ -42,7 +42,10 @@ def select(  # noqa: C901
     class _CEQ(ExtQuestion):  # type: ignore[misc]
         pass
 
-    default_language = get_instance_config("language")
+    if has_instance_config("language"):
+        default_language = get_instance_config("language")
+    else:
+        default_language = "en"
     language_texts = load_language_texts(default_language)
 
     if instruction is None:

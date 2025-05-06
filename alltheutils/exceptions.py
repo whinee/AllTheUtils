@@ -275,10 +275,10 @@ class BumpVersionPartUnknown(BumpVersionExceptions, ValueError, CustomBaseExcept
         self.message = f"Part `{part}` is not a valid version part."
 
 
-class LoadLanguagesTextsExceptions(BaseException):
-    pass
+# class LoadLanguagesTextsExceptions(BaseException):
+#     pass
 
-class LoadLanguagesTextsLanguageNotFound(LoadLanguagesTextsExceptions, KeyError, CustomBaseException):
+class LoadLanguageTextsLanguageNotFound(KeyError, CustomBaseException):
     def __init__(self, lang: str) -> None:
         self.message = f"Language `{lang}` is not found."
 

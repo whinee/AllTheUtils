@@ -19,7 +19,7 @@ from questionary.prompts.common import Choice
 from alltheutils.cli.base import ExtInquirerControl, ExtQuestion
 from alltheutils.cli.dataclasses import CommandConfig
 from alltheutils.instance_config import get_instance_config
-from alltheutils.utils import get_value_from_or_update_nested_dict
+from alltheutils.utils import get_value_from_or_update_nested_dict, load_language_texts
 
 
 def select(  # noqa: C901
@@ -28,6 +28,8 @@ def select(  # noqa: C901
     language_texts: dict[str, Any],
     default: Optional[Any] = None,
     instruction: Optional[str] = None,
+    answer_text: Optional[str] = None,
+    keyboard_interrupt_message: Optional[str] = None,
     qmark: Optional[str] = None,
     pointer: Optional[str] = None,
     style: Optional[BaseStyle] = None,
@@ -41,13 +43,17 @@ def select(  # noqa: C901
     class _CEQ(ExtQuestion):  # type: ignore[misc]
         pass
 
-    get_instance_config("languages_texts")
-
-    if language_texts.get("en"):
-        language_texts = language_texts["en"]
+    default_language = get_instance_config("language")
+    language_texts = load_language_texts(default_language)
 
     if instruction is None:
         instruction = get_value_from_or_update_nested_dict(language_texts, "cli.prompt.list_instruction")  # type: ignore
+
+    if answer_text is None:
+        answer_text = get_value_from_or_update_nested_dict(language_texts, "cli.prompt.answer")  # type: ignore
+
+    if keyboard_interrupt_message is None:
+        keyboard_interrupt_message = get_value_from_or_update_nested_dict(language_texts, "cli.general.keyboard_interrupt_message")  # type: ignore
 
     if qmark is None:
         qmark = DEFAULT_QUESTION_PREFIX
@@ -98,8 +104,8 @@ def select(  # noqa: C901
                 _CEQ.kbi = DEFAULT_KBI_MESSAGE
 
                 _instruction = _val.get("instruction", _instruction)
-                _CEIQ.answer_text = _val.get("answer", _CEIQ.answer_text)
-                _CEQ.kbi = _val.get("kbi", _CEQ.kbi)
+                _CEIQ.answer_text = _val.get("answer", answer_text if answer_text else _CEIQ.answer_text)
+                _CEQ.kbi = _val.get("kbi", keyboard_interrupt_message if keyboard_interrupt_message else _CEQ.kbi)
 
         tokens = [("class:qmark", qmark), ("class:question", f" {_msg} ")]
 

@@ -24,16 +24,17 @@ from typing import Any, Final, Optional
 import semver
 
 from alltheutils import PSH, types
+from alltheutils.config import read_conf_file
 from alltheutils.exceptions import (
     BumpVersionNoPrerelease,
     BumpVersionPartUnknown,
     FileNotFound,
+    LoadLanguageTextsLanguageNotFound,
     NDNonDictReplacementValue,
     NDValueDoesNotExist,
     NDValueIsAListAndIndexIsOutOfRange,
     NDValueNotADict,
     NDValueNotAList,
-    LoadLanguagesTextsLanguageNotFound,
 )
 from alltheutils.instance_config import get_instance_config
 
@@ -585,11 +586,17 @@ def literal_eval(expr: Optional[str]) -> Any:
         return ast.literal_eval(expr)
 
 
-def load_languages_texts(language_code: str):
+def load_language_texts(language_code: str):
     languages_texts = get_instance_config("languages_texts")
 
     if language_code not in languages_texts:
-        raise LoadLanguagesTextsLanguageNotFound(language_code)
+        raise LoadLanguageTextsLanguageNotFound(language_code)
+
+    languages_text_unknown = languages_texts[language_code]
+
+    if isinstance(languages_text_unknown, str):
+        return read_conf_file(languages_text_unknown)
+    return languages_text_unknown
 
 
 def noop(*args: types.ListAny, **kwargs: dict[str, Any]) -> None:
@@ -847,7 +854,7 @@ def which_ls(  # noqa: C901
                     op.add(name)
     return tuple(op)
 
-
+@deprecated(version="3.0.0", replacement="alltheutils.config.yaml_str_presenter")
 def yaml_str_presenter(dumper, data):  # type: ignore[no-untyped-def]
     if len(data.splitlines()) > 1:
         return dumper.represent_scalar("tag:yaml.org,2002:str", data, style="|")

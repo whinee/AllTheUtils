@@ -27,6 +27,10 @@ This software uses [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.h
 - `alltheutils.exceptions.BumpVersionPartUnknown`
 - `alltheutils.utils.bump_version`
 
+### Deprecated
+
+- Moved `alltheutils.utils.yaml_str_presenter` to `alltheutils.config.yaml_str_presenter`
+
 ## 2.3.0
 
 ### Added

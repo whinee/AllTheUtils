@@ -6,8 +6,12 @@ from typing import Any
 import yaml
 
 from alltheutils.exceptions import ConfigFileExtensionNotSupported
-from alltheutils.utils import yaml_str_presenter
 
+
+def yaml_str_presenter(dumper, data):  # type: ignore[no-untyped-def]
+    if len(data.splitlines()) > 1:
+        return dumper.represent_scalar("tag:yaml.org,2002:str", data, style="|")
+    return dumper.represent_scalar("tag:yaml.org,2002:str", data)
 
 class ParserRegistry:
     def __init__(self) -> None:

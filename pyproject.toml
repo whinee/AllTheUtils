@@ -39,9 +39,11 @@ dev = [
     "no-implicit-optional>=1.4",
     "pdoc3>=0.11.5",
     "pytest>=8.3.4",
+    "pytest-md-report>=0.7.0",
     "rich>=13.9.4",
     "ruamel-yaml>=0.18.10",
     "ruff>=0.9.6",
+    "semver>=3.0.4",
     "translate-toolkit>=3.15.2",
 ]
 

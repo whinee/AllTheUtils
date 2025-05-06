@@ -49,7 +49,7 @@ def select(  # noqa: C901
         language_texts = language_texts["en"]
 
     if instruction is None:
-        instruction = get_value_from_or_update_nested_dict(language_texts, "cli.prompt.list_instruction") # type: ignore
+        instruction = get_value_from_or_update_nested_dict(language_texts, "cli.prompt.list_instruction")  # type: ignore
 
     if qmark is None:
         qmark = DEFAULT_QUESTION_PREFIX

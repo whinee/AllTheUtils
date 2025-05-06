@@ -43,7 +43,8 @@ lint:
     @ just ruff
 
 test:
-    @ pytest tests
+    @ pytest --md-report --md-report-zeros empty --md-report-color never --md-report-output dev/docs/tests.md tests
+    @ python dev/scripts/py/prepend_dev_docs_test_md.py
 
 # Generate documentation
 [unix]

@@ -21,8 +21,12 @@ from re import Pattern
 from subprocess import call
 from typing import Any, Final, Optional
 
+import semver
+
 from alltheutils import PSH, types
 from alltheutils.exceptions import (
+    BumpVersionNoPrerelease,
+    BumpVersionPartUnknown,
     FileNotFound,
     NDNonDictReplacementValue,
     NDValueDoesNotExist,
@@ -32,7 +36,7 @@ from alltheutils.exceptions import (
 )
 
 # ================================ Constants ===================================
-PR = ["alpha", "beta", "rc"]  # Prerelease strings
+PRERELEASE = ["alpha", "beta", "rc"]  # Prerelease strings
 CATEGORIES: Final[set[str]] = {"Cn"}
 
 # ============================ Derived Constants ===============================
@@ -219,6 +223,49 @@ def batch_replace(text: str, key_value_map: dict[str, list[str]]) -> str:
     return text
 
 
+def bump_version(  # noqa: C901
+    version: str,
+    part: str = "patch",
+    prerelease=None,
+    build=None,
+) -> str:
+    v = semver.VersionInfo.parse(version)
+
+    if part == "major":
+        v = v.bump_major()
+    elif part == "minor":
+        v = v.bump_minor()
+    elif part == "patch":
+        v = v.bump_patch()
+    elif part == "prerelease":
+        current_prerelease = v.prerelease
+        if current_prerelease is None:
+            v = v.bump_prerelease(PRERELEASE[0])
+        elif current_prerelease.startswith("rc"):
+            v = v.replace(prerelease=None)
+        else:
+            v = v.replace(
+                prerelease=PRERELEASE[
+                    PRERELEASE.index(current_prerelease.split(".")[0]) + 1
+                ]
+                + ".1",
+            )
+    elif part == "prerelease_num":
+        # bumps the prerelease segment like alpha.1 → alpha.2
+        if v.prerelease is None:
+            raise BumpVersionNoPrerelease
+        v = v.bump_prerelease()
+    else:
+        raise BumpVersionPartUnknown(part)
+
+    if prerelease is not None:
+        v = v.replace(prerelease=prerelease)
+    if build is not None:
+        v = v.replace(build=build)
+
+    return str(v)
+
+
 def calculate_sha256_hash(input: str) -> str:
     """
     Given a string, calculate its hash and return it.
@@ -274,7 +321,7 @@ def custom_version_ls_to_str(
     pr = ""
     ivls = [int(i) for i in vls]
     if ivls[4] < 3:
-        pr = f"-{PR[ivls[4]]}.{ivls[5]}"
+        pr = f"-{PRERELEASE[ivls[4]]}.{ivls[5]}"
     return (
         ".".join([str(i) for i in ivls[0:4]]) + pr,
         ".".join([str(i) for i in [*ivls[0:2], 3 ** ivls[2] * 2 ** ivls[3]]]) + pr,

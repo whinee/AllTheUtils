@@ -712,7 +712,7 @@ def command_group(name: str | Callable[..., Any] | None = None, **attrs: Any) ->
 class CommandWrapper:
     """Returns wrappers for a click command evaluated from the given arguments."""
 
-    def __init__(self, command_config: CommandConfig, group: Group) -> None: # type: ignore
+    def __init__(self, command_config: CommandConfig, group: Group) -> None:  # type: ignore
         """
         Initialize object.
 
@@ -1043,7 +1043,7 @@ class CommandWrapper:
 
 def command(
     group: Group,
-    command_config: CommandConfig, # type: ignore
+    command_config: CommandConfig,  # type: ignore
 ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
     """
     Wrapper for click commands.

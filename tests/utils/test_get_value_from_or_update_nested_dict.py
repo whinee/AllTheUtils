@@ -1,6 +1,10 @@
 import pytest
 
-from alltheutils.exceptions import NestedDictExceptions
+from alltheutils.exceptions import (
+    NDNonDictReplacementValue,
+    NDValueDoesNotExist,
+    NDValueNotADict,
+)
 from alltheutils.utils import get_value_from_or_update_nested_dict
 
 
@@ -18,7 +22,7 @@ def test_deep_retrieve():
 # TODO: differentiate between non-existent path and non-dict path
 def test_error_on_retrieving_nonexistent_path():
     data = {"you": {"me": "huh?"}}
-    with pytest.raises(NestedDictExceptions.ValueDoesNotExist):
+    with pytest.raises(NDValueDoesNotExist):
         get_value_from_or_update_nested_dict(data, "you.nonexistent")
 
 
@@ -54,13 +58,13 @@ def test_retrieve_from_list_using_integer_key():
 
 def test_error_on_get_from_list_using_explicitly_string_integer_key():
     data = {"users": [{"name": "Alice"}, {"name": "Bob"}]}
-    with pytest.raises(NestedDictExceptions.ValueNotADict):
+    with pytest.raises(NDValueNotADict):
         get_value_from_or_update_nested_dict(data, "users.str>1.name")
 
 
 def test_error_on_get_from_list_using_implicitly_string_integer_key():
     data = {"users": [{"name": "Alice"}, {"name": "Bob"}]}
-    with pytest.raises(NestedDictExceptions.ValueNotADict):
+    with pytest.raises(NDValueNotADict):
         get_value_from_or_update_nested_dict(data, "users.1.name")
 
 
@@ -97,13 +101,13 @@ def test_replace_entire_dict_empty_address():
 
 def test_replace_entire_dict_with_non_dict():
     data = {"old": "data"}
-    with pytest.raises(NestedDictExceptions.NonDictReplacementValue):
+    with pytest.raises(NDNonDictReplacementValue):
         get_value_from_or_update_nested_dict(data, ".", "just a string")
 
 
 def test_error_on_non_dict_path():
     data = {"you": {"me": "huh?"}}
-    with pytest.raises(NestedDictExceptions.ValueNotADict):
+    with pytest.raises(NDValueNotADict):
         get_value_from_or_update_nested_dict(data, "you.me.key", "fail")
 
 
@@ -127,7 +131,7 @@ def test_update_dict_with_implicitly_string_integer_key():
 
 def test_error_on_update_nested_dict_with_list_using_implicitly_string_integer_key():
     data = {"users": [{"name": "Alice"}, {"name": "Bob"}]}
-    with pytest.raises(NestedDictExceptions.ValueNotADict):
+    with pytest.raises(NDValueNotADict):
         get_value_from_or_update_nested_dict(data, "users.0.name", "Charlie")
 
 
@@ -169,7 +173,7 @@ def test_address_not_existing():
 
 def test_non_dict_middle_element():
     data = {"top": "string_value"}
-    with pytest.raises(NestedDictExceptions.ValueNotADict):
+    with pytest.raises(NDValueNotADict):
         get_value_from_or_update_nested_dict(data, "top.sub.value", "fail")
 
 

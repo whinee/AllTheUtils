@@ -23,6 +23,7 @@ def has_instance_config(key):
 def clear_instance_config():
     _INSTANCE_CONFIG.clear()
 
+
 def requires_instance_config(*keys):
     def decorator(func):
         @functools.wraps(func)

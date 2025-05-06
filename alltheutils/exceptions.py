@@ -262,6 +262,16 @@ class NDValueIsAListAndIndexIsOutOfRange(IndexError, CustomBaseException):
         self.message = f"Value of path '{'.'.join(keys[: idx + 1])}' is a list and index is out of range."
 
 
+class BumpVersionNoPrerelease(ValueError, CustomBaseException):
+    def __init__(self) -> None:
+        self.message = "No prerelease found to bump"
+
+
+class BumpVersionPartUnknown(ValueError, CustomBaseException):
+    def __init__(self, part: str) -> None:
+        self.message = f"Part `{part}` is not a valid version part."
+
+
 # ============================ Deprecated Classes ==============================
 class GeneralExceptions:
     class ValidationError:

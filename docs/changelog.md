@@ -13,6 +13,12 @@ This software uses [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.h
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## 3.0.0 (Unreleased)
+
+### Removed
+
+- Classes, functions and modules deprecated in v2.0.0, v2.1.0, and v2.2.0
+
 ## Unreleased
 
 ### Added
@@ -34,10 +40,6 @@ This software uses [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.h
 
 - Project installer to be `uv` instead of `poetry`
 
-### Removed
-
-- Classes, functions and modules deprecated in v2.0.0, v2.1.0, and v2.2.0
-
 ## 2.2.0
 
 This is not funny anymore, guys. I'm so tired of deprecating shit due to the poor design choices I've made in the past :C
@@ -46,7 +48,7 @@ I've mostly deprecated stuff this time for the custom exceptions to be easily do
 
 ### Added
 
-- Added `alltheutils.exceptions.deprecated_class` decorator for deprecating classes
+- Added `alltheutils.utils.deprecated_class` decorator for deprecating classes
 - Added `alltheutils.exceptions.deprecated_class` decorators for deprecated base_exceptions classes. If you are an external API user, please use the `alltheutils.utils.deprecated_class` decorator instead.
 
 ### Changed

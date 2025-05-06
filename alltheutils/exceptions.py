@@ -262,14 +262,25 @@ class NDValueIsAListAndIndexIsOutOfRange(IndexError, CustomBaseException):
         self.message = f"Value of path '{'.'.join(keys[: idx + 1])}' is a list and index is out of range."
 
 
-class BumpVersionNoPrerelease(ValueError, CustomBaseException):
+class BumpVersionExceptions(BaseException):
+    pass
+
+class BumpVersionNoPrerelease(BumpVersionExceptions, ValueError, CustomBaseException):
     def __init__(self) -> None:
         self.message = "No prerelease found to bump"
 
 
-class BumpVersionPartUnknown(ValueError, CustomBaseException):
+class BumpVersionPartUnknown(BumpVersionExceptions, ValueError, CustomBaseException):
     def __init__(self, part: str) -> None:
         self.message = f"Part `{part}` is not a valid version part."
+
+
+class LoadLanguagesTextsExceptions(BaseException):
+    pass
+
+class LoadLanguagesTextsLanguageNotFound(LoadLanguagesTextsExceptions, KeyError, CustomBaseException):
+    def __init__(self, lang: str) -> None:
+        self.message = f"Language `{lang}` is not found."
 
 
 # ============================ Deprecated Classes ==============================

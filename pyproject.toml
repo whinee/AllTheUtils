@@ -47,6 +47,10 @@ dev = [
     "translate-toolkit>=3.15.2",
 ]
 
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools>=64"]
+
 [tool.setuptools.packages.find]
 include = ["alltheutils*", "alltheutils.cli*"]
 

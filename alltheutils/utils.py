@@ -33,7 +33,9 @@ from alltheutils.exceptions import (
     NDValueIsAListAndIndexIsOutOfRange,
     NDValueNotADict,
     NDValueNotAList,
+    LoadLanguagesTextsLanguageNotFound,
 )
+from alltheutils.instance_config import get_instance_config
 
 # ================================ Constants ===================================
 PRERELEASE = ["alpha", "beta", "rc"]  # Prerelease strings
@@ -581,6 +583,13 @@ def literal_eval(expr: Optional[str]) -> Any:
     """
     if expr is not None:
         return ast.literal_eval(expr)
+
+
+def load_languages_texts(language_code: str):
+    languages_texts = get_instance_config("languages_texts")
+
+    if language_code not in languages_texts:
+        raise LoadLanguagesTextsLanguageNotFound(language_code)
 
 
 def noop(*args: types.ListAny, **kwargs: dict[str, Any]) -> None:

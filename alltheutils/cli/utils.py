@@ -18,17 +18,13 @@ from questionary.prompts.common import Choice
 
 from alltheutils.cli.base import ExtInquirerControl, ExtQuestion
 from alltheutils.cli.dataclasses import CommandConfig
-from alltheutils.instance_config import requires_instance_config
+from alltheutils.instance_config import get_instance_config
 from alltheutils.utils import get_value_from_or_update_nested_dict
 
 
-@requires_instance_config("default_language")
-@requires_instance_config("initial_language_texts")
-@requires_instance_config("language_texts")
 def select(  # noqa: C901
     message: str,
     choices: Sequence[str | Choice | dict[str, Any]] | dict[str, Any],
-    initial_language_texts: dict[str, Any],
     language_texts: dict[str, Any],
     default: Optional[Any] = None,
     instruction: Optional[str] = None,
@@ -44,6 +40,8 @@ def select(  # noqa: C901
 
     class _CEQ(ExtQuestion):  # type: ignore[misc]
         pass
+
+    get_instance_config("languages_texts")
 
     if language_texts.get("en"):
         language_texts = language_texts["en"]

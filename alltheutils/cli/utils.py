@@ -25,7 +25,6 @@ from alltheutils.utils import get_value_from_or_update_nested_dict, load_languag
 def select(  # noqa: C901
     message: str,
     choices: Sequence[str | Choice | dict[str, Any]] | dict[str, Any],
-    language_texts: dict[str, Any],
     default: Optional[Any] = None,
     instruction: Optional[str] = None,
     answer_text: Optional[str] = None,
@@ -47,13 +46,13 @@ def select(  # noqa: C901
     language_texts = load_language_texts(default_language)
 
     if instruction is None:
-        instruction = get_value_from_or_update_nested_dict(language_texts, "cli.prompt.list_instruction")  # type: ignore
+        instruction = get_value_from_or_update_nested_dict(language_texts, "cli.prompt.list_selector_instruction")  # type: ignore
 
     if answer_text is None:
         answer_text = get_value_from_or_update_nested_dict(language_texts, "cli.prompt.answer")  # type: ignore
 
     if keyboard_interrupt_message is None:
-        keyboard_interrupt_message = get_value_from_or_update_nested_dict(language_texts, "cli.general.keyboard_interrupt_message")  # type: ignore
+        keyboard_interrupt_message = get_value_from_or_update_nested_dict(language_texts, "cli.general.keyboard_interrupt")  # type: ignore
 
     if qmark is None:
         qmark = DEFAULT_QUESTION_PREFIX

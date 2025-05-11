@@ -17,6 +17,12 @@ nio:
 ruff:
     @ python -m ruff check --fix {{app_id}} tests; exit 0
 
+# Lint codebase
+lint:
+    @ just nio
+    @ python -m black -q {{app_id}} tests
+    @ just ruff
+
 # Set up development environment
 [unix]
 bootstrap:
@@ -35,12 +41,6 @@ bootstrap:
     uv venv
     . .\.venv\Scripts\Activate.ps1
     uv sync
-
-# Lint codebase
-lint:
-    @ just nio
-    @ python -m black -q {{app_id}} tests
-    @ just ruff
 
 test:
     @ pytest --md-report --md-report-zeros empty --md-report-color never --md-report-output dev/docs/tests.md tests

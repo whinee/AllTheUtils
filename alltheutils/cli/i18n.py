@@ -58,3 +58,5 @@ def merge_command_config_n_help_text(raw_command_config: dict[str, Any]):  # noq
                 for key in ["help", "example"]:
                     cht_rcc_key = f"{command_name}.{paramater_type}.{command_options_name}.help.{key}"
                     ikihtpitl(cht_rcc_key, cht_rcc_key)
+
+    return raw_command_config

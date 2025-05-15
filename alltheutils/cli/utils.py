@@ -221,15 +221,18 @@ parameter_types = ["arguments", "options"]
 
 def parse_config_file_cli_config(
     file_path: str,
-    filters_before_conversion: list[Callable[[dict[str, Any]], dict[str, Any]]],
+    filters_before_conversion: Optional[
+        list[Callable[[dict[str, Any]], dict[str, Any]]]
+    ] = None,
 ) -> CLIConfig:
     cli_config = read_conf_file(file_path)
     commands = cli_config.get("commands", {})
 
     command_type_str_to_type(commands=commands)
 
-    for filter in filters_before_conversion:
-        cli_config = filter(cli_config)
+    if filters_before_conversion:
+        for filter in filters_before_conversion:
+            cli_config = filter(cli_config)
 
     ta = TypeAdapter(CLIConfig)  # type: ignore
     return ta.validate_python(cli_config)

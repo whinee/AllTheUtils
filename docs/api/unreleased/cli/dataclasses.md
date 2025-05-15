@@ -91,7 +91,7 @@ By default each command registers a `--help` option. This can be disabled by thi
 <h5 id="classes-cligroupcommandparamschema-class-variables-cls"><a href="#classes-cligroupcommandparamschema-class-variables-cls"><pre>cls</pre></a></h5>
 
 ```python
-type[alltheutils.cli._base.Command] | None
+type[click.core.Command] | None
 ```
 
 <h5 id="classes-cligroupcommandparamschema-class-variables-context_settings"><a href="#classes-cligroupcommandparamschema-class-variables-context_settings"><pre>context_settings</pre></a></h5>
@@ -533,7 +533,7 @@ The help string.
 <h5 id="classes-commandoptionskwargsschema-class-variables-callback"><a href="#classes-commandoptionskwargsschema-class-variables-callback"><pre>callback</pre></a></h5>
 
 ```python
-Callable[[click.core.Context, click.core.Parameter, typing.Any], typing.Any] | None
+Callable[[click.core.Context, click.core.Parameter, typing.Any], typing.Any]
 ```
 
 A function to further process or validate the value after type conversion. It is called as `f(ctx, param, value)` and must return the value. It is called for all sources, including prompts.

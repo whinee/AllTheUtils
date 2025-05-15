@@ -49,7 +49,9 @@ def merge_command_config_n_help_text(  # noqa: C901
 
     for command_name, command_value in raw_command_config["commands"].items():
         get_value_from_or_update_nested_dict(
-            raw_command_config, f"commands.{command_name}.help", {},
+            raw_command_config,
+            f"commands.{command_name}.help",
+            {},
         )
         for key in ["description", "overview"]:
             cht_rcc_key = f"commands.{command_name}.help.{key}"

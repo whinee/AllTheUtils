@@ -2,7 +2,9 @@ import os
 from pathlib import Path
 from typing import Any, Optional
 
-from alltheutils.cli.base import command, command_group
+from click.decorators import group
+
+from alltheutils.cli.base import command
 from alltheutils.cli.utils import parse_config_file_cli_config, select
 from alltheutils.config import read_conf_file, write_to_conf_file
 from alltheutils.exceptions import BumpVersionExceptions
@@ -27,7 +29,7 @@ for translation_file in translation_files_dir.glob("*.json"):
 set_instance_config("language", "en")
 set_instance_config("languages_texts", translation_file_dict)
 
-@command_group(**cli_config.group_command_params.model_dump())
+@group(**cli_config.group_command_params.model_dump())
 def cmd_group(**kwargs: dict[str, Any]) -> None:
     """Main command group."""
 

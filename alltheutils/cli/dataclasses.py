@@ -1,12 +1,12 @@
 from collections.abc import Callable, MutableMapping, Sequence
 from typing import Any, Optional, Union
 
-from click.core import Context, Parameter
+from click.core import Command, Context, Parameter
 from click.shell_completion import CompletionItem
 from click.types import ParamType
 from pydantic import BaseModel, ConfigDict, Field
 
-from alltheutils.cli._base import Command
+from alltheutils.cli._base import show_help
 
 # __pdoc__: dict[str, bool | str] = {
 #     f"{cls.__name__}.{method}": False
@@ -277,7 +277,7 @@ class CommandOptionsKwargsSchema(BaseModel):
         """The default value if omitted. This can also be a callable, in which case it's invoked when the default is needed without any arguments."""
     )
 
-    callback: Optional[Callable[[Context, Parameter, Any], Any]] = None
+    callback: Callable[[Context, Parameter, Any], Any] = show_help
     __pdoc__["CommandOptionsKwargsSchema.callback"] = (
         """A function to further process or validate the value after type conversion. It is called as `f(ctx, param, value)` and must return the value. It is called for all sources, including prompts."""
     )

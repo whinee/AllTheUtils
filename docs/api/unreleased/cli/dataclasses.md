@@ -4,6 +4,196 @@
 
 <h2 id="classes"><a href="#classes">Classes</a></h2>
 
+<h3 id="classes-cliconfig"><a href="#classes-cliconfig"><pre>CLIConfig</pre></a></h3>
+
+```python
+(**data: Any)
+```
+
+!!! abstract "Usage Documentation"
+    [Models](../concepts/models.md)
+
+A base class for creating Pydantic models.
+
+Attributes:
+    __class_vars__: The names of the class variables defined on the model.
+    __private_attributes__: Metadata about the private attributes of the model.
+    __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.
+
+    __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.
+    __pydantic_core_schema__: The core schema of the model.
+    __pydantic_custom_init__: Whether the model has a custom `__init__` function.
+    __pydantic_decorators__: Metadata containing the decorators defined on the model.
+        This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.
+    __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to
+        __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.
+    __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.
+    __pydantic_post_init__: The name of the post-init method for the model, if defined.
+    __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].
+    __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.
+    __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.
+
+    __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.
+    __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.
+
+    __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]
+        is set to `'allow'`.
+    __pydantic_fields_set__: The names of fields explicitly set during instantiation.
+    __pydantic_private__: Values of private attributes set on the model instance.
+
+Create a new model by parsing and validating input data from keyword arguments.
+
+Raises [`ValidationError`][pydantic_core.ValidationError] if the input data cannot be
+validated to form a valid model.
+
+`self` is explicitly positional-only to allow `self` as a field name.
+
+<h4 id="classes-cliconfig-ancestors-in-mro"><a href="#classes-cliconfig-ancestors-in-mro">Ancestors (in MRO)</a></h4>
+
+- pydantic.main.BaseModel
+
+<h4 id="classes-cliconfig-class-variables"><a href="#classes-cliconfig-class-variables">Class variables</a></h4>
+
+<h5 id="classes-cliconfig-class-variables-commands"><a href="#classes-cliconfig-class-variables-commands"><pre>commands</pre></a></h5>
+
+```python
+dict[str, alltheutils.cli.dataclasses.CommandSchema]
+```
+
+<h5 id="classes-cliconfig-class-variables-group_command_params"><a href="#classes-cliconfig-class-variables-group_command_params"><pre>group_command_params</pre></a></h5>
+
+```python
+alltheutils.cli.dataclasses.CLIGroupCommandParamSchema
+```
+
+<h5 id="classes-cliconfig-class-variables-model_config"><a href="#classes-cliconfig-class-variables-model_config"><pre>model_config</pre></a></h5>
+
+<h3 id="classes-cligroupcommandparamschema"><a href="#classes-cligroupcommandparamschema"><pre>CLIGroupCommandParamSchema</pre></a></h3>
+
+```python
+(**data: Any)
+```
+
+<h4 id="classes-cligroupcommandparamschema-ancestors-in-mro"><a href="#classes-cligroupcommandparamschema-ancestors-in-mro">Ancestors (in MRO)</a></h4>
+
+- pydantic.main.BaseModel
+
+<h4 id="classes-cligroupcommandparamschema-class-variables"><a href="#classes-cligroupcommandparamschema-class-variables">Class variables</a></h4>
+
+<h5 id="classes-cligroupcommandparamschema-class-variables-add_help_option"><a href="#classes-cligroupcommandparamschema-class-variables-add_help_option"><pre>add_help_option</pre></a></h5>
+
+```python
+bool
+```
+
+By default each command registers a `--help` option. This can be disabled by this parameter.
+
+<h5 id="classes-cligroupcommandparamschema-class-variables-cls"><a href="#classes-cligroupcommandparamschema-class-variables-cls"><pre>cls</pre></a></h5>
+
+```python
+type[alltheutils.cli._base.Command] | None
+```
+
+<h5 id="classes-cligroupcommandparamschema-class-variables-context_settings"><a href="#classes-cligroupcommandparamschema-class-variables-context_settings"><pre>context_settings</pre></a></h5>
+
+```python
+dict[str, typing.Any] | None
+```
+
+An optional dictionary with defaults that are passed to the context object.
+
+<h5 id="classes-cligroupcommandparamschema-class-variables-deprecated"><a href="#classes-cligroupcommandparamschema-class-variables-deprecated"><pre>deprecated</pre></a></h5>
+
+```python
+bool
+```
+
+If `True` or non-empty string, issues a message indicating that the command is deprecated and highlights its deprecation in --help. The message can be customized by using a string as the value.
+
+<h5 id="classes-cligroupcommandparamschema-class-variables-epilog"><a href="#classes-cligroupcommandparamschema-class-variables-epilog"><pre>epilog</pre></a></h5>
+
+```python
+str | None
+```
+
+Like the help string but it's printed at the end of the help page after everything else.
+
+<h5 id="classes-cligroupcommandparamschema-class-variables-help"><a href="#classes-cligroupcommandparamschema-class-variables-help"><pre>help</pre></a></h5>
+
+```python
+str | None
+```
+
+The help string to use for this command.
+
+<h5 id="classes-cligroupcommandparamschema-class-variables-hidden"><a href="#classes-cligroupcommandparamschema-class-variables-hidden"><pre>hidden</pre></a></h5>
+
+```python
+bool
+```
+
+Hide this command from help outputs.
+
+<h5 id="classes-cligroupcommandparamschema-class-variables-model_config"><a href="#classes-cligroupcommandparamschema-class-variables-model_config"><pre>model_config</pre></a></h5>
+
+<h5 id="classes-cligroupcommandparamschema-class-variables-name"><a href="#classes-cligroupcommandparamschema-class-variables-name"><pre>name</pre></a></h5>
+
+```python
+str | collections.abc.Callable[..., typing.Any] | None
+```
+
+The name of the command to use unless a group overrides it.
+
+<h5 id="classes-cligroupcommandparamschema-class-variables-no_args_is_help"><a href="#classes-cligroupcommandparamschema-class-variables-no_args_is_help"><pre>no_args_is_help</pre></a></h5>
+
+```python
+bool
+```
+
+This controls what happens if no arguments are provided. This option is disabled by default. If enabled this will add `--help` as argument if no arguments are passed
+
+<h5 id="classes-cligroupcommandparamschema-class-variables-options_metavar"><a href="#classes-cligroupcommandparamschema-class-variables-options_metavar"><pre>options_metavar</pre></a></h5>
+
+```python
+str | None
+```
+
+<h5 id="classes-cligroupcommandparamschema-class-variables-params"><a href="#classes-cligroupcommandparamschema-class-variables-params"><pre>params</pre></a></h5>
+
+```python
+list[click.core.Parameter] | None
+```
+
+The parameters to register with this command. This can be either :class:`Option` or :class:`Argument` objects.
+
+<h5 id="classes-cligroupcommandparamschema-class-variables-short_help"><a href="#classes-cligroupcommandparamschema-class-variables-short_help"><pre>short_help</pre></a></h5>
+
+```python
+str | None
+```
+
+The short help to use for this command. This is shown on the command listing of the parent command.
+
+<h3 id="classes-clihelpschema"><a href="#classes-clihelpschema"><pre>CLIHelpSchema</pre></a></h3>
+
+```python
+(**data: Any)
+```
+
+<h4 id="classes-clihelpschema-ancestors-in-mro"><a href="#classes-clihelpschema-ancestors-in-mro">Ancestors (in MRO)</a></h4>
+
+- pydantic.main.BaseModel
+
+<h4 id="classes-clihelpschema-class-variables"><a href="#classes-clihelpschema-class-variables">Class variables</a></h4>
+
+<h5 id="classes-clihelpschema-class-variables-model_config"><a href="#classes-clihelpschema-class-variables-model_config"><pre>model_config</pre></a></h5>
+
+<h5 id="classes-clihelpschema-class-variables-overview"><a href="#classes-clihelpschema-class-variables-overview"><pre>overview</pre></a></h5>
+
+```python
+str
+```
+
 <h3 id="classes-commandargumentshelpschema"><a href="#classes-commandargumentshelpschema"><pre>CommandArgumentsHelpSchema</pre></a></h3>
 
 ```python
@@ -22,11 +212,15 @@
 str | None
 ```
 
+Example of string that can be passed as an argument.
+
 <h5 id="classes-commandargumentshelpschema-class-variables-help"><a href="#classes-commandargumentshelpschema-class-variables-help"><pre>help</pre></a></h5>
 
 ```python
 str
 ```
+
+Main help string.
 
 <h5 id="classes-commandargumentshelpschema-class-variables-model_config"><a href="#classes-commandargumentshelpschema-class-variables-model_config"><pre>model_config</pre></a></h5>
 
@@ -140,6 +334,8 @@ click.types.ParamType | Any | None
 list[str]
 ```
 
+Arguments to provide to `click.core.Argument`.
+
 <h5 id="classes-commandargumentsschema-class-variables-help"><a href="#classes-commandargumentsschema-class-variables-help"><pre>help</pre></a></h5>
 
 ```python
@@ -151,6 +347,8 @@ alltheutils.cli.dataclasses.CommandArgumentsHelpSchema
 ```python
 alltheutils.cli.dataclasses.CommandArgumentsKwargsSchema
 ```
+
+Keyword arguments to provide to `click.core.Argument`.
 
 <h5 id="classes-commandargumentsschema-class-variables-model_config"><a href="#classes-commandargumentsschema-class-variables-model_config"><pre>model_config</pre></a></h5>
 
@@ -264,6 +462,8 @@ this controls what happens if no arguments are provided. This option is disabled
 str | None
 ```
 
+The metavar displayed for options in the help page.
+
 <h5 id="classes-commandkwargsschema-class-variables-params"><a href="#classes-commandkwargsschema-class-variables-params"><pre>params</pre></a></h5>
 
 ```python
@@ -278,7 +478,7 @@ The parameters to register with this command. This can be either `Option` or `Ar
 str | None
 ```
 
-The title for options in the help page.
+The short help to use for this command. This is shown on the command listing of the parent command.
 
 <h3 id="classes-commandoptionshelpschema"><a href="#classes-commandoptionshelpschema"><pre>CommandOptionsHelpSchema</pre></a></h3>
 
@@ -530,17 +730,23 @@ click.types.ParamType | Any | None
 list[str]
 ```
 
+Arguments to provide to `click.core.Option`.
+
 <h5 id="classes-commandoptionsschema-class-variables-help"><a href="#classes-commandoptionsschema-class-variables-help"><pre>help</pre></a></h5>
 
 ```python
 alltheutils.cli.dataclasses.CommandOptionsHelpSchema
 ```
 
+Help strings to show when the help option is invoked.
+
 <h5 id="classes-commandoptionsschema-class-variables-kwargs"><a href="#classes-commandoptionsschema-class-variables-kwargs"><pre>kwargs</pre></a></h5>
 
 ```python
 alltheutils.cli.dataclasses.CommandOptionsKwargsSchema
 ```
+
+Keyword arguments to provide to `click.core.Option`.
 
 <h5 id="classes-commandoptionsschema-class-variables-model_config"><a href="#classes-commandoptionsschema-class-variables-model_config"><pre>model_config</pre></a></h5>
 
@@ -562,11 +768,15 @@ alltheutils.cli.dataclasses.CommandOptionsKwargsSchema
 list[str]
 ```
 
+Arguments to provide to `alltheutils.cli.base.Group.command`.
+
 <h5 id="classes-commandschema-class-variables-arguments"><a href="#classes-commandschema-class-variables-arguments"><pre>arguments</pre></a></h5>
 
 ```python
 dict[str, alltheutils.cli.dataclasses.CommandArgumentsSchema]
 ```
+
+Arguments to attach to the command.
 
 <h5 id="classes-commandschema-class-variables-help"><a href="#classes-commandschema-class-variables-help"><pre>help</pre></a></h5>
 
@@ -574,11 +784,15 @@ dict[str, alltheutils.cli.dataclasses.CommandArgumentsSchema]
 alltheutils.cli.dataclasses.CommandHelpSchema
 ```
 
+Help strings to show when the help option is invoked
+
 <h5 id="classes-commandschema-class-variables-kwargs"><a href="#classes-commandschema-class-variables-kwargs"><pre>kwargs</pre></a></h5>
 
 ```python
 alltheutils.cli.dataclasses.CommandKwargsSchema
 ```
+
+Keyword arguments to provide to `alltheutils.cli.base.Group.command`.
 
 <h5 id="classes-commandschema-class-variables-model_config"><a href="#classes-commandschema-class-variables-model_config"><pre>model_config</pre></a></h5>
 
@@ -587,6 +801,8 @@ alltheutils.cli.dataclasses.CommandKwargsSchema
 ```python
 dict[str, alltheutils.cli.dataclasses.CommandOptionsSchema]
 ```
+
+Options to attach to the command.
 
 ---
 

@@ -4,7 +4,9 @@ from typing import Any, Optional, Union
 from click.core import Context, Parameter
 from click.shell_completion import CompletionItem
 from click.types import ParamType
-from pydantic import BaseModel, ConfigDict, Field, RootModel
+from pydantic import BaseModel, ConfigDict, Field
+
+from alltheutils.cli._base import Command
 
 # __pdoc__: dict[str, bool | str] = {
 #     f"{cls.__name__}.{method}": False
@@ -55,8 +57,8 @@ class CommandKwargsSchema(BaseModel):
     )
 
     options_metavar: Optional[str] = "[OPTIONS]"
-    __pdoc__["CommandKwargsSchema.short_help"] = (
-        """The title for options in the help page."""
+    __pdoc__["CommandKwargsSchema.options_metavar"] = (
+        """The metavar displayed for options in the help page."""
     )
 
     add_help_option: bool = True
@@ -154,22 +156,33 @@ class CommandArgumentsHelpSchema(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
     __pdoc__["CommandArgumentsHelpSchema"] = ""
 
-    # Main help string
     help: str
-    # Example of string that can be passed as an argument
+    __pdoc__["CommandArgumentsHelpSchema.help"] = """Main help string."""
+
     example: Optional[str] = None
+    __pdoc__["CommandArgumentsHelpSchema.example"] = (
+        """Example of string that can be passed as an argument."""
+    )
 
 
 class CommandArgumentsSchema(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
     __pdoc__["CommandArgumentsSchema"] = ""
 
-    # Arguments to provide to `click.core.Argument`
     args: list[str] = Field(default_factory=list)
-    # Keyword arguments to provide to `click.core.Argument`
+    __pdoc__["CommandArgumentsSchema.args"] = (
+        """Arguments to provide to `click.core.Argument`."""
+    )
+
     kwargs: CommandArgumentsKwargsSchema
-    # Help strings to show when the help option is invoked
+    __pdoc__["CommandArgumentsSchema.kwargs"] = (
+        """Keyword arguments to provide to `click.core.Argument`."""
+    )
+
     help: CommandArgumentsHelpSchema
+    __pdoc__["CommandArgumentsSchema.example"] = (
+        """Help strings to show when the help option is invoked."""
+    )
 
 
 class CommandOptionsKwargsSchema(BaseModel):
@@ -325,28 +338,122 @@ class CommandOptionsSchema(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
     __pdoc__["CommandOptionsSchema"] = ""
 
-    # Arguments to provide to `click.core.Option`
     args: list[str] = Field(default_factory=list)
-    # Keyword arguments to provide to `click.core.Option`
+    __pdoc__["CommandOptionsSchema.args"] = (
+        """Arguments to provide to `click.core.Option`."""
+    )
+
     kwargs: CommandOptionsKwargsSchema
-    # Help strings to show when the help option is invoked
+    __pdoc__["CommandOptionsSchema.kwargs"] = (
+        """Keyword arguments to provide to `click.core.Option`."""
+    )
+
     help: CommandOptionsHelpSchema
+    __pdoc__["CommandOptionsSchema.help"] = (
+        """Help strings to show when the help option is invoked."""
+    )
 
 
 class CommandSchema(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
     __pdoc__["CommandSchema"] = ""
 
-    # Arguments to provide to `alltheutils.cli.base.Group.command`
     args: list[str] = Field(default_factory=list)
-    # Keyword arguments to provide to `alltheutils.cli.base.Group.command`
+    __pdoc__["CommandSchema.args"] = (
+        """Arguments to provide to `alltheutils.cli.base.Group.command`."""
+    )
+
     kwargs: CommandKwargsSchema = CommandKwargsSchema()
+    __pdoc__["CommandSchema.kwargs"] = (
+        """Keyword arguments to provide to `alltheutils.cli.base.Group.command`."""
+    )
 
-    # Help strings to show when the help option is invoked
     help: CommandHelpSchema
-    # Arguments to attach to the command
+    __pdoc__["CommandSchema.help"] = (
+        """Help strings to show when the help option is invoked"""
+    )
+
     arguments: dict[str, CommandArgumentsSchema] = Field(default_factory=dict)
+    __pdoc__["CommandSchema.arguments"] = """Arguments to attach to the command."""
+
     options: dict[str, CommandOptionsSchema] = Field(default_factory=dict)
+    __pdoc__["CommandSchema.options"] = """Options to attach to the command."""
 
 
-CommandConfig = RootModel[dict[str, CommandSchema]]
+class CLIHelpSchema(BaseModel):
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+    __pdoc__["CLIHelpSchema"] = ""
+
+    overview: str
+
+
+class CLIGroupCommandParamSchema(BaseModel):
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+    __pdoc__["CLIGroupCommandParamSchema"] = ""
+
+    name: str | Callable[..., Any] | None = None
+    __pdoc__["CLIGroupCommandParamSchema.name"] = (
+        """The name of the command to use unless a group overrides it."""
+    )
+
+    cls: Optional[type[Command]] = None
+
+    context_settings: Optional[dict[str, Any]] = None
+    __pdoc__["CLIGroupCommandParamSchema.context_settings"] = (
+        """An optional dictionary with defaults that are passed to the context object."""
+    )
+
+    # callback: Optional[Callable[..., Any]] = None
+    # __pdoc__["CLIGroupCommandParamSchema.callback"] = (
+    #     """The callback to invoke. This is optional."""
+    # )
+
+    params: Optional[list[Parameter]] = None
+    __pdoc__["CLIGroupCommandParamSchema.params"] = (
+        """The parameters to register with this command. This can be either :class:`Option` or :class:`Argument` objects."""
+    )
+
+    help: Optional[str] = None
+    __pdoc__["CLIGroupCommandParamSchema.help"] = (
+        """The help string to use for this command."""
+    )
+
+    epilog: Optional[str] = None
+    __pdoc__["CLIGroupCommandParamSchema.epilog"] = (
+        """Like the help string but it's printed at the end of the help page after everything else."""
+    )
+
+    short_help: Optional[str] = None
+    __pdoc__["CLIGroupCommandParamSchema.short_help"] = (
+        """The short help to use for this command. This is shown on the command listing of the parent command."""
+    )
+
+    options_metavar: Optional[str] = "[OPTIONS]"
+    __pdoc__["CommandKwargsSchema.options_metavar"] = (
+        """The metavar displayed for options in the help page."""
+    )
+
+    add_help_option: bool = True
+    __pdoc__["CLIGroupCommandParamSchema.add_help_option"] = (
+        """By default each command registers a `--help` option. This can be disabled by this parameter."""
+    )
+
+    no_args_is_help: bool = False
+    __pdoc__["CLIGroupCommandParamSchema.no_args_is_help"] = (
+        """This controls what happens if no arguments are provided. This option is disabled by default. If enabled this will add `--help` as argument if no arguments are passed"""
+    )
+
+    hidden: bool = False
+    __pdoc__["CLIGroupCommandParamSchema.hidden"] = (
+        """Hide this command from help outputs."""
+    )
+
+    deprecated: bool = False
+    __pdoc__["CLIGroupCommandParamSchema.deprecated"] = (
+        """If `True` or non-empty string, issues a message indicating that the command is deprecated and highlights its deprecation in --help. The message can be customized by using a string as the value."""
+    )
+
+
+class CLIConfig(BaseModel):
+    group_command_params: CLIGroupCommandParamSchema = CLIGroupCommandParamSchema()
+    commands: dict[str, CommandSchema] = Field(default_factory=dict)

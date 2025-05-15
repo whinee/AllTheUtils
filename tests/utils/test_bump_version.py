@@ -1,4 +1,3 @@
-
 import pytest
 
 from alltheutils.exceptions import BumpVersionNoPrerelease, BumpVersionPartUnknown
@@ -40,6 +39,7 @@ def test_bump_prerelease_num():
 def test_bump_unknown_value():
     with pytest.raises(BumpVersionPartUnknown):
         bump_version("2.2.0", "huh?")
+
 
 def test_bump_no_prerelease():
     with pytest.raises(BumpVersionNoPrerelease):

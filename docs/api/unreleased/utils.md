@@ -19,6 +19,12 @@ Args:
 Returns:
 `str`: Modified string.
 
+<h3 id="functions-bump_version"><a href="#functions-bump_version"><pre>bump_version</pre></a></h3>
+
+```python
+(version: str, part: str = 'patch', build: str | None = None) → str
+```
+
 <h3 id="functions-calculate_sha256_hash"><a href="#functions-calculate_sha256_hash"><pre>calculate_sha256_hash</pre></a></h3>
 
 ```python
@@ -226,6 +232,12 @@ Args:
 Returns:
 `Any`: Expression literally evaluated.
 
+<h3 id="functions-load_language_texts"><a href="#functions-load_language_texts"><pre>load_language_texts</pre></a></h3>
+
+```python
+(language_code: str)
+```
+
 <h3 id="functions-noop"><a href="#functions-noop"><pre>noop</pre></a></h3>
 
 ```python
@@ -256,12 +268,6 @@ Args:
 
 Returns:
 `str`: Parent directory of the given filename.
-
-<h3 id="functions-requires_instance_config"><a href="#functions-requires_instance_config"><pre>requires_instance_config</pre></a></h3>
-
-```python
-(*keys)
-```
 
 <h3 id="functions-run_cmd"><a href="#functions-run_cmd"><pre>run_cmd</pre></a></h3>
 

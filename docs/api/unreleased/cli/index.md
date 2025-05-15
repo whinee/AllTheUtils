@@ -6,6 +6,7 @@
 
 - [alltheutils.cli.base](./base.md)
 - [alltheutils.cli.dataclasses](./dataclasses.md)
+- [alltheutils.cli.i18n](./i18n.md)
 - [alltheutils.cli.utils](./utils.md)
 
 ---

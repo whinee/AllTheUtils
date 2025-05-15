@@ -1,6 +1,6 @@
 # Constants
 app_id := `python -c 'from alltheutils.config import read_conf_file;print(read_conf_file("dev/conf/constants/main.yaml")["app_name"])'`
-app_version := `sed 's/^[[:space:]]*//;s/[[:space:]]*$//' dev/version`
+app_version := `python -c 'from alltheutils.config import read_conf_file;print(read_conf_file("dev/values/programmatic_variables/main.dev.json")["version"])'`
 dev_docs := "dev/docs"
 docs_api_root_dir := "docs/api"
 docs_api_unreleased_dir := docs_api_root_dir + "/unreleased"
@@ -63,7 +63,7 @@ docs:
     cp -r "$TMPDIR/{{app_id}}"/* "$TARGET_DIR"
     rm -rf "$TMPDIR"
 
-    erdantic alltheutils.cli.dataclasses.CommandSchema --dot | dot -Tpng -Gdpi=300 -o "{{dev_docs}}/cli/dataclasses.png"
+    erdantic alltheutils.cli.dataclasses.CLIConfig --dot | dot -Tpng -Gdpi=300 -o "{{dev_docs}}/cli/dataclasses.png"
 
     mkdir -p "$TARGET_DIR/dev"
     cp -r "{{dev_docs}}"/* "$TARGET_DIR/dev"
@@ -72,16 +72,16 @@ docs:
 
 [unix]
 [confirm('Are you sure you want to bump the version? [y/N]')]
-bump +args:
+bump *FLAGS:
     #!/usr/bin/env bash
     set -euo pipefail
 
     just lint
-    uv version --bump {{args}}
-    uv version --short > dev/version
+    python -m dev.scripts.py.dev bump {{FLAGS}}
+
     just docs
 
-    APP_VERSION=$(sed 's/^[[:space:]]*//;s/[[:space:]]*$//' dev/version)
+    APP_VERSION=$(python -c 'from alltheutils.config import read_conf_file;print(read_conf_file("dev/values/programmatic_variables/main.dev.json")["version"])')
 
     DOCS_SOURCE_DIR="{{docs_api_unreleased_dir}}"
     DOCS_TARGET_DIR="{{docs_api_root_dir}}/$APP_VERSION"

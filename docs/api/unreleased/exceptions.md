@@ -52,6 +52,51 @@ Args:
 - alltheutils.base_exceptions.CustomBaseException
 - builtins.BaseException
 
+<h3 id="classes-bumpversionexceptions"><a href="#classes-bumpversionexceptions"><pre>BumpVersionExceptions</pre></a></h3>
+
+```python
+(*args, **kwargs)
+```
+
+Common base class for all exceptions
+
+<h4 id="classes-bumpversionexceptions-ancestors-in-mro"><a href="#classes-bumpversionexceptions-ancestors-in-mro">Ancestors (in MRO)</a></h4>
+
+- builtins.BaseException
+
+<h4 id="classes-bumpversionexceptions-descendants"><a href="#classes-bumpversionexceptions-descendants">Descendants</a></h4>
+
+- alltheutils.exceptions.BumpVersionNoPrerelease
+- alltheutils.exceptions.BumpVersionPartUnknown
+
+<h3 id="classes-bumpversionnoprerelease"><a href="#classes-bumpversionnoprerelease"><pre>BumpVersionNoPrerelease</pre></a></h3>
+
+Inappropriate argument value (of correct type).
+
+<h4 id="classes-bumpversionnoprerelease-ancestors-in-mro"><a href="#classes-bumpversionnoprerelease-ancestors-in-mro">Ancestors (in MRO)</a></h4>
+
+- alltheutils.exceptions.BumpVersionExceptions
+- builtins.ValueError
+- builtins.Exception
+- alltheutils.base_exceptions.CustomBaseException
+- builtins.BaseException
+
+<h3 id="classes-bumpversionpartunknown"><a href="#classes-bumpversionpartunknown"><pre>BumpVersionPartUnknown</pre></a></h3>
+
+```python
+(part: str)
+```
+
+Inappropriate argument value (of correct type).
+
+<h4 id="classes-bumpversionpartunknown-ancestors-in-mro"><a href="#classes-bumpversionpartunknown-ancestors-in-mro">Ancestors (in MRO)</a></h4>
+
+- alltheutils.exceptions.BumpVersionExceptions
+- builtins.ValueError
+- builtins.Exception
+- alltheutils.base_exceptions.CustomBaseException
+- builtins.BaseException
+
 <h3 id="classes-cfgexceptions"><a href="#classes-cfgexceptions"><pre>CFGExceptions</pre></a></h3>
 
 <h4 id="classes-cfgexceptions-class-variables"><a href="#classes-cfgexceptions-class-variables">Class variables</a></h4>
@@ -220,6 +265,22 @@ Args:
 Base class for all custom exceptions.
 
 <h5 id="classes-generalexceptions-class-variables-validationerror"><a href="#classes-generalexceptions-class-variables-validationerror"><pre>ValidationError</pre></a></h5>
+
+<h3 id="classes-loadlanguagetextslanguagenotfound"><a href="#classes-loadlanguagetextslanguagenotfound"><pre>LoadLanguageTextsLanguageNotFound</pre></a></h3>
+
+```python
+(lang: str)
+```
+
+Mapping key not found.
+
+<h4 id="classes-loadlanguagetextslanguagenotfound-ancestors-in-mro"><a href="#classes-loadlanguagetextslanguagenotfound-ancestors-in-mro">Ancestors (in MRO)</a></h4>
+
+- builtins.KeyError
+- builtins.LookupError
+- builtins.Exception
+- alltheutils.base_exceptions.CustomBaseException
+- builtins.BaseException
 
 <h3 id="classes-missinginstanceconfigvalue"><a href="#classes-missinginstanceconfigvalue"><pre>MissingInstanceConfigValue</pre></a></h3>
 

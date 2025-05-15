@@ -13,6 +13,7 @@ def yaml_str_presenter(dumper, data):  # type: ignore[no-untyped-def]
         return dumper.represent_scalar("tag:yaml.org,2002:str", data, style="|")
     return dumper.represent_scalar("tag:yaml.org,2002:str", data)
 
+
 class ParserRegistry:
     def __init__(self) -> None:
         self.parsers: dict[str, dict[str, Callable[[str], Any]]] = {"r": {}, "w": {}}

@@ -1,0 +1,11 @@
+app_name_proper: AllTheUtils.py
+app_name: alltheutils
+copyright_holder: |-
+    Copyright © 2025 [whinee](https://github.com/whinee)
+    Copyright © 2014-2025 Pallets
+synopsis: Python utility functions
+description: Haii! Here lies all the utility functions I have created and collected over the years working in python.
+internals:
+    magic_str: c0VjUmVUX2NPZEUgYnkgd2hpX25l
+defaults:
+    language: en

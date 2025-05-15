@@ -71,6 +71,8 @@ Base class for all custom exceptions.
 <h4 id="classes-custombaseexception-descendants"><a href="#classes-custombaseexception-descendants">Descendants</a></h4>
 
 - alltheutils.exceptions.ArgumentsNotFollowingSpec
+- alltheutils.exceptions.BumpVersionNoPrerelease
+- alltheutils.exceptions.BumpVersionPartUnknown
 - alltheutils.exceptions.CFGExceptions.ExtensionNotSupported
 - alltheutils.exceptions.CLICommandNotFound
 - alltheutils.exceptions.CLICommonError
@@ -86,6 +88,7 @@ Base class for all custom exceptions.
 - alltheutils.exceptions.GeneralExceptions.ValidationError.Arguments
 - alltheutils.exceptions.GeneralExceptions.ValidationError.Common
 - alltheutils.exceptions.GeneralExceptions.ValidationError.FileNotFound
+- alltheutils.exceptions.LoadLanguageTextsLanguageNotFound
 - alltheutils.exceptions.MissingInstanceConfigValue
 - alltheutils.exceptions.NDNonDictReplacementValue
 - alltheutils.exceptions.NDValueDoesNotExist

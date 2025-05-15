@@ -73,6 +73,12 @@ Args:
 Raises:
 - `ConfigFileExtensionNotSupported`: If the file extension is not supported.
 
+<h3 id="functions-yaml_str_presenter"><a href="#functions-yaml_str_presenter"><pre>yaml_str_presenter</pre></a></h3>
+
+```python
+(dumper, data)
+```
+
 <h2 id="classes"><a href="#classes">Classes</a></h2>
 
 <h3 id="classes-parserregistry"><a href="#classes-parserregistry"><pre>ParserRegistry</pre></a></h3>

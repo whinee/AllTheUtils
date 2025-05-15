@@ -229,8 +229,7 @@ def batch_replace(text: str, key_value_map: dict[str, list[str]]) -> str:
 def bump_version(  # noqa: C901
     version: str,
     part: str = "patch",
-    prerelease=None,
-    build=None,
+    build: Optional[str] = None,
 ) -> str:
     v = semver.VersionInfo.parse(version)
 
@@ -261,8 +260,6 @@ def bump_version(  # noqa: C901
     else:
         raise BumpVersionPartUnknown(part)
 
-    if prerelease is not None:
-        v = v.replace(prerelease=prerelease)
     if build is not None:
         v = v.replace(build=build)
 
@@ -853,6 +850,7 @@ def which_ls(  # noqa: C901
                 if shutil._access_check(name, mode):  # type: ignore
                     op.add(name)
     return tuple(op)
+
 
 @deprecated(version="3.0.0", replacement="alltheutils.config.yaml_str_presenter")
 def yaml_str_presenter(dumper, data):  # type: ignore[no-untyped-def]

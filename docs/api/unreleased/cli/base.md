@@ -68,13 +68,13 @@ Bruh, why am I touching this?
 <h3 id="functions-command"><a href="#functions-command"><pre>command</pre></a></h3>
 
 ```python
-(group: alltheutils.cli.base.Group, command_config: pydantic.root_model.RootModel[dict[str, CommandSchema]]) → Callable[[Callable[..., typing.Any]], Callable[..., typing.Any]]
+(group: alltheutils.cli.base.Group, command_config: dict[str, alltheutils.cli.dataclasses.CommandSchema]) → Callable[[Callable[..., typing.Any]], Callable[..., typing.Any]]
 ```
 
 Wrapper for click commands.
 
 Args:
-- command_config (`CommandConfig`): Command configuration.
+- command_config (`dict[str, CommandSchema]`): Command configuration.
 - group (`Group`): Command group of the command to be under.
 
 Returns:
@@ -89,109 +89,15 @@ Returns:
 <h3 id="functions-custom_command"><a href="#functions-custom_command"><pre>custom_command</pre></a></h3>
 
 ```python
-(name: str | collections.abc.Callable[..., typing.Any] | None = None, cls: type[alltheutils.cli.base.Command] | None = None, **attrs: Any) → alltheutils.cli.base.Command | collections.abc.Callable[..., alltheutils.cli.base.Command]
-```
-
-<h3 id="functions-show_help"><a href="#functions-show_help"><pre>show_help</pre></a></h3>
-
-```python
-(ctx: click.core.Context, param: click.core.Parameter, value: str) → None
+(name: str | collections.abc.Callable[..., typing.Any] | None = None, cls: type[alltheutils.cli._base.Command] | None = None, **attrs: Any) → alltheutils.cli._base.Command | collections.abc.Callable[..., alltheutils.cli._base.Command]
 ```
 
 <h2 id="classes"><a href="#classes">Classes</a></h2>
 
-<h3 id="classes-command"><a href="#classes-command"><pre>Command</pre></a></h3>
-
-```python
-(name: str | None, context_settings: dict[str, typing.Any] | None = None, callback: Callable[..., typing.Any] | None = None, params: list[click.core.Parameter] | None = None, help: str | None = None, epilog: str | None = None, short_help: str | None = None, options_metavar: str | None = '[OPTIONS]', add_help_option: bool = True, no_args_is_help: bool = False, hidden: bool = False, deprecated: bool = False)
-```
-
-Commands are the basic building block of command line interfaces in
-Click.  A basic command handles command line parsing and might dispatch
-more parsing to commands nested below it.
-
-:param name: the name of the command to use unless a group overrides it.
-:param context_settings: an optional dictionary with defaults that are
-                         passed to the context object.
-:param callback: the callback to invoke.  This is optional.
-:param params: the parameters to register with this command.  This can
-               be either :class:`Option` or :class:`Argument` objects.
-:param help: the help string to use for this command.
-:param epilog: like the help string but it's printed at the end of the
-               help page after everything else.
-:param short_help: the short help to use for this command.  This is
-                   shown on the command listing of the parent command.
-:param add_help_option: by default each command registers a ``--help``
-                        option.  This can be disabled by this parameter.
-:param no_args_is_help: this controls what happens if no arguments are
-                        provided.  This option is disabled by default.
-                        If enabled this will add ``--help`` as argument
-                        if no arguments are passed
-:param hidden: hide this command from help outputs.
-
-:param deprecated: issues a message indicating that
-                         the command is deprecated.
-
-.. versionchanged:: 8.1
-    ``help``, ``epilog``, and ``short_help`` are stored unprocessed,
-    all formatting is done when outputting help text, not at init,
-    and is done even if not using the ``@command`` decorator.
-
-.. versionchanged:: 8.0
-    Added a ``repr`` showing the command name.
-
-.. versionchanged:: 7.1
-    Added the ``no_args_is_help`` parameter.
-
-.. versionchanged:: 2.0
-    Added the ``context_settings`` parameter.
-
-<h4 id="classes-command-ancestors-in-mro"><a href="#classes-command-ancestors-in-mro">Ancestors (in MRO)</a></h4>
-
-- click.core.Command
-- click.core.BaseCommand
-
-<h4 id="classes-command-descendants"><a href="#classes-command-descendants">Descendants</a></h4>
-
-- alltheutils.cli.base.MultiCommand
-
-<h4 id="classes-command-instance-variables"><a href="#classes-command-instance-variables">Instance variables</a></h4>
-
-<h5 id="classes-command-instance-variables-callback"><a href="#classes-command-instance-variables-callback"><pre>callback</pre></a></h5>
-
-the callback to execute when the command fires.  This might be
-`None` in which case nothing happens.
-
-<h5 id="classes-command-instance-variables-name"><a href="#classes-command-instance-variables-name"><pre>name</pre></a></h5>
-
-the list of parameters for this command in the order they
-should show up in the help page and execute.  Eager parameters
-will automatically be handled before non eager ones.
-
-<h4 id="classes-command-methods"><a href="#classes-command-methods">Methods</a></h4>
-
-<h5 id="classes-command-methods-format_usage"><a href="#classes-command-methods-format_usage"><pre>format_usage</pre></a></h5>
-
-```python
-(self, ctx: click.core.Context, formatter: click.formatting.HelpFormatter) → None
-```
-
-Writes the usage line into the formatter.
-
-This is a low-level method called by :meth:`get_usage`.
-
-<h5 id="classes-command-methods-get_help_option"><a href="#classes-command-methods-get_help_option"><pre>get_help_option</pre></a></h5>
-
-```python
-(self, ctx: click.core.Context) → click.core.Option | None
-```
-
-Returns the help option object.
-
 <h3 id="classes-commandwrapper"><a href="#classes-commandwrapper"><pre>CommandWrapper</pre></a></h3>
 
 ```python
-(command_config: pydantic.root_model.RootModel[dict[str, CommandSchema]], group: alltheutils.cli.base.Group)
+(command_config: dict[str, alltheutils.cli.dataclasses.CommandSchema], group: alltheutils.cli.base.Group)
 ```
 
 Returns wrappers for a click command evaluated from the given arguments.
@@ -199,7 +105,7 @@ Returns wrappers for a click command evaluated from the given arguments.
 Initialize object.
 
 Args:
-- command_config (`CommandConfig`): Command config for initialization of the command.
+- command_config (`dict[str, CommandSchema]`): Command config for initialization of the command.
 - group (`Group`): Command group of the command to be under.
 
 <h4 id="classes-commandwrapper-methods"><a href="#classes-commandwrapper-methods">Methods</a></h4>
@@ -359,7 +265,7 @@ Returns:
 <h3 id="classes-group"><a href="#classes-group"><pre>Group</pre></a></h3>
 
 ```python
-(name: str | None = None, commands: dict[str, alltheutils.cli.base.Command] | Sequence[alltheutils.cli.base.Command] | None = None, **attrs: Any)
+(name: str | None = None, commands: dict[str, alltheutils.cli._base.Command] | Sequence[alltheutils.cli._base.Command] | None = None, **attrs: Any)
 ```
 
 Commands are the basic building block of command line interfaces in
@@ -405,7 +311,7 @@ more parsing to commands nested below it.
 <h4 id="classes-group-ancestors-in-mro"><a href="#classes-group-ancestors-in-mro">Ancestors (in MRO)</a></h4>
 
 - alltheutils.cli.base.MultiCommand
-- alltheutils.cli.base.Command
+- alltheutils.cli._base.Command
 - click.core.Command
 - click.core.BaseCommand
 
@@ -414,7 +320,7 @@ more parsing to commands nested below it.
 <h5 id="classes-group-class-variables-command_class"><a href="#classes-group-class-variables-command_class"><pre>command_class</pre></a></h5>
 
 ```python
-type[alltheutils.cli.base.Command] | None
+type[alltheutils.cli._base.Command] | None
 ```
 
 <h5 id="classes-group-class-variables-group_class"><a href="#classes-group-class-variables-group_class"><pre>group_class</pre></a></h5>
@@ -425,27 +331,16 @@ type[alltheutils.cli.base.Group] | type[type] | None
 
 <h4 id="classes-group-instance-variables"><a href="#classes-group-instance-variables">Instance variables</a></h4>
 
-<h5 id="classes-group-instance-variables-callback"><a href="#classes-group-instance-variables-callback"><pre>callback</pre></a></h5>
-
-the callback to execute when the command fires.  This might be
-`None` in which case nothing happens.
-
 <h5 id="classes-group-instance-variables-commands"><a href="#classes-group-instance-variables-commands"><pre>commands</pre></a></h5>
 
 The registered subcommands by their exported names.
-
-<h5 id="classes-group-instance-variables-name"><a href="#classes-group-instance-variables-name"><pre>name</pre></a></h5>
-
-the list of parameters for this command in the order they
-should show up in the help page and execute.  Eager parameters
-will automatically be handled before non eager ones.
 
 <h4 id="classes-group-methods"><a href="#classes-group-methods">Methods</a></h4>
 
 <h5 id="classes-group-methods-add_command"><a href="#classes-group-methods-add_command"><pre>add_command</pre></a></h5>
 
 ```python
-(self, cmd: alltheutils.cli.base.Command, name: str | None = None) → None
+(self, cmd: alltheutils.cli._base.Command, name: str | None = None) → None
 ```
 
 <h5 id="classes-group-methods-collect_usage_pieces"><a href="#classes-group-methods-collect_usage_pieces"><pre>collect_usage_pieces</pre></a></h5>
@@ -460,7 +355,7 @@ it as a list of strings.
 <h5 id="classes-group-methods-command"><a href="#classes-group-methods-command"><pre>command</pre></a></h5>
 
 ```python
-(self, *args: Any, **kwargs: Any) → collections.abc.Callable[[collections.abc.Callable[..., typing.Any]], alltheutils.cli.base.Command] | alltheutils.cli.base.Command
+(self, *args: Any, **kwargs: Any) → collections.abc.Callable[[collections.abc.Callable[..., typing.Any]], alltheutils.cli._base.Command] | alltheutils.cli._base.Command
 ```
 
 <h5 id="classes-group-methods-format_options"><a href="#classes-group-methods-format_options"><pre>format_options</pre></a></h5>
@@ -471,29 +366,11 @@ it as a list of strings.
 
 Writes all the options into the formatter if they exist.
 
-<h5 id="classes-group-methods-format_usage"><a href="#classes-group-methods-format_usage"><pre>format_usage</pre></a></h5>
-
-```python
-(self, ctx: click.core.Context, formatter: click.formatting.HelpFormatter) → None
-```
-
-Writes the usage line into the formatter.
-
-This is a low-level method called by :meth:`get_usage`.
-
 <h5 id="classes-group-methods-get_command"><a href="#classes-group-methods-get_command"><pre>get_command</pre></a></h5>
 
 ```python
-(self, ctx: click.core.Context, cmd_name: str) → alltheutils.cli.base.Command | None
+(self, ctx: click.core.Context, cmd_name: str) → alltheutils.cli._base.Command | None
 ```
-
-<h5 id="classes-group-methods-get_help_option"><a href="#classes-group-methods-get_help_option"><pre>get_help_option</pre></a></h5>
-
-```python
-(self, ctx: click.core.Context) → click.core.Option | None
-```
-
-Returns the help option object.
 
 <h5 id="classes-group-methods-group"><a href="#classes-group-methods-group"><pre>group</pre></a></h5>
 
@@ -605,7 +482,7 @@ more parsing to commands nested below it.
 
 <h4 id="classes-multicommand-ancestors-in-mro"><a href="#classes-multicommand-ancestors-in-mro">Ancestors (in MRO)</a></h4>
 
-- alltheutils.cli.base.Command
+- alltheutils.cli._base.Command
 - click.core.Command
 - click.core.BaseCommand
 
@@ -618,19 +495,6 @@ more parsing to commands nested below it.
 <h5 id="classes-multicommand-class-variables-allow_extra_args"><a href="#classes-multicommand-class-variables-allow_extra_args"><pre>allow_extra_args</pre></a></h5>
 
 <h5 id="classes-multicommand-class-variables-allow_interspersed_args"><a href="#classes-multicommand-class-variables-allow_interspersed_args"><pre>allow_interspersed_args</pre></a></h5>
-
-<h4 id="classes-multicommand-instance-variables"><a href="#classes-multicommand-instance-variables">Instance variables</a></h4>
-
-<h5 id="classes-multicommand-instance-variables-callback"><a href="#classes-multicommand-instance-variables-callback"><pre>callback</pre></a></h5>
-
-the callback to execute when the command fires.  This might be
-`None` in which case nothing happens.
-
-<h5 id="classes-multicommand-instance-variables-name"><a href="#classes-multicommand-instance-variables-name"><pre>name</pre></a></h5>
-
-the list of parameters for this command in the order they
-should show up in the help page and execute.  Eager parameters
-will automatically be handled before non eager ones.
 
 <h4 id="classes-multicommand-methods"><a href="#classes-multicommand-methods">Methods</a></h4>
 
@@ -657,29 +521,11 @@ it as a list of strings.
 
 Writes all the options into the formatter if they exist.
 
-<h5 id="classes-multicommand-methods-format_usage"><a href="#classes-multicommand-methods-format_usage"><pre>format_usage</pre></a></h5>
-
-```python
-(self, ctx: click.core.Context, formatter: click.formatting.HelpFormatter) → None
-```
-
-Writes the usage line into the formatter.
-
-This is a low-level method called by :meth:`get_usage`.
-
 <h5 id="classes-multicommand-methods-get_command"><a href="#classes-multicommand-methods-get_command"><pre>get_command</pre></a></h5>
 
 ```python
-(self, ctx: click.core.Context, cmd_name: str) → alltheutils.cli.base.Command | None
+(self, ctx: click.core.Context, cmd_name: str) → alltheutils.cli._base.Command | None
 ```
-
-<h5 id="classes-multicommand-methods-get_help_option"><a href="#classes-multicommand-methods-get_help_option"><pre>get_help_option</pre></a></h5>
-
-```python
-(self, ctx: click.core.Context) → click.core.Option | None
-```
-
-Returns the help option object.
 
 <h5 id="classes-multicommand-methods-invoke"><a href="#classes-multicommand-methods-invoke"><pre>invoke</pre></a></h5>
 
@@ -709,7 +555,7 @@ This is automatically invoked by :meth:`make_context`.
 <h5 id="classes-multicommand-methods-resolve_command"><a href="#classes-multicommand-methods-resolve_command"><pre>resolve_command</pre></a></h5>
 
 ```python
-(self, ctx: click.core.Context, args: list[str]) → tuple[str | None, alltheutils.cli.base.Command | None, list[str]]
+(self, ctx: click.core.Context, args: list[str]) → tuple[str | None, alltheutils.cli._base.Command | None, list[str]]
 ```
 
 <h5 id="classes-multicommand-methods-result_callback"><a href="#classes-multicommand-methods-result_callback"><pre>result_callback</pre></a></h5>

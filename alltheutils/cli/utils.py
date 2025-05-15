@@ -17,7 +17,7 @@ from questionary.prompts import common
 from questionary.prompts.common import Choice
 
 from alltheutils.cli.base import ExtInquirerControl, ExtQuestion
-from alltheutils.cli.dataclasses import CommandConfig
+from alltheutils.cli.dataclasses import CLIConfig
 from alltheutils.config import read_conf_file
 from alltheutils.instance_config import get_instance_config, has_instance_config
 from alltheutils.utils import get_value_from_or_update_nested_dict, load_language_texts
@@ -107,8 +107,18 @@ def select(  # noqa: C901
                 _CEQ.kbi = DEFAULT_KBI_MESSAGE
 
                 _instruction = _val.get("instruction", _instruction)
-                _CEIQ.answer_text = _val.get("answer", answer_text if answer_text else _CEIQ.answer_text)
-                _CEQ.kbi = _val.get("kbi", keyboard_interrupt_message if keyboard_interrupt_message else _CEQ.kbi)
+                _CEIQ.answer_text = _val.get(
+                    "answer",
+                    answer_text if answer_text else _CEIQ.answer_text,
+                )
+                _CEQ.kbi = _val.get(
+                    "keyboard_interrupt",
+                    (
+                        keyboard_interrupt_message
+                        if keyboard_interrupt_message
+                        else _CEQ.kbi
+                    ),
+                )
 
         tokens = [("class:qmark", qmark), ("class:question", f" {_msg} ")]
 
@@ -174,6 +184,46 @@ def select(  # noqa: C901
     return err, res
 
 
-def parse_config_file_command_config(file_path: str) -> CommandConfig:
-    ta = TypeAdapter(CommandConfig)  # type: ignore
-    return ta.validate_python(read_conf_file(file_path))
+def str_to_type(str_type: str) -> Any:
+    match str_type:
+        case "int":
+            return int
+        case "float":
+            return float
+        case "bool":
+            return bool
+        case "str":
+            return str
+        case _:
+            return str
+
+
+def command_type_str_to_type(
+    commands: dict[str, Any],
+) -> Any:
+    for command_name, command_value in commands.items():
+        for parameter_type in parameter_types:
+            command_parameters = command_value.get(parameter_type, {})
+            for (
+                command_parameter_name,
+                command_parameter_value,
+            ) in command_parameters.items():
+                command_parameter_kwargs = command_parameter_value.get("kwargs", {})
+                command_parameter_type = command_parameter_kwargs.get("type")
+                if isinstance(command_parameter_type, str):
+                    commands[command_name][parameter_type][command_parameter_name][
+                        "kwargs"
+                    ]["type"] = str_to_type(command_parameter_type)
+
+
+parameter_types = ["arguments", "options"]
+
+
+def parse_config_file_cli_config(file_path: str) -> CLIConfig:
+    cli_config = read_conf_file(file_path)
+    commands = cli_config.get("commands", {})
+
+    command_type_str_to_type(commands=commands)
+
+    ta = TypeAdapter(CLIConfig)  # type: ignore
+    return ta.validate_python(cli_config)

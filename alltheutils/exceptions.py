@@ -265,6 +265,7 @@ class NDValueIsAListAndIndexIsOutOfRange(IndexError, CustomBaseException):
 class BumpVersionExceptions(BaseException):
     pass
 
+
 class BumpVersionNoPrerelease(BumpVersionExceptions, ValueError, CustomBaseException):
     def __init__(self) -> None:
         self.message = "No prerelease found to bump"
@@ -277,6 +278,7 @@ class BumpVersionPartUnknown(BumpVersionExceptions, ValueError, CustomBaseExcept
 
 # class LoadLanguagesTextsExceptions(BaseException):
 #     pass
+
 
 class LoadLanguageTextsLanguageNotFound(KeyError, CustomBaseException):
     def __init__(self, lang: str) -> None:

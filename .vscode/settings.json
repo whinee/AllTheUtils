@@ -1,5 +1,5 @@
 {
     "python.defaultInterpreterPath": "./.venv/bin/python",
     "python.languageServer": "Pylance",
-    "autoDocstring.customTemplatePath": "dev/conf/others/autodoc.mustache",
+    "autoDocstring.customTemplatePath": "dev/tpl/others/autodoc.mustache",
 }

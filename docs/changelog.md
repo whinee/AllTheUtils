@@ -31,6 +31,8 @@ This software uses [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.h
 
 - Moved `alltheutils.utils.yaml_str_presenter` to `alltheutils.config.yaml_str_presenter`
 
+## 2.4.0 (Unreleased)
+
 ## 2.3.0
 
 ### Added
@@ -38,6 +40,7 @@ This software uses [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.h
 - CLI utilities
 - `alltheutils.exceptions.CLICommandNotFound`
 - `alltheutils.instance_config`
+- `alltheutils.utils.bump_version`
 - `alltheutils.utils.requires_instance_config`
 
 ### Changed

@@ -22,6 +22,12 @@
 (key)
 ```
 
+<h3 id="functions-requires_instance_config"><a href="#functions-requires_instance_config"><pre>requires_instance_config</pre></a></h3>
+
+```python
+(*keys)
+```
+
 <h3 id="functions-set_instance_config"><a href="#functions-set_instance_config"><pre>set_instance_config</pre></a></h3>
 
 ```python

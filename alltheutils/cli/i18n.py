@@ -29,7 +29,7 @@ def if_key_in_help_texts_put_in_this_location(
     return inner
 
 
-def merge_command_config_n_help_text(raw_command_config: dict[str, Any]):  # noqa: C901
+def merge_command_config_n_help_text(raw_command_config: dict[str, Any]) -> dict[str, Any]:  # noqa: C901
     commands_help_texts = get_value_from_or_update_nested_dict(
         get_instance_config("language_texts"),
         "cli.commands",

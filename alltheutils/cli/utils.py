@@ -1,4 +1,4 @@
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from typing import Any, Optional
 
 from prompt_toolkit.application import Application
@@ -219,11 +219,11 @@ def command_type_str_to_type(
 parameter_types = ["arguments", "options"]
 
 
-def parse_config_file_cli_config(file_path: str) -> CLIConfig:
+def parse_config_file_cli_config(file_path: str, filter_before_conversion: Callable[[dict[str, Any]], dict[str, Any]]) -> CLIConfig:
     cli_config = read_conf_file(file_path)
     commands = cli_config.get("commands", {})
 
     command_type_str_to_type(commands=commands)
 
     ta = TypeAdapter(CLIConfig)  # type: ignore
-    return ta.validate_python(cli_config)
+    return ta.validate_python(filter_before_conversion(cli_config))

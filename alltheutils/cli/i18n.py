@@ -44,6 +44,7 @@ def merge_command_config_n_help_text(raw_command_config: dict[str, Any]):  # noq
         ikihtpitl(key, value)
 
     for command_name, command_value in raw_command_config["commands"].items():
+        raw_command_config["commands"][command_name]["help"] = {}
         for key in ["description", "overview"]:
             cht_rcc_key = f"{command_name}.help.{key}"
             ikihtpitl(cht_rcc_key, cht_rcc_key)
@@ -53,6 +54,7 @@ def merge_command_config_n_help_text(raw_command_config: dict[str, Any]):  # noq
                 paramater_type,
                 {},
             ):
+                raw_command_config["commands"][command_name][paramater_type][command_options_name]["help"] = {}
                 for key in ["help", "example"]:
                     cht_rcc_key = f"{command_name}.{paramater_type}.{command_options_name}.help.{key}"
                     ikihtpitl(cht_rcc_key, cht_rcc_key)

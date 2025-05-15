@@ -20,10 +20,8 @@ def if_key_in_help_texts_put_in_this_location(
 
         try:
             value = get_value_from_or_update_nested_dict(commands_help_texts, cht_key)
-        except NewNestedDictExceptions as e:
-            print(cht_key, e, type(e))
+        except NewNestedDictExceptions:
             return
-        print(value)
         get_value_from_or_update_nested_dict(
             raw_command_config,
             rcc_key,

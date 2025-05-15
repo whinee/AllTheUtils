@@ -6,8 +6,9 @@ from alltheutils.instance_config import get_instance_config
 from alltheutils.utils import get_value_from_or_update_nested_dict
 
 mapping = {
-    "help.overview": "help.overview",
-    "help.description": "help.description",
+    "help.help": "group_command_params.help",
+    "help.epilog": "group_command_params.epilog",
+    "help.short_help": "group_command_params.short_help",
 }
 
 
@@ -16,23 +17,28 @@ def if_key_in_help_texts_put_in_this_location(
     raw_command_config: dict[str, Any],
 ) -> Callable[[str, str], None]:
     def inner(cht_key: str, rcc_key: str) -> None:
+
         try:
-            get_value_from_or_update_nested_dict(commands_help_texts, cht_key)
-        except NewNestedDictExceptions:
+            value = get_value_from_or_update_nested_dict(commands_help_texts, cht_key)
+        except NewNestedDictExceptions as e:
+            print(cht_key, e, type(e))
             return
+        print(value)
         get_value_from_or_update_nested_dict(
             raw_command_config,
             rcc_key,
-            get_value_from_or_update_nested_dict(commands_help_texts, cht_key),
+            value,
         )
 
     return inner
 
 
-def merge_command_config_n_help_text(raw_command_config: dict[str, Any]) -> dict[str, Any]:  # noqa: C901
+def merge_command_config_n_help_text(  # noqa: C901
+    raw_command_config: dict[str, Any],
+) -> dict[str, Any]:
     commands_help_texts = get_value_from_or_update_nested_dict(
         get_instance_config("language_texts"),
-        "cli.commands",
+        "cli",
     )
 
     ikihtpitl = if_key_in_help_texts_put_in_this_location(
@@ -44,8 +50,9 @@ def merge_command_config_n_help_text(raw_command_config: dict[str, Any]) -> dict
         ikihtpitl(key, value)
 
     for command_name, command_value in raw_command_config["commands"].items():
-        get_value_from_or_update_nested_dict(raw_command_config, f"commands.{command_name}.help", {})
-        # raw_command_config["commands"][command_name]["help"] = {}
+        get_value_from_or_update_nested_dict(
+            raw_command_config, f"commands.{command_name}.help", {},
+        )
         for key in ["description", "overview"]:
             cht_rcc_key = f"commands.{command_name}.help.{key}"
             ikihtpitl(cht_rcc_key, cht_rcc_key)
@@ -55,8 +62,11 @@ def merge_command_config_n_help_text(raw_command_config: dict[str, Any]) -> dict
                 paramater_type,
                 {},
             ):
-                get_value_from_or_update_nested_dict(command_parameter_value, f"commands.{command_name}.{paramater_type}.{command_parameter_name}.help", {})
-                # raw_command_config["commands"][command_name][paramater_type][command_parameter_name]["help"] = {}
+                get_value_from_or_update_nested_dict(
+                    command_parameter_value,
+                    f"commands.{command_name}.{paramater_type}.{command_parameter_name}.help",
+                    {},
+                )
                 for key in ["help", "example"]:
                     cht_rcc_key = f"commands.{command_name}.{paramater_type}.{command_parameter_name}.help.{key}"
                     ikihtpitl(cht_rcc_key, cht_rcc_key)

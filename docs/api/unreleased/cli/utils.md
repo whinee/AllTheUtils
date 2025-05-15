@@ -13,7 +13,7 @@
 <h3 id="functions-parse_config_file_cli_config"><a href="#functions-parse_config_file_cli_config"><pre>parse_config_file_cli_config</pre></a></h3>
 
 ```python
-(file_path: str) → alltheutils.cli.dataclasses.CLIConfig
+(file_path: str, filters_before_conversion: list[Callable[[dict[str, typing.Any]], dict[str, typing.Any]]]) → alltheutils.cli.dataclasses.CLIConfig
 ```
 
 <h3 id="functions-select"><a href="#functions-select"><pre>select</pre></a></h3>

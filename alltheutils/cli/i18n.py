@@ -44,19 +44,21 @@ def merge_command_config_n_help_text(raw_command_config: dict[str, Any]) -> dict
         ikihtpitl(key, value)
 
     for command_name, command_value in raw_command_config["commands"].items():
-        raw_command_config["commands"][command_name]["help"] = {}
+        get_value_from_or_update_nested_dict(command_value, "help", {})
+        # raw_command_config["commands"][command_name]["help"] = {}
         for key in ["description", "overview"]:
-            cht_rcc_key = f"{command_name}.help.{key}"
+            cht_rcc_key = f"commands.{command_name}.help.{key}"
             ikihtpitl(cht_rcc_key, cht_rcc_key)
 
         for paramater_type in ["arguments", "options"]:
-            for command_options_name in command_value.get(
+            for command_parameter_name, command_parameter_value in command_value.get(
                 paramater_type,
                 {},
             ):
-                raw_command_config["commands"][command_name][paramater_type][command_options_name]["help"] = {}
+                get_value_from_or_update_nested_dict(command_parameter_value, "help", {})
+                # raw_command_config["commands"][command_name][paramater_type][command_parameter_name]["help"] = {}
                 for key in ["help", "example"]:
-                    cht_rcc_key = f"{command_name}.{paramater_type}.{command_options_name}.help.{key}"
+                    cht_rcc_key = f"commands.{command_name}.{paramater_type}.{command_parameter_name}.help.{key}"
                     ikihtpitl(cht_rcc_key, cht_rcc_key)
 
     return raw_command_config

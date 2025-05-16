@@ -93,9 +93,7 @@ CLICK_CMD_OPTIONS_EXAMPLE_INDICATOR_LEN: Final[int] = len(
 
 
 class ExtInquirerControl(InquirerControl):  # type: ignore[misc]
-    """
-    Extended/Modified InquirerControl class.
-    """
+    """Extended/Modified InquirerControl class."""
 
     answer_text = "Answer"
 
@@ -198,9 +196,7 @@ class ExtInquirerControl(InquirerControl):  # type: ignore[misc]
 
 
 class ExtQuestion(Question):  # type: ignore[misc]
-    """
-    Extended/Modified Question class.
-    """
+    """Extended/Modified Question class."""
 
     kbi = DEFAULT_KBI_MESSAGE
 

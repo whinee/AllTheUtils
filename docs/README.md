@@ -34,7 +34,7 @@ pip install alltheutils
 
 ## Getting Started
 
-Follow [this tutorial](./getting-started.md) to install development prerequsites and get started.
+Follow [this tutorial](./getting-started.md) to install development prerequsites and get started. Please report any inaccuracies to said tutorial.
 
 ## Linting
 

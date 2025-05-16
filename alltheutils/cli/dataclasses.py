@@ -41,30 +41,30 @@ class CommandKwargsSchema(BaseModel):
         """The parameters to register with this command. This can be either `Option` or `Argument` objects."""
     )
 
-    help: Optional[str] = None
-    __pdoc__["CommandKwargsSchema.help"] = (
-        """The help string to use for this command."""
-    )
+    # help: Optional[str] = None
+    # __pdoc__["CommandKwargsSchema.help"] = (
+    #     """The help string to use for this command."""
+    # )
 
     epilog: Optional[str] = None
     __pdoc__["CommandKwargsSchema.epilog"] = (
         """Like the help string but it's printed at the end of the help page after everything else."""
     )
 
-    short_help: Optional[str] = None
-    __pdoc__["CommandKwargsSchema.short_help"] = (
-        """The short help to use for this command. This is shown on the command listing of the parent command."""
-    )
+    # short_help: Optional[str] = None
+    # __pdoc__["CommandKwargsSchema.short_help"] = (
+    #     """The short help to use for this command. This is shown on the command listing of the parent command."""
+    # )
 
     options_metavar: Optional[str] = "[OPTIONS]"
     __pdoc__["CommandKwargsSchema.options_metavar"] = (
         """The metavar displayed for options in the help page."""
     )
 
-    add_help_option: bool = True
-    __pdoc__["CommandKwargsSchema.add_help_option"] = (
-        """By default each command registers a `--help` option. This can be disabled by this parameter."""
-    )
+    # add_help_option: bool = True
+    # __pdoc__["CommandKwargsSchema.add_help_option"] = (
+    #     """By default each command registers a `--help` option. This can be disabled by this parameter."""
+    # )
 
     no_args_is_help: bool = False
     __pdoc__["CommandKwargsSchema.no_args_is_help"] = (
@@ -423,10 +423,10 @@ class CLIGroupCommandParamSchema(BaseModel):
         """Like the help string but it's printed at the end of the help page after everything else."""
     )
 
-    short_help: Optional[str] = None
-    __pdoc__["CLIGroupCommandParamSchema.short_help"] = (
-        """The short help to use for this command. This is shown on the command listing of the parent command."""
-    )
+    # short_help: Optional[str] = None
+    # __pdoc__["CLIGroupCommandParamSchema.short_help"] = (
+    #     """The short help to use for this command. This is shown on the command listing of the parent command."""
+    # )
 
     options_metavar: Optional[str] = "[OPTIONS]"
     __pdoc__["CommandKwargsSchema.options_metavar"] = (

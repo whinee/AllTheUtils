@@ -3,7 +3,7 @@ name: Publish to PyPI
 on:
   push:
     paths:
-      - dev/values/programmatic_variables/main.dev.json
+      - dev/values/programmatic_variables/version
   workflow_dispatch:
 
 jobs:

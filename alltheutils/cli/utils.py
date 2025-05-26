@@ -1,6 +1,7 @@
 from collections.abc import Callable, Sequence
 from typing import Any, Optional
 
+import click
 from prompt_toolkit.application import Application
 from prompt_toolkit.key_binding import KeyBindings, KeyPressEvent
 from prompt_toolkit.keys import Keys
@@ -21,6 +22,8 @@ from alltheutils.cli.dataclasses import CLIConfig
 from alltheutils.config import read_conf_file
 from alltheutils.instance_config import get_instance_config, has_instance_config
 from alltheutils.utils import get_value_from_or_update_nested_dict, load_language_texts
+
+PARAMETER_TYPES = ["arguments", "options"]
 
 
 def select(  # noqa: C901
@@ -184,7 +187,7 @@ def select(  # noqa: C901
     return err, res
 
 
-def str_to_type(str_type: str) -> Any:
+def str_to_type(str_type: str) -> Any:  # noqa: C901
     match str_type:
         case "int":
             return int
@@ -194,6 +197,18 @@ def str_to_type(str_type: str) -> Any:
             return bool
         case "str":
             return str
+        case "tuple":
+            return tuple
+        case "Choice":
+            return click.Choice
+        case "DateTime":
+            return click.DateTime
+        case "UUIDParameter":
+            return click.types.UUIDParameterType
+        case "File":
+            return click.File
+        case "Path":
+            return click.Path
         case _:
             return str
 
@@ -202,7 +217,7 @@ def command_type_str_to_type(
     commands: dict[str, Any],
 ) -> Any:
     for command_name, command_value in commands.items():
-        for parameter_type in parameter_types:
+        for parameter_type in PARAMETER_TYPES:
             command_parameters = command_value.get(parameter_type, {})
             for (
                 command_parameter_name,
@@ -214,9 +229,6 @@ def command_type_str_to_type(
                     commands[command_name][parameter_type][command_parameter_name][
                         "kwargs"
                     ]["type"] = str_to_type(command_parameter_type)
-
-
-parameter_types = ["arguments", "options"]
 
 
 def parse_config_file_cli_config(

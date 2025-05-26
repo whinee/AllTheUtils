@@ -6,6 +6,10 @@
 
 Items are sorted by priority, with the most important item at the top and least important at the bottom.
 
+## Important
+
+- [ ] Fix PyPi CI
+
 ## Permanent
 
 - [ ] Unit testing for mission critical piece of code

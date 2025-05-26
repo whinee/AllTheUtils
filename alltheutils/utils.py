@@ -14,7 +14,7 @@ import warnings
 from collections.abc import Callable, Generator, Iterable, Sized
 from datetime import datetime, timezone
 from itertools import cycle
-from multiprocessing import Pool, pool
+from multiprocessing import pool
 from os import makedirs
 from os.path import dirname
 from re import Pattern
@@ -144,66 +144,6 @@ def deprecated_class(
         return cls
 
     return decorator
-
-
-@deprecated(
-    "3.0.0",
-    "alltheutils.multi_processing.run_mp_qir",
-    "This is probably broken anyways.",
-)
-def run_mp_qir(
-    func: types.CallableAny,
-    iterable: types.IterAny,
-    callback: types.CallableAny,
-) -> None:
-    """
-    Run `multiprocessing.Pool().map_async()`, and quit in return.
-
-    Iterate over `iterable` and apply iterated item to `func` asynchronously. Wait for a single process in the pool to return, and terminate the pool.
-
-    This function requires the given function to return a bool, or an iterable with its first item as a bool. This bool is then used to decide whether to trigger the callback and terminate the pool.
-
-    Args:
-    - func (`types.CallableAny`): Function to be run on each item in parallel.
-    - iterable (`types.IterAny`): Iterable containing items to iterate over and pass to `func`.
-    - callback (`types.CallableAny`): Function to be called when a process in the pool returns.
-
-    """
-    if callback is None:
-        callback = noop
-    with Pool() as pool:
-        for i in iterable:
-            pool.apply_async(
-                func,
-                args=(i,),
-                callback=PoolTerminate(pool, callback).inner,
-            )
-        pool.close()
-        pool.join()
-
-
-@deprecated(
-    "3.0.0",
-    "alltheutils.multi_processing.run_mp_star_qir",
-    "This is probably broken anyways.",
-)
-def run_mp_star_qir(
-    func: types.CallableAny,
-    iterable: types.IterIterAny,
-    callback: types.CallableAny,
-) -> None:
-    """
-    Run `multiprocessing.Pool().starmap_async()`, and quit in return.
-
-    Iterate over `iterable` and apply iterated items to `func` asynchronously. Wait for a single process in the pool to return, and terminate the pool.
-    """
-    if callback is None:
-        callback = noop
-    with Pool() as pool:
-        for i in iterable:
-            pool.apply_async(func, args=i, callback=PoolTerminate(pool, callback).inner)
-        pool.close()
-        pool.join()
 
 
 # ================================ Functions ===================================
@@ -635,51 +575,6 @@ def run_cmd(cmd: str) -> None:
     call(shlex.split(cmd))  # noqa: S603
 
 
-@deprecated(
-    "3.0.0",
-    "alltheutils.multi_processing.run_mp",
-    "This is probably broken anyways.",
-)
-def run_mp(func: types.CallableAny, iterable: types.IterAny) -> types.ListAny:
-    with Pool() as pool:
-        return pool.map(func, iterable)
-
-
-@deprecated(
-    "3.0.0",
-    "alltheutils.multi_processing.run_mp_qgr",
-    "This is probably broken anyways.",
-)
-def run_mp_qgr(func: types.CallableAny, iterable: types.IterAny) -> types.TupleAny:
-    res_cb = CallbackGetResult()
-    run_mp_qir(func, iterable, res_cb.callback)
-    return res_cb.get()
-
-
-@deprecated(
-    "3.0.0",
-    "alltheutils.multi_processing.run_mp_star",
-    "This is probably broken anyways.",
-)
-def run_mp_star(func: types.CallableAny, iterable: types.IterIterAny) -> types.ListAny:
-    with Pool() as pool:
-        return pool.starmap(func, iterable)
-
-
-@deprecated(
-    "3.0.0",
-    "alltheutils.multi_processing.run_mp_star_qgr",
-    "This is probably broken anyways.",
-)
-def run_mp_star_qgr(
-    func: types.CallableAny,
-    iterable: types.IterIterAny,
-) -> types.TupleAny:
-    res_cb = CallbackGetResult()
-    run_mp_star_qir(func, iterable, res_cb.callback)
-    return res_cb.get()
-
-
 def sanitize_text(s: str) -> str:
     """
     Sanitize input text.
@@ -850,13 +745,6 @@ def which_ls(  # noqa: C901
                 if shutil._access_check(name, mode):  # type: ignore
                     op.add(name)
     return tuple(op)
-
-
-@deprecated(version="3.0.0", replacement="alltheutils.config.yaml_str_presenter")
-def yaml_str_presenter(dumper, data):  # type: ignore[no-untyped-def]
-    if len(data.splitlines()) > 1:
-        return dumper.represent_scalar("tag:yaml.org,2002:str", data, style="|")
-    return dumper.represent_scalar("tag:yaml.org,2002:str", data)
 
 
 def zip_extend(a: Sized, b: Sized) -> Iterable[Any]:

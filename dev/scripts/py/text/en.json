@@ -13,12 +13,6 @@
         },
         "below_recommended_width": "Your terminal width is below than the recommended\n\n{terminal_width} instead of {recc_terminal_width} and above",
         "commands": {
-            "credits": {
-                "help": {
-                    "overview": "credits",
-                    "description": "Credits where it is due"
-                }
-            },
             "version": {
                 "help": {
                     "overview": "display application version",

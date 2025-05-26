@@ -13,25 +13,33 @@ This software uses [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.h
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## 3.0.0 (Unreleased)
+## 4.0.0
 
 ### Removed
 
-- Classes, functions and modules deprecated in v2.0.0, v2.1.0, and v2.2.0
+- Removed classes, functions and modules deprecated in v3.0.0
 
-## Unreleased
+## 3.0.0
 
 ### Added
 
+- Added more cases to `alltheutils.cli.str_to_type`
+- `alltheutils.exceptions.BumpVersion`
 - `alltheutils.exceptions.BumpVersionNoPrerelease`
 - `alltheutils.exceptions.BumpVersionPartUnknown`
 - `alltheutils.utils.bump_version`
 
 ### Deprecated
 
-- Moved `alltheutils.utils.yaml_str_presenter` to `alltheutils.config.yaml_str_presenter`
+- The following classes has been renamed in favor of old naming conventions:
+    - `alltheutils.exceptions.NewCLIExceptions` -> `alltheutils.exceptions.CLIExceptions`
+    - `alltheutils.exceptions.NewConfigExceptions` -> `alltheutils.exceptions.ConfigExceptions`
+    - `alltheutils.exceptions.NewNestedDictExceptions` -> `alltheutils.exceptions.NestedDictExceptions`
 
-## 2.4.0 (Unreleased)
+### Removed
+
+- Removed classes, functions and modules deprecated in v2.0.0, v2.1.0, and v2.2.0
+- Moved `alltheutils.utils.yaml_str_presenter` to `alltheutils.config.yaml_str_presenter`
 
 ## 2.3.0
 

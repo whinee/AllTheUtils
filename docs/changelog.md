@@ -13,7 +13,7 @@ This software uses [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.h
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## 4.0.0
+## 4.0.0 (Unreleased)
 
 ### Removed
 
@@ -24,6 +24,7 @@ This software uses [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.h
 ### Added
 
 - Added more cases to `alltheutils.cli.str_to_type`
+- Added `toml` file type to parser registry in `alltheutils.config`
 - `alltheutils.exceptions.BumpVersion`
 - `alltheutils.exceptions.BumpVersionNoPrerelease`
 - `alltheutils.exceptions.BumpVersionPartUnknown`

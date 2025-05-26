@@ -9,15 +9,23 @@ from alltheutils.cli.utils import parse_config_file_cli_config, select
 from alltheutils.config import read_conf_file, write_to_conf_file
 from alltheutils.exceptions import BumpVersionExceptions
 from alltheutils.instance_config import set_instance_config
-from alltheutils.utils import bump_version, parent_dir_nth_times
+from alltheutils.utils import (
+    bump_version,
+    get_value_from_or_update_nested_dict,
+    parent_dir_nth_times,
+)
 
 BUMP_TYPES = ["major", "minor", "patch", "prerelease", "prerelease_num"]
 
 
 program_vars_dir = os.path.join(parent_dir_nth_times(__file__, 3), "values", "programmatic_variables")
+pyproject_fp = os.path.join(parent_dir_nth_times(__file__, 4), "pyproject.toml")
+
 main_dev_json_fp = os.path.join(program_vars_dir, "main.dev.json")
 version_fp = os.path.join(program_vars_dir, "version")
+
 main_dev_json = read_conf_file(main_dev_json_fp)
+pyproject = read_conf_file(pyproject_fp)
 
 cli_config = parse_config_file_cli_config(os.path.join(parent_dir_nth_times(__file__), "values", "cli.yaml"))
 
@@ -61,7 +69,10 @@ def bump(part: Optional[str], build: Optional[str] = None) -> None:  # noqa: C90
 
     main_dev_json["version"] = next_version
 
+    get_value_from_or_update_nested_dict(pyproject, "project.version", next_version)
+
     write_to_conf_file(main_dev_json_fp, main_dev_json)
+    write_to_conf_file(pyproject_fp, pyproject)
 
     with open(version_fp, "w") as f:
         f.write(next_version)

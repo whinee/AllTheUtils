@@ -3,6 +3,7 @@ import os
 from collections.abc import Callable
 from typing import Any
 
+import tomlkit
 import yaml
 
 from alltheutils.exceptions import ConfigFileExtensionNotSupported
@@ -67,13 +68,17 @@ yaml.add_representer(str, yaml_str_presenter)
 # Create a global registry instance
 registry = ParserRegistry()
 
-# Register YAML parsers
-registry.register(["yaml", "yml"], "r", yaml.safe_load)
-registry.register(["yaml", "yml"], "w", lambda x: yaml.dump(x, indent=2))
-
 # Register JSON parsers
 registry.register("json", "r", json.loads)
 registry.register("json", "w", lambda x: json.dumps(x, indent=4, sort_keys=False))
+
+# Register JSON parsers
+registry.register("toml", "r", tomlkit.parse)
+registry.register("toml", "w", tomlkit.dumps)
+
+# Register YAML parsers
+registry.register(["yaml", "yml"], "r", yaml.safe_load)
+registry.register(["yaml", "yml"], "w", lambda x: yaml.dump(x, indent=2))
 
 
 def parse_conf_str(data_str: str, ext: str) -> Any:

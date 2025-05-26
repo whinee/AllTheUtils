@@ -1,5 +1,5 @@
 # Constants
-app_id := `python -c 'from alltheutils.config import read_conf_file;print(read_conf_file("dev/conf/constants/main.yaml")["app_name"])'`
+app_id := `python -c 'from alltheutils.config import read_conf_file;print(read_conf_file("dev/values/constants/main.yaml")["app_name"])'`
 app_version := `python -c 'from alltheutils.config import read_conf_file;print(read_conf_file("dev/values/programmatic_variables/main.dev.json")["version"])'`
 dev_docs := "dev/docs"
 docs_api_root_dir := "docs/api"

@@ -17,16 +17,17 @@ Items are sorted by priority, with the most important item at the top and least 
 
 ## Temporary
 
-- [ ] Custom version bumping CLI dev tool
+- [ ] Recursively grouped commands
 - [ ] Translation file support for CLI
 - [ ] In pdoc-generated markdown files, make a Table of Contents
-- [ ] In pdoc-generated markdown files, determine whether a given mmarkdown file is the top level index file for that app's version, and if so, shall point back to the index where the user can choose the app's version and their corresponding documentation
+- [ ] In pdoc-generated markdown files, determine whether a given markdown file is the top level index file for that app's version, and if so, shall point back to the index where the user can choose the app's version and their corresponding documentation
 - [ ] Use [typeguard](https://typeguard.readthedocs.io/en/stable/userguide.html) to type check function arguments and return values in runtime
 - [ ] Add test coverage in README
 - [ ] Replace `pyyaml` library dependency with `ruamel.yaml`
 
 ## Done
 
+- [x] Custom version bumping CLI dev tool
 - [x] Migrate from `poetry` to `uv`
 - [x] In pdoc-generated markdown files, convert markdown headings to HTML headings with links
 - [x] Add PyPi project specific API token in the Github repository for automatic python package release

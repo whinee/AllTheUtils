@@ -19,7 +19,13 @@ This software uses [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.h
 
 - Removed classes, functions and modules deprecated in v3.0.0
 
-## 3.0.0
+## 3.0.1
+
+### Fixed
+
+- Added missing dependency `semver`
+
+## 3.0.0 [YANKED]
 
 ### Added
 

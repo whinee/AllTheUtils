@@ -1,13 +1,12 @@
 import sys
 from types import TracebackType
-from typing import Optional
 
 
 class CustomBaseException(BaseException):
     """Base class for all custom exceptions."""
 
     message: str
-    details: Optional[str] = None
+    details: str | None = None
 
     def __init__(self, message: str) -> None:
         self.message = message
@@ -43,7 +42,7 @@ def custom_exception(cls: type[CustomBaseException]) -> type[CustomBaseException
     def init(
         self: type[BaseException],
         message: str,
-        details: Optional[str] = None,
+        details: str | None = None,
     ) -> None:
         self.message = message  # type: ignore
         if details is not None:
@@ -57,7 +56,7 @@ def custom_exception(cls: type[CustomBaseException]) -> type[CustomBaseException
 def custom_exception_hook(
     exctype: type[CustomBaseException],
     value: CustomBaseException,
-    traceback: Optional[TracebackType],
+    traceback: TracebackType | None,
 ) -> None:
     sys.__excepthook__(exctype, value, traceback)
     if hasattr(value, "print_details"):

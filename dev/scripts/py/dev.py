@@ -49,6 +49,8 @@ cli = command(cmd_group, cli_config.commands)
 @cli
 def bump(part: Optional[str], build: Optional[str] = None) -> None:  # noqa: C901
     """Bump the version of the project."""
+    print("here!")
+    print(part, build)
     version: str = main_dev_json["version"]
     selection = {}
     if part is None:

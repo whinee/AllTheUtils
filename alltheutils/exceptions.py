@@ -1,6 +1,6 @@
 import functools
 import warnings
-from typing import Any, Optional
+from typing import Any
 
 from alltheutils import TW
 from alltheutils.base_exceptions import (
@@ -17,8 +17,8 @@ from alltheutils.types import Kwargs
 # ============================= Top dependencies ===============================
 def deprecated(
     version: str,
-    replacement: Optional[str] = None,
-    reason: Optional[str] = None,
+    replacement: str | None = None,
+    reason: str | None = None,
 ):
     """
     Decorator to mark functions as deprecated.
@@ -51,8 +51,8 @@ def deprecated(
 
 def deprecated_class(
     version: str,
-    replacement: Optional[str] = None,
-    reason: Optional[str] = None,
+    replacement: str | None = None,
+    reason: str | None = None,
 ):
     """
     Decorator to mark a classes as deprecated.
@@ -132,7 +132,7 @@ class PrerequisiteNotFound(CustomBaseException):
     def __init__(
         self,
         prerequisite: str,
-        inst_instruction: Optional[str] = None,
+        inst_instruction: str | None = None,
         **kwargs: Kwargs,
     ) -> None:
         """

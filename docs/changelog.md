@@ -19,13 +19,33 @@ This software uses [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.h
 
 - Removed classes, functions and modules deprecated in v3.0.0
 
+## 3.0.2
+
+### Added
+
+- `alltheutils.utils.transfer_if_key_exists`
+
+### Changed 
+
+- `alltheutils.cli.CommandWrapper` to exit gracefully when the required options are not filled in, instead of throwing an error like it did before. 
+
+### Removed
+
+- `alltheutils.cli._base` cuz' idk what's it doing there even :C
+
+### Fixed
+
+- Made it so that `alltheutils.cli.dataclasses.CommandOptionsKwargsSchema.callback` default value to be `None` instead of a function that I forgot where it came from, which halts operations whenever the user calls the command with an option :C
+
 ## 3.0.1
 
 ### Fixed
 
 - Added missing dependency `semver`
 
-## 3.0.0 [YANKED]
+## [YANKED] 3.0.0
+
+[YANKED]: missing dependency `semver`
 
 ### Added
 

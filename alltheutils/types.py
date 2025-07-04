@@ -1,5 +1,5 @@
 from collections.abc import Callable, Iterable, Sequence
-from typing import Any, Optional, TypeAlias
+from typing import Any, TypeAlias
 
 Args: TypeAlias = tuple[Any, ...]
 CallableAny: TypeAlias = Callable[..., Any]
@@ -8,7 +8,7 @@ IterAny: TypeAlias = Iterable[Any]
 IterIterAny: TypeAlias = Iterable[Iterable[Any]]
 Kwargs: TypeAlias = dict[str, Any]
 ListAny: TypeAlias = list[Any]
-ListOptionalAny: TypeAlias = list[Optional[Any]]
+ListOptionalAny: TypeAlias = list[Any | None]
 Number = float | int
 # RecursiveDict: TypeAlias = (
 #     (

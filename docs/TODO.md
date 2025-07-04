@@ -17,6 +17,7 @@ Items are sorted by priority, with the most important item at the top and least 
 
 ## Temporary
 
+- [ ] In the dev tools, merge both gen_config and bump commands
 - [ ] Recursively grouped commands
 - [ ] Translation file support for CLI
 - [ ] In pdoc-generated markdown files, make a Table of Contents

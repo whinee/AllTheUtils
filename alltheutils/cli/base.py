@@ -64,7 +64,7 @@ Bruh, why am I touching this?
 
 from collections.abc import Callable
 from textwrap import wrap
-from typing import Any, Final, Optional
+from typing import Any, Final
 
 import click
 from click.core import Group
@@ -200,7 +200,7 @@ class ExtQuestion(Question):  # type: ignore[misc]
 
     kbi = DEFAULT_KBI_MESSAGE
 
-    def ask(self, patch_stdout: Optional[bool] = None, **kwargs: dict[str, Any]) -> tuple[bool, Any]:  # type: ignore[override]
+    def ask(self, patch_stdout: bool | None = None, **kwargs: dict[str, Any]) -> tuple[bool, Any]:  # type: ignore[override]
         """
         Ask the question synchronously and return user response.
 
@@ -535,10 +535,31 @@ class CommandWrapper:
         return inner
 
     def kwargs_preprocessor(self, func: Callable[..., Any]) -> Callable[..., Any]:
-        def inner(**kwargs: dict[str, Any]) -> Any:
+        def inner(ctx, **kwargs: dict[str, Any]) -> Any:
+            """
+            _summary_.
+
+            This horrible hack still allows the API user to decorate the function with `click.pass_context` and still get the context. This ain't cursed, bestie :3
+
+            Args:
+            - ctx (`_type_`): _description_
+
+            Returns:
+            `Any`: Whatever the decorated function (the command) returns.
+
+            """
+            empty_required_options = []
             for i in self.cfg["required_options"]:
                 if kwargs.get(i) is None:
-                    raise exceptions.CLIOptionRequired(i)
+                    empty_required_options.append(i)
+                    # raise exceptions.CLIOptionRequired(i)
+
+            if empty_required_options:
+                print(
+                    f"Option/s `{'`, `'.join(empty_required_options)}` is/are required option/s and must be filled in.",
+                )
+                click.utils.echo(ctx.get_help(), color=ctx.color)
+                exit()
             return func(**kwargs)
 
         inner.__name__ = func.__name__
@@ -558,7 +579,12 @@ class CommandWrapper:
 
         self.cmd: CommandSchema = self.command_config[func.__name__]
         self.arguments_cfg = self.cmd.arguments
-        wrappers_ls = self.command(), self.arguments(), self.options()
+        wrappers_ls = (
+            click.pass_context,
+            self.options(),
+            self.arguments(),
+            self.command(),
+        )
         func = self.kwargs_preprocessor(func)
         for wrapper in wrappers_ls:
             func = wrapper(func)

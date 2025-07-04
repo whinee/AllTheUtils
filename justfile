@@ -1,9 +1,19 @@
 # Constants
-app_id := `python -c 'from alltheutils.config import read_conf_file;print(read_conf_file("dev/values/constants/main.yaml")["app_name"])'`
-app_version := `python -c 'from alltheutils.config import read_conf_file;print(read_conf_file("dev/values/programmatic_variables/main.dev.json")["version"])'`
 dev_docs := "dev/docs"
 docs_api_root_dir := "docs/api"
 docs_api_unreleased_dir := docs_api_root_dir + "/unreleased"
+
+app_id := if os_family() == "windows" {
+    `python -c 'exec("""\ntry:\n from alltheutils import config\n print(config.read_conf_file("dev/values/constants/main.yaml")["app_name"])\nexcept ModuleNotFoundError:\n print("PLACEHOLDER")\n""")'`
+} else {
+    `python -c 'exec("""\ntry:\n from alltheutils import config\n print(config.read_conf_file("dev/values/constants/main.yaml")["app_name"])\nexcept ModuleNotFoundError:\n print("PLACEHOLDER")\n""")'`
+}
+
+app_version := if os_family() == "windows" {
+    `python -c 'exec("""\ntry:\n from alltheutils import config\n print(config.read_conf_file("dev/values/programmatic_variables/main.dev.json")["version"])\nexcept ModuleNotFoundError:\n print("PLACEHOLDER")\n""")'`
+} else {
+    `python -c 'exec("""\ntry:\n from alltheutils import config\n print(config.read_conf_file("dev/values/programmatic_variables/main.dev.json")["version"])\nexcept ModuleNotFoundError:\n print("PLACEHOLDER")\n""")'`
+}
 
 # Choose recipes
 default:

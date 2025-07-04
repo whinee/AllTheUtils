@@ -1,12 +1,10 @@
 from collections.abc import Callable, MutableMapping, Sequence
-from typing import Any, Optional, Union
+from typing import Any, Union
 
 from click.core import Command, Context, Parameter
 from click.shell_completion import CompletionItem
 from click.types import ParamType
 from pydantic import BaseModel, ConfigDict, Field
-
-from alltheutils.cli._base import show_help
 
 # __pdoc__: dict[str, bool | str] = {
 #     f"{cls.__name__}.{method}": False
@@ -21,12 +19,12 @@ class CommandKwargsSchema(BaseModel):
     __pdoc__["CommandKwargsSchema"] = ""
 
     # Arguments to provide to `click.core.Command`
-    name: Optional[str] = None
+    name: str | None = None
     __pdoc__["CommandKwargsSchema.name"] = (
         """The name of the command to use unless a group overrides it."""
     )
 
-    context_settings: Optional[MutableMapping[str, Any]] = None
+    context_settings: MutableMapping[str, Any] | None = None
     __pdoc__["CommandKwargsSchema.context_settings"] = (
         """An optional dictionary with defaults that are passed to the context object."""
     )
@@ -36,7 +34,7 @@ class CommandKwargsSchema(BaseModel):
     #     """The callback to invoke. This is optional."""
     # )
 
-    params: Optional[list[Parameter]] = None
+    params: list[Parameter] | None = None
     __pdoc__["CommandKwargsSchema.params"] = (
         """The parameters to register with this command. This can be either `Option` or `Argument` objects."""
     )
@@ -46,7 +44,7 @@ class CommandKwargsSchema(BaseModel):
     #     """The help string to use for this command."""
     # )
 
-    epilog: Optional[str] = None
+    epilog: str | None = None
     __pdoc__["CommandKwargsSchema.epilog"] = (
         """Like the help string but it's printed at the end of the help page after everything else."""
     )
@@ -56,7 +54,7 @@ class CommandKwargsSchema(BaseModel):
     #     """The short help to use for this command. This is shown on the command listing of the parent command."""
     # )
 
-    options_metavar: Optional[str] = "[OPTIONS]"
+    options_metavar: str | None = "[OPTIONS]"
     __pdoc__["CommandKwargsSchema.options_metavar"] = (
         """The metavar displayed for options in the help page."""
     )
@@ -86,7 +84,7 @@ class CommandHelpSchema(BaseModel):
 
     # Help string to show when the help option is invoked in the group command
     # and not the command itself
-    overview: Optional[str] = None
+    overview: str | None = None
     # Help string to show when the help option is invoked in the command itself
     description: str
 
@@ -96,7 +94,7 @@ class CommandArgumentsKwargsSchema(BaseModel):
     __pdoc__["CommandArgumentsKwargsSchema"] = ""
 
     # Arguments to provide to `click.core.Parameter`
-    type: Optional[Union[ParamType, Any]] = None
+    type: Union[ParamType, Any] | None = None
     __pdoc__["CommandOptionsKwargsSchema.help"] = (
         """The type that should be used.  Either a `ParamType` or a Python type. The latter is converted into the former automatically if supported."""
     )
@@ -106,22 +104,22 @@ class CommandArgumentsKwargsSchema(BaseModel):
         """Controls if an environment variable should be shown on the help page. Normally, environment variables are not shown."""
     )
 
-    default: Optional[Union[Any, Callable[[], Any]]] = None
+    default: Union[Any, Callable[[], Any]] | None = None
     __pdoc__["CommandArgumentsKwargsSchema.default"] = (
         """The default value if omitted. This can also be a callable, in which case it's invoked when the default is needed without any arguments."""
     )
 
-    callback: Optional[Callable[[Context, Parameter, Any], Any]] = None
+    callback: Callable[[Context, Parameter, Any], Any] | None = None
     __pdoc__["CommandArgumentsKwargsSchema.callback"] = (
         """A function to further process or validate the value after type conversion. It is called as `f(ctx, param, value)` and must return the value. It is called for all sources, including prompts."""
     )
 
-    nargs: Optional[int] = None
+    nargs: int | None = None
     __pdoc__["CommandArgumentsKwargsSchema.nargs"] = (
         """The number of arguments to match.  If not `1` the return value is a tuple instead of single value.  The default for nargs is `1` (except if the type is a tuple, then it's the arity of the tuple). If `nargs=-1`, all remaining parameters are collected."""
     )
 
-    metavar: Optional[str] = None
+    metavar: str | None = None
     __pdoc__["CommandArgumentsKwargsSchema.metavar"] = (
         """How the value is represented in the help page."""
     )
@@ -136,17 +134,15 @@ class CommandArgumentsKwargsSchema(BaseModel):
         """Eager values are processed before non eager ones.  This should not be set for arguments or it will inverse the order of processing."""
     )
 
-    envvar: Optional[Union[str, Sequence[str]]] = None
+    envvar: Union[str, Sequence[str]] | None = None
     __pdoc__["CommandArgumentsKwargsSchema.envvar"] = (
         """A string or list of strings that are environment variables that should be checked."""
     )
 
-    shell_complete: Optional[
-        Callable[
-            [Context, Parameter, str],
-            Union[list["CompletionItem"], list[str]],
-        ]
-    ] = None
+    shell_complete: (
+        Callable[[Context, Parameter, str], Union[list["CompletionItem"], list[str]]]
+        | None
+    ) = None
     __pdoc__["CommandArgumentsKwargsSchema.shell_complete"] = (
         """A function that returns custom shell completions. Used instead of the param's type completion if given. Takes `ctx, param, incomplete` and must return a list of `click.shell_completion.CompletionItem` or a list of strings."""
     )
@@ -159,7 +155,7 @@ class CommandArgumentsHelpSchema(BaseModel):
     help: str
     __pdoc__["CommandArgumentsHelpSchema.help"] = """Main help string."""
 
-    example: Optional[str] = None
+    example: str | None = None
     __pdoc__["CommandArgumentsHelpSchema.example"] = (
         """Example of string that can be passed as an argument."""
     )
@@ -218,12 +214,12 @@ class CommandOptionsKwargsSchema(BaseModel):
         """If this is `True` then the input on the prompt will be hidden from the user. This is useful for password input."""
     )
 
-    is_flag: Optional[bool] = None
+    is_flag: bool | None = None
     __pdoc__["CommandOptionsKwargsSchema.is_flag"] = (
         """Forces this option to act as a flag. The default is auto detection."""
     )
 
-    flag_value: Optional[Any] = None
+    flag_value: Any | None = None
     __pdoc__["CommandOptionsKwargsSchema.flag_value"] = (
         """Which value should be used for this flag if it's enabled. This is set to a boolean automatically if the option string contains a slash to mark two options."""
     )
@@ -241,14 +237,14 @@ class CommandOptionsKwargsSchema(BaseModel):
     allow_from_autoenv: bool = True
     __pdoc__["CommandOptionsKwargsSchema.allow_from_autoenv"] = """The help string."""
 
-    type: Optional[Union[ParamType, Any]] = None
+    type: Union[ParamType, Any] | None = None
     __pdoc__["CommandOptionsKwargsSchema.help"] = (
         """The type that should be used.  Either a `ParamType` or a Python type. The latter is converted into the former automatically if supported.
         
         This type will also appear in the help page."""
     )
 
-    help: Optional[str] = None
+    help: str | None = None
     __pdoc__["CommandOptionsKwargsSchema.help"] = """The help string."""
 
     hidden: bool = False
@@ -272,22 +268,22 @@ class CommandOptionsKwargsSchema(BaseModel):
         """Controls if an environment variable should be shown on the help page. Normally, environment variables are not shown."""
     )
 
-    default: Optional[Union[Any, Callable[[], Any]]] = None
+    default: Union[Any, Callable[[], Any]] | None = None
     __pdoc__["CommandOptionsKwargsSchema.default"] = (
         """The default value if omitted. This can also be a callable, in which case it's invoked when the default is needed without any arguments."""
     )
 
-    callback: Callable[[Context, Parameter, Any], Any] = show_help
+    callback: Callable[[Context, Parameter, Any], Any] | None = None
     __pdoc__["CommandOptionsKwargsSchema.callback"] = (
         """A function to further process or validate the value after type conversion. It is called as `f(ctx, param, value)` and must return the value. It is called for all sources, including prompts."""
     )
 
-    nargs: Optional[int] = None
+    nargs: int | None = None
     __pdoc__["CommandOptionsKwargsSchema.nargs"] = (
         """The number of arguments to match.  If not `1` the return value is a tuple instead of single value.  The default for nargs is `1` (except if the type is a tuple, then it's the arity of the tuple). If `nargs=-1`, all remaining parameters are collected."""
     )
 
-    metavar: Optional[str] = None
+    metavar: str | None = None
     __pdoc__["CommandOptionsKwargsSchema.metavar"] = (
         """How the value is represented in the help page."""
     )
@@ -302,17 +298,15 @@ class CommandOptionsKwargsSchema(BaseModel):
         """Eager values are processed before non eager ones.  This should not be set for arguments or it will inverse the order of processing."""
     )
 
-    envvar: Optional[Union[str, Sequence[str]]] = None
+    envvar: Union[str, Sequence[str]] | None = None
     __pdoc__["CommandOptionsKwargsSchema.envvar"] = (
         """A string or list of strings that are environment variables that should be checked."""
     )
 
-    shell_complete: Optional[
-        Callable[
-            [Context, Parameter, str],
-            Union[list["CompletionItem"], list[str]],
-        ]
-    ] = None
+    shell_complete: (
+        Callable[[Context, Parameter, str], Union[list["CompletionItem"], list[str]]]
+        | None
+    ) = None
     __pdoc__["CommandOptionsKwargsSchema.shell_complete"] = (
         """A function that returns custom shell completions. Used instead of the param's type completion if given. Takes `ctx, param, incomplete` and must return a list of `click.shell_completion.CompletionItem` or a list of strings."""
     )
@@ -328,7 +322,7 @@ class CommandOptionsHelpSchema(BaseModel):
     help: str
     __pdoc__["CommandOptionsHelpSchema.help"] = """Main help string."""
 
-    example: Optional[str] = None
+    example: str | None = None
     __pdoc__["CommandOptionsHelpSchema.example"] = (
         """Example of string that can be passed as an argument"""
     )
@@ -396,9 +390,9 @@ class CLIGroupCommandParamSchema(BaseModel):
         """The name of the command to use unless a group overrides it."""
     )
 
-    cls: Optional[type[Command]] = None
+    cls: type[Command] | None = None
 
-    context_settings: Optional[dict[str, Any]] = None
+    context_settings: dict[str, Any] | None = None
     __pdoc__["CLIGroupCommandParamSchema.context_settings"] = (
         """An optional dictionary with defaults that are passed to the context object."""
     )
@@ -408,17 +402,17 @@ class CLIGroupCommandParamSchema(BaseModel):
     #     """The callback to invoke. This is optional."""
     # )
 
-    params: Optional[list[Parameter]] = None
+    params: list[Parameter] | None = None
     __pdoc__["CLIGroupCommandParamSchema.params"] = (
         """The parameters to register with this command. This can be either :class:`Option` or :class:`Argument` objects."""
     )
 
-    help: Optional[str] = None
+    help: str | None = None
     __pdoc__["CLIGroupCommandParamSchema.help"] = (
         """The help string to use for this command."""
     )
 
-    epilog: Optional[str] = None
+    epilog: str | None = None
     __pdoc__["CLIGroupCommandParamSchema.epilog"] = (
         """Like the help string but it's printed at the end of the help page after everything else."""
     )
@@ -428,7 +422,7 @@ class CLIGroupCommandParamSchema(BaseModel):
     #     """The short help to use for this command. This is shown on the command listing of the parent command."""
     # )
 
-    options_metavar: Optional[str] = "[OPTIONS]"
+    options_metavar: str | None = "[OPTIONS]"
     __pdoc__["CommandKwargsSchema.options_metavar"] = (
         """The metavar displayed for options in the help page."""
     )

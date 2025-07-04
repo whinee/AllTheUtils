@@ -1,5 +1,5 @@
 from collections.abc import Callable, Sequence
-from typing import Any, Optional
+from typing import Any
 
 import click
 from prompt_toolkit.application import Application
@@ -29,15 +29,15 @@ PARAMETER_TYPES = ["arguments", "options"]
 def select(  # noqa: C901
     message: str,
     choices: Sequence[str | Choice | dict[str, Any]] | dict[str, Any],
-    default: Optional[Any] = None,
-    instruction: Optional[str] = None,
-    answer_text: Optional[str] = None,
-    keyboard_interrupt_message: Optional[str] = None,
-    qmark: Optional[str] = None,
-    pointer: Optional[str] = None,
-    style: Optional[BaseStyle] = None,
-    show_selected: Optional[bool] = None,
-    ret_err: Optional[bool] = None,
+    default: Any | None = None,
+    instruction: str | None = None,
+    answer_text: str | None = None,
+    keyboard_interrupt_message: str | None = None,
+    qmark: str | None = None,
+    pointer: str | None = None,
+    style: BaseStyle | None = None,
+    show_selected: bool | None = None,
+    ret_err: bool | None = None,
     **kwargs: dict[str, Any],
 ) -> tuple[bool, Any]:
     class _CEIQ(ExtInquirerControl):  # type: ignore[misc]
@@ -233,9 +233,9 @@ def command_type_str_to_type(
 
 def parse_config_file_cli_config(
     file_path: str,
-    filters_before_conversion: Optional[
-        list[Callable[[dict[str, Any]], dict[str, Any]]]
-    ] = None,
+    filters_before_conversion: (
+        list[Callable[[dict[str, Any]], dict[str, Any]]] | None
+    ) = None,
 ) -> CLIConfig:
     cli_config = read_conf_file(file_path)
     commands = cli_config.get("commands", {})

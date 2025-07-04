@@ -1,34 +1,16 @@
-from collections.abc import Callable
 from typing import Any
 
-from alltheutils.exceptions import NewNestedDictExceptions
 from alltheutils.instance_config import get_instance_config
-from alltheutils.utils import get_value_from_or_update_nested_dict
+from alltheutils.utils import (
+    get_value_from_or_update_nested_dict,
+    transfer_if_key_exists,
+)
 
 mapping = {
     "help.help": "group_command_params.help",
     "help.epilog": "group_command_params.epilog",
     "help.short_help": "group_command_params.short_help",
 }
-
-
-def if_key_in_help_texts_put_in_this_location(
-    commands_help_texts: dict,
-    raw_command_config: dict[str, Any],
-) -> Callable[[str, str], None]:
-    def inner(cht_key: str, rcc_key: str) -> None:
-
-        try:
-            value = get_value_from_or_update_nested_dict(commands_help_texts, cht_key)
-        except NewNestedDictExceptions:
-            return
-        get_value_from_or_update_nested_dict(
-            raw_command_config,
-            rcc_key,
-            value,
-        )
-
-    return inner
 
 
 def merge_command_config_n_help_text(  # noqa: C901
@@ -39,13 +21,13 @@ def merge_command_config_n_help_text(  # noqa: C901
         "cli",
     )
 
-    ikihtpitl = if_key_in_help_texts_put_in_this_location(
+    tike_wrapper = transfer_if_key_exists(
         commands_help_texts,
         raw_command_config,
     )
 
     for key, value in mapping.items():
-        ikihtpitl(key, value)
+        tike_wrapper(key, value)
 
     for command_name, command_value in raw_command_config["commands"].items():
         get_value_from_or_update_nested_dict(
@@ -54,8 +36,7 @@ def merge_command_config_n_help_text(  # noqa: C901
             {},
         )
         for key in ["description", "overview"]:
-            cht_rcc_key = f"commands.{command_name}.help.{key}"
-            ikihtpitl(cht_rcc_key, cht_rcc_key)
+            tike_wrapper(f"commands.{command_name}.help.{key}")
 
         for paramater_type in ["arguments", "options"]:
             for command_parameter_name, command_parameter_value in command_value.get(
@@ -68,7 +49,8 @@ def merge_command_config_n_help_text(  # noqa: C901
                     {},
                 )
                 for key in ["help", "example"]:
-                    cht_rcc_key = f"commands.{command_name}.{paramater_type}.{command_parameter_name}.help.{key}"
-                    ikihtpitl(cht_rcc_key, cht_rcc_key)
+                    tike_wrapper(
+                        f"commands.{command_name}.{paramater_type}.{command_parameter_name}.help.{key}",
+                    )
 
     return raw_command_config

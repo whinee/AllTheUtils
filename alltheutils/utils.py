@@ -19,7 +19,7 @@ from os import makedirs
 from os.path import dirname
 from re import Pattern
 from subprocess import call
-from typing import Any, Final, Optional
+from typing import Any, Final
 
 import semver
 
@@ -35,6 +35,7 @@ from alltheutils.exceptions import (
     NDValueIsAListAndIndexIsOutOfRange,
     NDValueNotADict,
     NDValueNotAList,
+    NestedDictExceptions,
 )
 from alltheutils.instance_config import get_instance_config
 
@@ -78,8 +79,8 @@ class CallbackGetResult:
 # ============================= Top dependencies ===============================
 def deprecated(
     version: str,
-    replacement: Optional[str] = None,
-    reason: Optional[str] = None,
+    replacement: str | None = None,
+    reason: str | None = None,
 ):
     """
     Decorator to mark functions as deprecated.
@@ -113,8 +114,8 @@ def deprecated(
 
 def deprecated_class(
     version: str,
-    replacement: Optional[str] = None,
-    reason: Optional[str] = None,
+    replacement: str | None = None,
+    reason: str | None = None,
 ):
     """
     Decorator to mark a classes as deprecated.
@@ -169,7 +170,7 @@ def batch_replace(text: str, key_value_map: dict[str, list[str]]) -> str:
 def bump_version(  # noqa: C901
     version: str,
     part: str = "patch",
-    build: Optional[str] = None,
+    build: str | None = None,
 ) -> str:
     v = semver.VersionInfo.parse(version)
 
@@ -222,7 +223,7 @@ def calculate_sha256_hash(input: str) -> str:
     return sha256_hash.hexdigest()
 
 
-def caller_relative_path(relative_path: str, idx: Optional[int] = None) -> str:
+def caller_relative_path(relative_path: str, idx: int | None = None) -> str:
     """
     Given a path, output the same path, relative to the absolute directory path of the file that invoked this function.
 
@@ -271,7 +272,7 @@ def custom_version_ls_to_str(
 def dict_get_first_match(
     dictionary: dict[Any, Any],
     keys: list[int | list[str | int | tuple[str, ...]] | str],
-    default_value: Optional[Any] = None,
+    default_value: Any | None = None,
 ) -> Any:
     """
     Iterate through the `keys` and see if the value exists in the `dictionary`. First one that exists will be returned. If none exists, return `default_value`.
@@ -294,7 +295,7 @@ def dict_get_first_match(
 
 def ensure_parent_dir(
     file_path: str,
-    make_dir_append_to_ls: Optional[list[str]] = None,
+    make_dir_append_to_ls: list[str] | None = None,
 ) -> str:
     """
     If the directory of the file path does not exist, then make it.
@@ -339,7 +340,7 @@ def fill_ls(
     *,
     ls: types.SequenceAny,
     length: int,
-    filler: Optional[Any] = None,
+    filler: Any | None = None,
 ) -> types.SequenceAny:
     """
     Fill given list (`ls`) with `filler` up to `length`.
@@ -508,7 +509,7 @@ def iter_ls_with_items(
         yield i, *items
 
 
-def literal_eval(expr: Optional[str]) -> Any:
+def literal_eval(expr: str | None) -> Any:
     """
     Literal Evaluation.
 
@@ -544,7 +545,7 @@ def noop_single_kwargs(arg: Any) -> Any:
     return arg
 
 
-def parent_dir_nth_times(filename: str, n: Optional[int] = None) -> str:
+def parent_dir_nth_times(filename: str, n: int | None = None) -> str:
     """
     Dirname N-th times.
 
@@ -630,7 +631,7 @@ def search_query(
             yield (sequence_matcher.ratio(), search_value)
 
 
-def str2int(num: int | str) -> Optional[int]:
+def str2int(num: int | str) -> int | None:
     """
     If given number is int, return it. Else, if given number is string and is decimal, convert string to integer. Otherwise, return None.
 
@@ -648,6 +649,28 @@ def str2int(num: int | str) -> Optional[int]:
     if num.isdecimal():
         return int(num)
     return None
+
+
+def transfer_if_key_exists(
+    dict_a: dict,
+    dict_b: dict[str, Any],
+) -> Callable[..., None]:
+    def inner(key_a: str, key_b: str | None = None) -> None:
+
+        if key_b is None:
+            key_b = key_a
+
+        try:
+            value = get_value_from_or_update_nested_dict(dict_a, key_a)
+        except NestedDictExceptions:
+            return
+        get_value_from_or_update_nested_dict(
+            dict_b,
+            key_b,
+            value,
+        )
+
+    return inner
 
 
 def unix_timestamp_to_iso(timestamp: int) -> str:
@@ -669,9 +692,9 @@ def unix_timestamp_to_iso(timestamp: int) -> str:
 
 def which_ls(  # noqa: C901
     cmd: str,
-    mode: Optional[int] = None,
-    path: Optional[str] = None,
-) -> Optional[types.TupleStr]:
+    mode: int | None = None,
+    path: str | None = None,
+) -> types.TupleStr | None:
     """
     Given a command, mode, and a PATH string, return the path which conforms to the given mode on the PATH, or None if there is no such file. Yoinked from shutil.
 

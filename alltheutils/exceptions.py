@@ -1,5 +1,3 @@
-import functools
-import warnings
 from typing import Any
 
 from alltheutils import TW
@@ -12,79 +10,6 @@ from alltheutils.types import Kwargs
 """
 `Common` exceptions are raised if an error occured and it is of the `Common` exception's common variant of error.
 """
-
-
-# ============================= Top dependencies ===============================
-def deprecated(
-    version: str,
-    replacement: str | None = None,
-    reason: str | None = None,
-):
-    """
-    Decorator to mark functions as deprecated.
-
-    Args:
-    - version (`str`): The version in which the function will be removed.
-    - replacement (`str`, optional): The new function to use instead.
-
-    """
-
-    def decorator(func):
-        func_name = func.__name__  # Get function name automatically
-
-        @functools.wraps(func)
-        def wrapper(*args, **kwargs):
-            message = (
-                f"{func_name}() is deprecated and will be removed in version {version}."
-            )
-            if replacement:
-                message += f" Use {replacement}() instead."
-            if reason:
-                message += f" {reason}"
-            warnings.warn(message, DeprecationWarning, stacklevel=2)
-            return func(*args, **kwargs)  # Pass all arguments properly
-
-        return wrapper
-
-    return decorator
-
-
-def deprecated_class(
-    version: str,
-    replacement: str | None = None,
-    reason: str | None = None,
-):
-    """
-    Decorator to mark a classes as deprecated.
-
-    Args:
-    - version (`str`): The version in which the exception will be removed.
-    - replacement (`str`, optional): The new exception to use instead.
-    - reason (`str`, optional): Additional reason for deprecation.
-
-    """
-
-    def decorator(cls):
-        orig_init = cls.__init__
-
-        @functools.wraps(orig_init)
-        def new_init(self, *args, **kwargs):
-            message = f"{cls.__name__} is deprecated and will be removed in version {version}."
-            if replacement:
-                message += f" Use {replacement} instead."
-            if reason:
-                message += f" {reason}"
-
-            warnings.warn(message, DeprecationWarning, stacklevel=2)
-            orig_init(self, *args, **kwargs)  # Pass all arguments properly
-
-        cls.__init__ = new_init
-        return cls
-
-    return decorator
-
-
-# In v4.0.0, all classes prefixed with `New` will have their prefix removed, to replace the old classes
 
 
 class ValidationError(BaseException):

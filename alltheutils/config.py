@@ -1,8 +1,8 @@
-import json
 import os
 from collections.abc import Callable
 from typing import Any
 
+import json5
 import tomlkit
 import yaml
 
@@ -69,8 +69,8 @@ yaml.add_representer(str, yaml_str_presenter)
 registry = ParserRegistry()
 
 # Register JSON parsers
-registry.register("json", "r", json.loads)
-registry.register("json", "w", lambda x: json.dumps(x, indent=4, sort_keys=False))
+registry.register("json", "r", json5.loads)
+registry.register("json", "w", lambda x: json5.dumps(x, indent=4, sort_keys=False))
 
 # Register JSON parsers
 registry.register("toml", "r", tomlkit.parse)

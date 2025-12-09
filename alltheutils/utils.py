@@ -423,10 +423,37 @@ def get_value_from_or_update_nested_dict(  # noqa: C901
     new_value: int | types.RecursiveDict | str | None = None,
 ):
     """
-    Updates or retrieves a nested dictionary value at the given dot-separated address.
+    Retrieve or update a nested dictionary (or mixed dict/list) value at a dot-separated address. If `new_value` is provided, the function updates the value at the given address. If `new_value` is `None`, the function returns the value at the address. Auto-creates intermediate dictionaries when navigating missing keys. Supports typed keys using the prefixes "int>" and "str>" as part of the address.
 
-    - If `new_value` is provided, updates the value.
-    - If `new_value` is `None`, returns the current value at `address`.
+    Args:
+    - data (`types.RecursiveDict`): The root dictionary-like structure to
+    operate on. May contain nested dicts or lists.
+    - address (`str`): Dot-separated path describing where to retrieve or
+    place the value. Keys may use "int>" or "str>" prefixes to explicitly
+    specify their type.
+    - new_value (`int | types.RecursiveDict | str | None`, optional):
+    The value to assign at `address`. When `None`, the function performs
+    a lookup instead of an update.
+
+    Returns:
+    `Any`:
+    - The retrieved value when performing a lookup (`new_value is None`).
+    - The updated `data` structure when performing an assignment.
+
+    Raises:
+    - `NDNonDictReplacementValue`: Attempted to replace the root object with a
+    non-dict.
+    - `NDValueNotADict`: Expected a dict when accessing a string-key component.
+    - `NDValueNotAList`: Expected a list when accessing an integer-key component.
+    - `NDValueDoesNotExist`: Final key does not exist when retrieving.
+    - `NDValueIsAListAndIndexIsOutOfRange`: List index access out of range.
+
+    Notes:
+    - Using an empty address (`""` or `"."`) returns the entire structure for
+    retrieval, or replaces it entirely when `new_value` is a non-empty dict.
+    - Intermediate dicts are auto-created, but lists must already exist at the
+    path.
+
     """
     if not address or address == ".":
         if new_value is None:

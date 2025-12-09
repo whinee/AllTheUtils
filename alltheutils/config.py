@@ -2,6 +2,7 @@ import os
 from collections.abc import Callable
 from typing import Any
 
+import _jsonnet
 import json5
 import tomlkit
 import yaml
@@ -156,3 +157,11 @@ def write_to_conf_file(file_path: str, value: Any) -> None:
 
     with open(file_path, "w", encoding="utf-8") as f:
         f.write(dump_conf_obj(value, file_path.split(".")[-1]))
+
+
+# Register Jsonnet parsers
+registry.register(
+    ["jsonnet"],
+    "r",
+    lambda x: parse_conf_str(_jsonnet.evaluate_file(x), "json"),
+)

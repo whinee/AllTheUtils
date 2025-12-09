@@ -13,15 +13,17 @@ This software uses [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.h
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## 4.1.0
+
+### Added
+
+- Added reader for jsonnet config files
+
 ## 4.0.0
 
-## Changed
+### Changed
 
 - Changed `json` dependency in `alltheutils.config` to instead rely on json5, to be able to support comments in JSON files
-
-### Removed
-
-- Removed classes, functions and modules deprecated in v3.0.0
 
 ## 3.0.2
 
@@ -36,6 +38,7 @@ This software uses [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.h
 ### Removed
 
 - `alltheutils.cli._base` cuz' idk what's it doing there even :C
+- OOPSIES! Removed classes, functions and modules deprecated in v3.0.0
 
 ### Fixed
 
